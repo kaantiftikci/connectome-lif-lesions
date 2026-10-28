@@ -22,3 +22,17 @@ def test_surrogate_fits_linear_map_and_screens():
     xt, _ = sur.predict(target)
     mimic = sur.reverse_screen(xt[0], exclude=[1], steps=300)
     assert mimic[1] == 0.0 and mimic.shape == (K,)
+
+
+def test_linear_surrogate_recovers_linear_map():
+    from sinek.surrogate import LinearSurrogate, cv_r2
+    rng = np.random.default_rng(1)
+    K, D = 5, 7
+    A = rng.normal(size=(K, D))
+    theta = rng.random((80, K)); x = theta @ A + 0.05 * rng.normal(size=(80, D))
+    assert cv_r2(lambda: LinearSurrogate(K, D, lam=0.1), theta, x) > 0.9
+    m = LinearSurrogate(K, D, lam=0.1).fit(theta, x)
+    assert np.allclose(m.sensitivity(), A.T, atol=0.15)
+    t = np.zeros(K); t[2] = 0.8
+    mimic = m.reverse_screen((t @ A), l1=0.0, exclude=[])
+    assert abs(mimic[2] - 0.8) < 0.1
