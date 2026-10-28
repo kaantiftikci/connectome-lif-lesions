@@ -41,6 +41,7 @@ if __name__ == "__main__":
     ap.add_argument("--duration", type=float, default=500.0)
     ap.add_argument("--procs", type=int, default=4)
     ap.add_argument("--out", default="results/progressive.csv")
+    ap.add_argument("--resume", action="store_true", help="skip (group, fraction, seeds) already present in --out")
     args = ap.parse_args()
 
     cn = load_flywire()
@@ -62,10 +63,15 @@ if __name__ == "__main__":
             for ls in range(args.lesion_seeds if f > 0 else 1):
                 for ss in range(args.sim_seeds):
                     jobs.append((g, f, ls, ss))
-    print(f"{cn.n} neurons; {len(names)} features; {len(jobs)} simulations on {args.procs} workers", flush=True)
-
     rows = []
     out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
+    if args.resume and out.exists():
+        prev = pd.read_csv(out)
+        done = set(map(tuple, prev[["group", "fraction", "lesion_seed", "sim_seed"]].drop_duplicates().itertuples(index=False)))
+        jobs = [j for j in jobs if (j[0], float(j[1]), j[2], j[3]) not in done]
+        rows = prev.to_dict("records")
+        print(f"resuming: {len(done)} simulations already in {out}, {len(jobs)} to go", flush=True)
+    print(f"{cn.n} neurons; {len(names)} features; {len(jobs)} simulations on {args.procs} workers", flush=True)
     t0 = time.time()
     with mp.get_context("fork").Pool(args.procs) as pool:
         for i, (g, f, ls, ss, n_hit, x) in enumerate(pool.imap_unordered(_job, jobs, chunksize=1)):

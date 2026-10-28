@@ -49,6 +49,7 @@ if __name__ == "__main__":
     ap.add_argument("--groups", nargs="*", default=None,
                     help="restrict lesioned groups (e.g. PAM PPL1 PPL2 PPM1); others stay intact")
     ap.add_argument("--group-set", choices=["default", "subtype"], default="default")
+    ap.add_argument("--resume", action="store_true", help="continue from <out>.ckpt.npz (same --n/--seed/--groups)")
     ap.add_argument("--out", default="results/sweep.npz")
     args = ap.parse_args()
 
@@ -61,17 +62,31 @@ if __name__ == "__main__":
     specs = sample_lesions(lesion_groups, args.n, seed=args.seed, mode=args.mode, sparsity=args.sparsity)
     theta = np.stack([lesion_vector(s, group_names) for s in specs])   # full-length vector, zeros elsewhere
 
+    out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
+    ckpt = out.with_suffix(".ckpt.npz")
+    X_done = []
+    if args.resume and ckpt.exists():
+        c = np.load(ckpt, allow_pickle=False)
+        X_done = list(c["x"]); assert len(X_done) <= len(specs)
+        print(f"resuming from checkpoint: {len(X_done)} of {args.n} done", flush=True)
+    todo = specs[len(X_done):]
+
+    def _save(final=False):
+        X = np.stack(X_done)
+        th = theta[: len(X_done)]
+        np.savez(ckpt, theta=th, x=X, group_names=np.array(group_names), feature_names=np.array(names))
+        if final:
+            if out.exists() and not args.resume:
+                old = np.load(out, allow_pickle=False)
+                th = np.concatenate([old["theta"], th]); X = np.concatenate([old["x"], X])
+            np.savez(out, theta=th, x=X, group_names=np.array(group_names), feature_names=np.array(names))
+            print(f"saved {out}: theta {th.shape}, x {X.shape}")
+
     t0 = time.time()
     with mp.get_context("fork").Pool(args.procs) as pool:
-        X = []
-        for i, x in enumerate(pool.imap(_one, specs, chunksize=1)):
-            X.append(x)
-            if (i + 1) % 10 == 0:
-                print(f"{i+1}/{args.n} in {time.time()-t0:.0f}s", flush=True)
-    X = np.stack(X)
-    out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
-    if out.exists():
-        old = np.load(out, allow_pickle=False)
-        theta = np.concatenate([old["theta"], theta]); X = np.concatenate([old["x"], X])
-    np.savez(out, theta=theta, x=X, group_names=np.array(group_names), feature_names=np.array(names))
-    print(f"saved {out}: theta {theta.shape}, x {X.shape}")
+        for i, x in enumerate(pool.imap(_one, todo, chunksize=1)):
+            X_done.append(x)
+            if len(X_done) % 10 == 0:
+                _save()
+                print(f"{len(X_done)}/{args.n} in {time.time()-t0:.0f}s", flush=True)
+    _save(final=True)
