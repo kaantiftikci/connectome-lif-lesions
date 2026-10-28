@@ -28,6 +28,11 @@ keep = x.std(0) > args.min_sd
 feat_names = [str(f) for f in d["feature_names"]]
 print(f"features: {x.shape[1]} total, {int(keep.sum())} vary (sd > {args.min_sd}); dropping the rest")
 x = x[:, keep]
+# drop lesion groups that were never lesioned in this sweep (restricted sweeps); the posterior is over the rest
+on = theta.std(0) > 1e-6
+if (~on).any():
+    print(f"lesion groups never varied in this sweep, excluded from the posterior: {[g for g, o in zip(groups, on) if not o]}")
+theta = theta[:, on]; groups = [g for g, o in zip(groups, on) if o]
 n = len(theta); k = int(n * (1 - args.holdout))
 rng = np.random.default_rng(0); perm = rng.permutation(n)
 tr, te = perm[:k], perm[k:]

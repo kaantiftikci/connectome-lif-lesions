@@ -189,3 +189,30 @@ seyreklik 0.5), 436 özellik.
 5. **Özellik tasarımı.** Sabit 383 özellik atılıyor; inen nöron okumaları
    için daha uzun süre (1-2 s) veya mekanosensör uyaran eklenmeli, aksi
    halde "davranış vekili" fiilen MBON çıkışına indirgeniyor.
+
+## 10. Dopamin odaklı tarama: ters problemin ilk cevabı (2026-10-28)
+
+80 lezyon, yalnızca PAM / PPL1 / PPL2 / PPM1 (seyreklik 0.4), kontroller
+sağlam. `artifacts/sweep_v1_da80.npz`.
+
+| Ölçüm | PAM | PPL1 | PPL2 | PPM1 |
+|---|---|---|---|---|
+| Duyarlılık (ridge, Σ\|∂x/∂θ\|) | 4.4 | **13.6** | 2.2 | 1.5 |
+| NPE posterior ortanca hatası (prior ≈ 0.33) | **0.15** | **0.11** | 0.34 | 0.29 |
+
+Vekil 5 kat CV R²: ridge 0.46, MLP 0.43. Değişen özellik 46/436.
+
+* **PAM ve PPL1 kaybı fenotipten geri çıkarılabiliyor**, 80 örnekle bile
+  prior'un 2-3 katı daha iyi. Bu, "gözlenen fenotipten hasar örüntüsünü
+  çıkarma" fikrinin modelde çalıştığının ilk kanıtı.
+* **PPL2 ve PPM1 tanımlanamıyor:** bu uyaran bataryası altında çıktıya
+  neredeyse hiç yansımıyorlar (duyarlılık 1.5-2.2). Ya batarya genişlemeli
+  (bu kümelerin hedeflediği devreleri süren uyaranlar) ya da bu kümelerin
+  kaybının bu modelde sessiz olduğu raporlanmalı; ikisi de sonuç.
+* **PPL1 en duyarlı küme**: 16 nöron, PAM'ın 307 nöronundan 3 kat büyük
+  etki. Kırılganlık nöron sayısıyla değil, bağlantı konumuyla ilgili;
+  2610.19153'ün hub bulgusunun hücre tipi düzeyinde karşılığı.
+* **Ters tarama:** tam PPL1 kaybını taklit etmeye en yakın dopaminerjik
+  lezyon %13 PAM, ama uyum zayıf; yani PPL1 imzası bu grup kümesi içinde
+  benzersiz. Kontrol gruplarını da içeren taramada "MBON %8" çıkmıştı.
+  Alt tip çözünürlüklü tarama bu soruyu asıl cevaplayacak.
