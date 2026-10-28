@@ -67,13 +67,14 @@ def _gather_rows(W: sp.csr_matrix, rows: np.ndarray):
     return W.indices[pos], W.data[pos]
 
 
-def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
+def simulate_dense(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
              poisson: dict[int, float] | np.ndarray | None = None,
              poisson_rate: float | None = None,
              seed: int | None = 0, record: bool = True) -> SpikeRecord:
-    """Run the network.
+    """Reference dense implementation (every neuron updated every step).
 
-    W : csr (n, n), W[pre, post] in mV (signed).
+    Kept for cross-checking :func:`simulate`; ~5x slower in the sparse-activity
+    regime.  W : csr (n, n), W[pre, post] in mV (signed).
     poisson : neuron indices driven by Poisson input (all at ``poisson_rate``
         or ``params.r_poi``), or a dict {index: rate_hz}.
     """
@@ -139,6 +140,98 @@ def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
             if record:
                 t_list.append(np.full(spk.size, t))
                 i_list.append(spk)
+
+    if t_list:
+        times = np.concatenate(t_list)
+        ids = np.concatenate(i_list)
+    else:
+        times = np.empty(0)
+        ids = np.empty(0, dtype=np.int64)
+    return SpikeRecord(times=times, ids=ids, n=n, duration=duration)
+
+
+def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
+             poisson: dict[int, float] | np.ndarray | None = None,
+             poisson_rate: float | None = None,
+             seed: int | None = 0, record: bool = True, eps: float = 1e-3) -> SpikeRecord:
+    """Active-set implementation: only neurons that are away from rest, carry
+    synaptic input, or are refractory are updated each step.  Identical
+    dynamics to :func:`simulate_dense` up to ``eps`` (mV): a neuron is put to
+    sleep once |v - v_0| < eps and |g| < eps and it is not refractory.
+
+    W : csr (n, n), W[pre, post] in mV (signed).
+    poisson : neuron indices driven by Poisson input (all at ``poisson_rate``
+        or ``params.r_poi``), or a dict {index: rate_hz}.
+    """
+    rng = np.random.default_rng(seed)
+    n = W.shape[0]
+    p = params
+    dt = p.dt
+    n_steps = int(round(duration / dt))
+    D = int(round(p.t_dly / dt))
+    e_m = np.exp(-dt / p.t_mbr)
+    e_s = np.exp(-dt / p.tau)
+    a = p.tau / (p.tau - p.t_mbr)
+
+    v = np.full(n, p.v_0, dtype=np.float64)
+    g = np.zeros(n, dtype=np.float64)
+    rfc = np.full(n, p.t_rfc, dtype=np.float64)
+    ref_until = np.full(n, -np.inf)
+    awake = np.zeros(n, dtype=bool)
+
+    poi_idx = np.empty(0, dtype=np.int64)
+    poi_p = np.empty(0)
+    if poisson is not None:
+        if isinstance(poisson, dict):
+            poi_idx = np.fromiter(poisson.keys(), dtype=np.int64)
+            rates = np.fromiter(poisson.values(), dtype=np.float64)
+        else:
+            poi_idx = np.asarray(poisson, dtype=np.int64)
+            rates = np.full(len(poi_idx), poisson_rate if poisson_rate is not None else p.r_poi)
+        poi_p = rates * dt / 1000.0
+        rfc[poi_idx] = 0.0
+    w_poi = p.w_syn * p.f_poi
+
+    empty = (np.empty(0, dtype=np.int64), np.empty(0, dtype=W.data.dtype))
+    buf = [empty] * (D + 1)
+    t_list, i_list = [], []
+
+    for k in range(n_steps):
+        t = k * dt
+        slot = k % (D + 1)
+        post, w = buf[slot]
+        if post.size:
+            buf[slot] = empty
+            np.add.at(g, post, w)
+            awake[post] = True
+        if poi_idx.size:
+            hit = rng.random(poi_idx.size) < poi_p
+            if hit.any():
+                h = poi_idx[hit]
+                v[h] += w_poi
+                awake[h] = True
+        idx = np.flatnonzero(awake)
+        if idx.size == 0:
+            continue
+        act = idx[t >= ref_until[idx]]
+        va, ga = v[act], g[act]
+        v[act] = p.v_0 + (va - p.v_0 - a * ga) * e_m + a * ga * e_s
+        g[act] = ga * e_s
+        spk = act[v[act] > p.v_th]
+        if spk.size:
+            v[spk] = p.v_rst
+            g[spk] = 0.0
+            ref_until[spk] = t + rfc[spk]
+            buf[(k + D) % (D + 1)] = _gather_rows(W, spk)
+            if record:
+                t_list.append(np.full(spk.size, t))
+                i_list.append(spk)
+        # put settled, non-refractory neurons to sleep
+        quiet = act[(np.abs(v[act] - p.v_0) < eps) & (np.abs(g[act]) < eps) & (t >= ref_until[act])]
+        if quiet.size:
+            v[quiet] = p.v_0
+            g[quiet] = 0.0
+            awake[quiet] = False
 
     if t_list:
         times = np.concatenate(t_list)

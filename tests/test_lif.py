@@ -56,3 +56,18 @@ def test_refractory_limits_rate():
     r1 = firing_rates(rec)[1]
     assert r1 <= 1000.0 / p.t_rfc + 1
     assert r1 > 300
+
+
+def test_active_set_matches_dense_on_small_network():
+    from sinek.sim import simulate_dense
+    rng = np.random.default_rng(5)
+    n = 40
+    W = sp.random(n, n, density=0.15, random_state=5, format="csr")
+    W.data = (rng.choice([-1, 1], size=W.nnz) * (rng.integers(5, 60, size=W.nnz))) * 0.275
+    W = W.tocsr()
+    drive = np.array([0, 1, 2])
+    a = simulate(W, 600.0, poisson=drive, seed=11)
+    b = simulate_dense(W, 600.0, poisson=drive, seed=11)
+    ra, rb = firing_rates(a), firing_rates(b)
+    assert a.times.size > 10
+    assert np.abs(ra - rb).max() <= 2.0      # identical up to the eps sleep rule

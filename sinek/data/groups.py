@@ -14,6 +14,10 @@ import numpy as np
 
 from .flywire import Connectome
 
+
+class _LazySubtypes(dict):
+    """Placeholder resolved by ``group_indices`` when a Connectome is at hand."""
+
 # Lesion targets with a disease rationale.
 DA_GROUPS: dict[str, dict] = {
     "PAM":  {"cell_type__startswith": "PAM"},    # reward / appetitive memory, vulnerable in PD models
@@ -43,7 +47,10 @@ STIMULI: dict[str, dict] = {
 
 
 def group_indices(cn: Connectome, groups: dict[str, dict] | None = None) -> dict[str, np.ndarray]:
-    groups = {**DA_GROUPS, **CONTROL_GROUPS} if groups is None else groups
+    if groups is None:
+        groups = {**DA_GROUPS, **CONTROL_GROUPS}
+    elif isinstance(groups, _LazySubtypes):
+        groups = subtype_groups(cn)
     return {name: cn.select(**sel) for name, sel in groups.items()}
 
 
@@ -74,3 +81,21 @@ def readout_groups(cn: Connectome, min_size: int = 4, extra: dict[str, np.ndarra
     if extra:
         out.update(extra)
     return out
+
+
+# Subtype-resolved dopaminergic groups (one group per annotated cell type).
+# Built lazily from the annotation table so the list matches the dataset.
+_PREFIXES = ("PAM", "PPL1", "PPL2", "PPM1")
+
+
+def subtype_groups(cn: Connectome, min_size: int = 2) -> dict[str, dict]:
+    ct = cn.meta["cell_type"].astype(str)
+    out: dict[str, dict] = {}
+    for pre in _PREFIXES:
+        for name, cnt in ct[ct.str.startswith(pre)].value_counts().items():
+            if cnt >= min_size:
+                out[name] = {"cell_type": name}
+    return out
+
+
+SUBTYPE_GROUPS = _LazySubtypes()
