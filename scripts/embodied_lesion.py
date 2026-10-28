@@ -23,7 +23,8 @@ ap.add_argument("--stimuli", nargs="+", default=["wind_gravity", "head_bristle"]
 ap.add_argument("--seeds", type=int, default=3)
 ap.add_argument("--brain-ms", type=float, default=500.0)
 ap.add_argument("--walk-s", type=float, default=1.0)
-ap.add_argument("--tilts", nargs="+", type=float, default=[0.0, 60.0])
+ap.add_argument("--tilts", nargs="+", type=float, default=[0.0, 30.0],
+                help="0 = flat; 30 = steepest slope the controller climbs (slides at 45+), the negative-geotaxis proxy")
 ap.add_argument("--out", default="results/embodied.csv")
 args = ap.parse_args()
 
