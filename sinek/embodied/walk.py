@@ -19,7 +19,8 @@ import numpy as np
 os.environ.setdefault("MUJOCO_GL", "")
 
 
-def walk(signal, duration: float = 1.0, tilt_deg: float = 0.0, seed: int = 0, warmup: bool = True) -> dict:
+def walk(signal, duration: float = 1.0, tilt_deg: float = 0.0, seed: int = 0, warmup: bool = True,
+         adhesion_gain: float = 40.0) -> dict:
     from flygym import Simulation
     from flygym.anatomy import BodySegment, ContactBodiesPreset
     from flygym.compose import FlatGroundWorld
@@ -29,7 +30,7 @@ def walk(signal, duration: float = 1.0, tilt_deg: float = 0.0, seed: int = 0, wa
                                              make_locomotion_fly)
 
     signal = np.asarray(signal, dtype=float)
-    fly = make_locomotion_fly(name="fly", add_adhesion=True)
+    fly = make_locomotion_fly(name="fly", add_adhesion=True, adhesion_gain=adhesion_gain)
     world = FlatGroundWorld()
     world.add_fly(fly, [0, 0, 0.8], Rotation3D("quat", [1, 0, 0, 0]),
                   bodysegs_with_ground_contact=ContactBodiesPreset.TIBIA_TARSUS_ONLY,
