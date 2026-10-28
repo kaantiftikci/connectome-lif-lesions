@@ -17,11 +17,17 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--sweep", default="results/sweep.npz")
 ap.add_argument("--epochs", type=int, default=300)
 ap.add_argument("--holdout", type=float, default=0.2)
+ap.add_argument("--min-sd", type=float, default=1e-6)
 args = ap.parse_args()
 
 d = np.load(args.sweep, allow_pickle=False)
 theta, x = d["theta"], d["x"]
 groups = [str(g) for g in d["group_names"]]
+# drop features that never change across the sweep (silent readouts, stimuli untouched by these lesions)
+keep = x.std(0) > args.min_sd
+feat_names = [str(f) for f in d["feature_names"]]
+print(f"features: {x.shape[1]} total, {int(keep.sum())} vary (sd > {args.min_sd}); dropping the rest")
+x = x[:, keep]
 n = len(theta); k = int(n * (1 - args.holdout))
 rng = np.random.default_rng(0); perm = rng.permutation(n)
 tr, te = perm[:k], perm[k:]
