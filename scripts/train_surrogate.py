@@ -18,6 +18,7 @@ ap.add_argument("--sweep", default="results/sweep.npz")
 ap.add_argument("--epochs", type=int, default=300)
 ap.add_argument("--holdout", type=float, default=0.2)
 ap.add_argument("--min-sd", type=float, default=1e-6)
+ap.add_argument("--report", default=None, help="save sensitivity and recovery results to this .npz")
 args = ap.parse_args()
 
 d = np.load(args.sweep, allow_pickle=False)
@@ -51,14 +52,21 @@ for g, s in sorted(zip(groups, np.abs(J).sum(0)), key=lambda t: -t[1]):
     print(f"  {g:6s} {s:8.3f}")
 
 post = LesionPosterior(groups).fit(theta[tr], x[tr])
-err = []
-for i in te[:20]:
+err, rec_truth, rec_med, rec_lo, rec_hi = [], [], [], [], []
+for i in te[:40]:
     s = post.summarize(x[i])
-    err.append([abs(s[g][0] - theta[i, j]) for j, g in enumerate(groups)])
+    med = np.array([s[g][0] for g in groups]); lo = np.array([s[g][1] for g in groups]); hi = np.array([s[g][2] for g in groups])
+    err.append(np.abs(med - theta[i])); rec_truth.append(theta[i]); rec_med.append(med); rec_lo.append(lo); rec_hi.append(hi)
 err = np.array(err)
 print("posterior-median recovery error per group (held-out):")
 for g, e in zip(groups, err.mean(0)):
     print(f"  {g:6s} {e:.3f}")
+if args.report:
+    Path(args.report).parent.mkdir(parents=True, exist_ok=True)
+    np.savez(args.report, groups=np.array(groups), features=np.array([f for f, k in zip(feat_names, keep) if k]),
+             sensitivity=J, r2_ridge=r2_lin, r2_mlp=r2_mlp, n_sims=n,
+             rec_truth=np.array(rec_truth), rec_median=np.array(rec_med), rec_lo=np.array(rec_lo), rec_hi=np.array(rec_hi))
+    print("saved report to", args.report)
 
 if "PPL1" in groups:
     j = groups.index("PPL1")
