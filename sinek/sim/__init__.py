@@ -1,1 +1,1 @@
-from .lif import LIFParams, SpikeRecord, simulate, firing_rates
+from .lif import LIFParams, SpikeRecord, simulate, simulate_dense, firing_rates
