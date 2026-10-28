@@ -119,3 +119,37 @@ nasıl kaydığı başlı başına bir sonuç olarak raporlanacak.
 * MaleCNS v1.0: male-cns.janelia.org (neuPrint)
 * Shiu et al. 2024, Nature 634:210. Lappalainen et al. 2024, Nature 634:1132.
   Robie et al. 2017, Cell 170:393 (davranış taraması, faz 2 doğrulama verisi).
+
+## 8. Faz 1 ilk sonuçlar (2026-10-28, tek deneme, tek lezyon sırası)
+
+Dişi FlyWire v783, 4 uyaran (şeker, su, acı, ORN_DM1) × 109 okuma grubu =
+436 özellik, 500 ms. Gürültü tabanı (sağlam beyin, 3 tohum): L2 ortalama
+0.82, en çok 0.97; tohumlar arası 7 özellik >0.1 değişiyor.
+
+| Grup | n | %20 | %40 | %60 | %80 | %100 | Biçim |
+|---|---|---|---|---|---|---|---|
+| PPL1 | 16 | 1.22 | 1.15 | 3.02 | 6.14 | 6.26 | **sigmoid, eşik ~%50-60, sessiz rezerv** |
+| PAM | 307 | 2.86 | 2.92 | 2.88 | 2.90 | 2.98 | **basamak: %20'de tam etki, sonra düz** |
+| KC (kontrol) | 5177 | 4.13 | 6.37 | 11.99 | 21.39 | 25.57 | **doğrusal/hızlanan, rezerv yok** |
+
+(L2 uzaklık = sağlam beyinden, log-hız özellikleri üzerinde.)
+
+Yorum ve uyarılar:
+* PPL1 eğrisi Parkinson'daki "belirtiler ~%60 kayıptan sonra" gözlemiyle
+  aynı biçimde. Ama 16 nöronluk bir kümede hangi nöronların önce gittiği
+  eşiği belirler; bu tek bir rastgele sıralama. Yapılacak: 10+ lezyon sırası
+  × 3 simülasyon tohumu, ve alt tip bazında (PPL101..108) lezyon.
+* PAM etkisinin neredeyse tamamı tek özellik: koku altında MBON29 çıkışı
+  %20 kayıpta 2.77'den 0'a düşüyor ve bir daha değişmiyor. Yani küçük bir
+  PAM alt tipi MBON29'u doğrudan sürüyor; model bunu kapı gibi gösteriyor.
+  Hangi PAM alt tipi olduğu `lesioned_neurons` ile çıkarılabilir.
+* Her üç grupta da etki koku→MBON özelliklerinde; inen nöron (davranış
+  vekili) özellikleri neredeyse hiç kıpırdamıyor (PAM'da DNp41 -0.49 en
+  büyüğü). Bu, (a) LIF'te dopaminin doğrudan uyarıcı sayılmasının ve
+  (b) kısa koku uyaranının inen nöronlara zayıf yansımasının sonucu.
+  Faz 3'teki nöromodülasyon katmanı ve faz 2'deki gövdeli okuma tam bu
+  boşluk için.
+* Özgüllük sorusu için ilk cevap: büyüklük eşleştirilmiş olmasa da KC
+  kaybı tamamen farklı bir eğri veriyor; dopamin kümeleri "rezerv/basamak",
+  KC "doğrusal". Büyüklük eşleştirilmiş kontroller (ör. 16 rastgele
+  merkezi nöron, 307 rastgele merkezi nöron) sıradaki deney.
