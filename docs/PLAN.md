@@ -142,7 +142,12 @@ Yorum ve uyarılar:
 * PAM etkisinin neredeyse tamamı tek özellik: koku altında MBON29 çıkışı
   %20 kayıpta 2.77'den 0'a düşüyor ve bir daha değişmiyor. Yani küçük bir
   PAM alt tipi MBON29'u doğrudan sürüyor; model bunu kapı gibi gösteriyor.
-  Hangi PAM alt tipi olduğu `lesioned_neurons` ile çıkarılabilir.
+  Bağlantı izi: MBON29'un en güçlü dopaminerjik girdisi PAM08 (iki MBON29
+  nöronuna 38 ve 18 mV toplam ağırlık; PAM01 7 ve 4 mV). %20 lezyon 6 PAM08
+  nöronu götürüyor ve MBON29'un koku cevabı eşik altına düşüp sıfırlanıyor.
+  Yani eşiğin hemen üstünde çalışan bir devrenin kırılganlığı; büyüklük
+  değil, hangi alt tipin kaybolduğu belirleyici. Alt tip çözünürlüklü
+  lezyon (PAM01..15 ayrı gruplar) bir sonraki tarama için şart.
 * Her üç grupta da etki koku→MBON özelliklerinde; inen nöron (davranış
   vekili) özellikleri neredeyse hiç kıpırdamıyor (PAM'da DNp41 -0.49 en
   büyüğü). Bu, (a) LIF'te dopaminin doğrudan uyarıcı sayılmasının ve
