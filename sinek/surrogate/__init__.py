@@ -1,1 +1,1 @@
-from .model import Surrogate
+from .model import Surrogate, LinearSurrogate, cv_r2

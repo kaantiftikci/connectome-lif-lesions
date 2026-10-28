@@ -158,3 +158,34 @@ Yorum ve uyarılar:
   kaybı tamamen farklı bir eğri veriyor; dopamin kümeleri "rezerv/basamak",
   KC "doğrusal". Büyüklük eşleştirilmiş kontroller (ör. 16 rastgele
   merkezi nöron, 307 rastgele merkezi nöron) sıradaki deney.
+
+## 9. Ters model hattının durumu (2026-10-28)
+
+Uçtan uca çalışıyor: `run_lesion_sweep.py` → `train_surrogate.py`
+(vekil + NPE + ters tarama). İlk veri seti: 60 karışık lezyon (8 grup,
+seyreklik 0.5), 436 özellik.
+
+| Ölçüm | Değer | Anlamı |
+|---|---|---|
+| Değişen özellik | 53 / 436 | tat uyaranları ve inen nöronların çoğu bu lezyonlardan etkilenmiyor |
+| Ridge vekil, 5 kat CV R² | 0.49 | öğrenilebilir sinyal var |
+| MLP topluluğu, 5 kat CV R² | 0.39 | 60 örnekte aşırı uyum; ridge varsayılan taban çizgisi oldu |
+| NPE posterior ortanca hatası | 0.22-0.36 | düzgün prior'un hatasıyla aynı (~0.33): 60 örnek NPE için yetersiz |
+| Duyarlılık sırası | MBON 92, KC 86, PPM1 17, LHLN 16, PPL2 13, PPL1 13, mAL 11, PAM 10 | MB'nin kendisi dopamin kümelerini 5-9 kat eziyor |
+
+Çıkarımlar ve sıradaki adımlar:
+1. **Kontrolleri ayrı taramaya al.** KC ve MBON lezyonları aynı taramada
+   olduğunda dopamin etkisi maskeleniyor. Dopamin odaklı tarama
+   (`--groups PAM PPL1 PPL2 PPM1`) başlatıldı; büyüklük eşleştirilmiş
+   kontroller ayrı taramada.
+2. **Örnek sayısı.** NPE için en az 500-1000 çift gerekir. Bu makinede
+   örnek başına ~55 s (500 ms, 4 uyaran); 2 işlemle ~7 saat/500 örnek.
+   GPU'da torch.sparse ile 10-50 kat hızlanır; bu ilk yerel iş.
+3. **Bellek.** Her işlem konnektomu ayrı yüklüyor (~1.2 GB + yükleme
+   tepesi). 15 GB'lık makinede 3 işlem + eğitim OOM verdi; 2 işlem güvenli.
+   Paylaşımlı bellek (np.memmap üzerinden CSR) ile 4+ işlem mümkün.
+4. **Alt tip çözünürlüğü.** PAM08→MBON29 bulgusu grupların alt tipe
+   bölünmesini zorunlu kılıyor (PAM01..15, PPL101..108 → K ≈ 30).
+5. **Özellik tasarımı.** Sabit 383 özellik atılıyor; inen nöron okumaları
+   için daha uzun süre (1-2 s) veya mekanosensör uyaran eklenmeli, aksi
+   halde "davranış vekili" fiilen MBON çıkışına indirgeniyor.

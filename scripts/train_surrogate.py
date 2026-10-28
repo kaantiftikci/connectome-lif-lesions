@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from sinek.surrogate import Surrogate            # noqa: E402
+from sinek.surrogate import Surrogate, LinearSurrogate, cv_r2   # noqa: E402
 from sinek.inference import LesionPosterior      # noqa: E402
 
 ap = argparse.ArgumentParser()
@@ -33,10 +33,12 @@ rng = np.random.default_rng(0); perm = rng.permutation(n)
 tr, te = perm[:k], perm[k:]
 print(f"{n} simulations, {theta.shape[1]} lesion groups {groups}, {x.shape[1]} features")
 
-sur = Surrogate(theta.shape[1], x.shape[1]).fit(theta[tr], x[tr], epochs=args.epochs)
-mu, sd = sur.predict(theta[te])
-r2 = 1 - ((mu - x[te]) ** 2).sum() / ((x[te] - x[te].mean(0)) ** 2).sum()
-print(f"surrogate held-out R^2 = {r2:.3f}")
+K, D = theta.shape[1], x.shape[1]
+r2_lin = cv_r2(lambda: LinearSurrogate(K, D, lam=1.0), theta, x)
+r2_mlp = cv_r2(lambda: Surrogate(K, D, n_members=2), theta, x, epochs=args.epochs)
+print(f"5-fold CV R^2: ridge {r2_lin:.3f}   MLP ensemble {r2_mlp:.3f}")
+sur = (LinearSurrogate(K, D) if r2_lin >= r2_mlp else Surrogate(K, D)).fit(theta, x, epochs=args.epochs)
+print(f"using {'ridge' if r2_lin >= r2_mlp else 'MLP'} surrogate for sensitivity and reverse screen")
 
 J = sur.sensitivity()
 print("sensitivity |dx/dtheta| summed over features, per group:")
