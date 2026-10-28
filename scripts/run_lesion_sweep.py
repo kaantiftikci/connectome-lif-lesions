@@ -12,7 +12,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from sinek.data import load_flywire, group_indices, stimulus_indices, readout_groups   # noqa: E402
+from sinek.data import load_flywire, group_indices, build_stimuli, readout_groups   # noqa: E402
 from sinek.lesion import apply_lesion, lesion_vector, sample_lesions                     # noqa: E402
 from sinek.readout import Stimulus, phenotype_vector, phenotype_names                    # noqa: E402
 
@@ -25,7 +25,7 @@ def _load(duration, trials, groups=None):
     cn = load_flywire()
     _G["cn"] = cn
     _G["groups"] = group_indices(cn, groups)
-    _G["stim"] = [Stimulus(k, v) for k, v in stimulus_indices(cn).items()]
+    _G["stim"] = build_stimuli(cn)
     _G["readouts"] = readout_groups(cn)
     _G["duration"], _G["trials"] = duration, trials
     return cn

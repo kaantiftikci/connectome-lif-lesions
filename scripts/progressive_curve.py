@@ -15,7 +15,7 @@ from pathlib import Path
 import numpy as np, pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from sinek.data import load_flywire, group_indices, stimulus_indices, readout_groups   # noqa: E402
+from sinek.data import load_flywire, group_indices, build_stimuli, readout_groups   # noqa: E402
 from sinek.lesion import LesionSpec, apply_lesion                                        # noqa: E402
 from sinek.readout import Stimulus, phenotype_vector, phenotype_names                    # noqa: E402
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     for size in args.controls:
         groups[f"RND{size}"] = np.sort(rng.choice(pool_idx, size=size, replace=False))
     _G.update(cn=cn, groups=groups, mode=args.mode, duration=args.duration,
-              stim=[Stimulus(k, v) for k, v in stimulus_indices(cn).items()], readouts=readout_groups(cn))
+              stim=build_stimuli(cn), readouts=readout_groups(cn))
     names = phenotype_names(_G["stim"], _G["readouts"])
     all_groups = list(args.groups) + [f"RND{s}" for s in args.controls]
 

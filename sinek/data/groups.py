@@ -34,15 +34,22 @@ CONTROL_GROUPS: dict[str, dict] = {
     "LHLN":   {"cell_class": "LHLN"},
 }
 
-# Stimulus battery: sensory populations driven with Poisson input.
+# Stimulus battery: sensory populations driven with Poisson input.  Each entry
+# is a selector plus an optional "rate_hz" (default 150).  Every member was
+# checked to stay in the stable regime (see docs/PLAN.md, "stable regime"):
+#   * sugar: only the 32 "sugar" GRNs; adding the 25 "sugar/low_salt" GRNs at
+#     150 Hz tips the model into a runaway attractor (~9,000 neurons at the
+#     refractory ceiling)
+#   * odor_DM1 is stable; ORN_DA1 (126) and ORN_VM4 (75) at 150 Hz run away
+#   * wind_gravity (481 JO neurons) and head bristles recruit descending
+#     neurons (68 and 135 active) and stay stable at the listed rates
 STIMULI: dict[str, dict] = {
-    # NOTE: only the 32 "sugar" GRNs.  Adding the 25 "sugar/low_salt" GRNs at
-    # 150 Hz tips the whole model into a runaway attractor (~9,000 neurons at
-    # the refractory ceiling); see docs/PLAN.md, "stable regime".
-    "sugar":  {"cell_sub_class": "sugar"},
-    "water":  {"cell_sub_class": "water"},
-    "bitter": {"cell_sub_class": "bitter"},
-    "odor_DM1": {"cell_type": "ORN_DM1"},   # one food-odour glomerulus (68 ORNs); all 2,282 ORNs would saturate the model
+    "sugar":        {"cell_sub_class": "sugar"},
+    "water":        {"cell_sub_class": "water"},
+    "bitter":       {"cell_sub_class": "bitter"},
+    "odor_DM1":     {"cell_type": "ORN_DM1"},
+    "wind_gravity": {"cell_sub_class": "wind_gravity", "rate_hz": 150.0},
+    "head_bristle": {"cell_sub_class": "head bristle", "rate_hz": 100.0},
 }
 
 
@@ -54,8 +61,23 @@ def group_indices(cn: Connectome, groups: dict[str, dict] | None = None) -> dict
     return {name: cn.select(**sel) for name, sel in groups.items()}
 
 
+def _split(sel: dict) -> tuple[dict, float]:
+    sel = dict(sel)
+    return sel, float(sel.pop("rate_hz", 150.0))
+
+
 def stimulus_indices(cn: Connectome, stimuli: dict[str, dict] | None = None) -> dict[str, np.ndarray]:
-    return {name: cn.select(**sel) for name, sel in (stimuli or STIMULI).items()}
+    return {name: cn.select(**_split(sel)[0]) for name, sel in (stimuli or STIMULI).items()}
+
+
+def build_stimuli(cn: Connectome, stimuli: dict[str, dict] | None = None) -> list:
+    """The battery as ``Stimulus`` objects (name, target indices, rate)."""
+    from ..readout.phenotype import Stimulus
+    out = []
+    for name, sel in (stimuli or STIMULI).items():
+        kw, rate = _split(sel)
+        out.append(Stimulus(name, cn.select(**kw), rate))
+    return out
 
 
 def readout_groups(cn: Connectome, min_size: int = 4, extra: dict[str, np.ndarray] | None = None) -> dict[str, np.ndarray]:

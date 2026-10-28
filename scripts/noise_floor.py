@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from sinek.data import load_flywire, stimulus_indices, readout_groups   # noqa: E402
+from sinek.data import load_flywire, build_stimuli, readout_groups   # noqa: E402
 from sinek.readout import Stimulus, phenotype_vector, phenotype_names   # noqa: E402
 
 ap = argparse.ArgumentParser()
@@ -18,7 +18,7 @@ ap.add_argument("--out", default="results/noise_floor.npz")
 args = ap.parse_args()
 
 cn = load_flywire()
-stim = [Stimulus(k, v) for k, v in stimulus_indices(cn).items()]
+stim = build_stimuli(cn)
 readouts = readout_groups(cn)
 names = phenotype_names(stim, readouts)
 X = []
