@@ -43,6 +43,8 @@ if __name__ == "__main__":
     ap.add_argument("--trials", type=int, default=1)
     ap.add_argument("--mode", default="remove")
     ap.add_argument("--sparsity", type=float, default=0.5)
+    ap.add_argument("--groups", nargs="*", default=None,
+                    help="restrict lesioned groups (e.g. PAM PPL1 PPL2 PPM1); others stay intact")
     ap.add_argument("--out", default="results/sweep.npz")
     args = ap.parse_args()
 
@@ -50,8 +52,9 @@ if __name__ == "__main__":
     group_names = list(group_indices(cn).keys())
     stim = [Stimulus(k, v) for k, v in stimulus_indices(cn).items()]
     names = phenotype_names(stim, readout_groups(cn))
-    specs = sample_lesions(group_names, args.n, seed=args.seed, mode=args.mode, sparsity=args.sparsity)
-    theta = np.stack([lesion_vector(s, group_names) for s in specs])
+    lesion_groups = args.groups or group_names
+    specs = sample_lesions(lesion_groups, args.n, seed=args.seed, mode=args.mode, sparsity=args.sparsity)
+    theta = np.stack([lesion_vector(s, group_names) for s in specs])   # full-length vector, zeros elsewhere
     del cn
 
     t0 = time.time()
