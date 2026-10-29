@@ -532,3 +532,30 @@ dişiden belirgin daha uyarılabilir olması ve kararlı bir çalışma noktası
 dopamin devrelerini sessizleştirmesi. Temiz karşılaştırma için her iki
 cinsin de seyrek MB rejiminde (bölüm 18, APL kazancı) koşulması gerekiyor;
 bu, dişi için başlatıldı, erkek için sıradaki iş.
+
+## 18. Seyrek mantar gövdesi rejimi: dopamin etkileri kayboluyor (2026-10-29)
+
+Rejim araması (`artifacts/odor_regime_search_v1.csv`): koku çekicisi uyaran
+tasarımıyla kırılamadı (8 ORN, 50 ms darbe, 6 glomerül, genel ölçek 0.6:
+hepsinde KC'lerin yüzde 51-75'i aktif). KC→KC yinelemesini sıfırlamak da
+yetmedi (yüzde 67). Yalnızca APL→KC inhibisyonunu 5 kat artırmak KC
+aktivasyonunu yüzde 3.8'e, MBON ortalamasını 10 Hz'e indirdi (biyolojik
+seyreklik ~yüzde 5); beyin geneli çekici (5.9 bin aktif nöron) sürüyor.
+
+Bu rejimde ilerleyici lezyonlar (3 sıra × 1 tohum,
+`artifacts/progressive_v4_sparse_apl5.csv`, gürültü tabanı 1.91):
+
+| Grup | Çekici rejimi, %100 kayıp | Seyrek rejim, %100 kayıp |
+|---|---|---|
+| PPL1 | 6.19 | 1.62 (taban altı) |
+| PAM | 3.00 | 1.24 (taban altı) |
+| RND16 | 0.97 | 1.12 |
+| RND307 | 1.77 | 2.19 |
+
+Sonuç: bölüm 11 ve 13'teki dopamin özgüllüğü (PPL1 ≫ rastgele, etiketli
+hatlar) MBON doyumunun ürünü. MBON'lar doyumdan çıkınca dopaminerjik kayıp
+bu batarya altında okunamıyor; rastgele 307 nöron daha büyük iz bırakıyor.
+Referans LIF'te dopamin etkisi, DAN→MBON hızlı sinapslarının doymuş MBON'u
+kapatmasından ibaretti. Modülatör katman (bölüm 15) ve seyrek rejim birlikte
+test edilmeli; bu, projenin sıradaki deneyi. Bölüm 11, 13 ve 14'ün
+sonuçları "çekici rejiminde" ibaresiyle okunmalı.
