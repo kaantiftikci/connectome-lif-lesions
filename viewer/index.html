@@ -1,0 +1,184 @@
+<meta charset="utf-8">
+<title>Fly Brain Lesion Viewer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-bleed WebGL point cloud, a control strip pinned to the bottom, a legend card top-left.
+   Single dark theme by choice: a microscope-stage look where spikes are the only bright thing. */
+:root {
+  --bg: #0b0d12; --panel: rgba(18, 21, 30, 0.86); --line: #2a2f3d; --fg: #e6e8ef; --muted: #8b92a5;
+  --accent: #ffb547; --kc: #4f7ff2; --dan: #ff5d5d; --mbon: #46d39c; --sens: #b58cff; --dn: #ffd166;
+  --font-ui: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-ui); overflow: hidden; }
+canvas#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.hud { position: fixed; z-index: 2; background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+       backdrop-filter: blur(6px); font-size: 13px; line-height: 1.45; }
+#legend { top: max(12px, env(safe-area-inset-top, 0px)); left: max(16px, env(safe-area-inset-left, 0px)); padding: 10px 12px; max-width: 260px; }
+#legend h1 { font-size: 15px; font-weight: 600; margin: 0 0 2px; letter-spacing: 0.01em; }
+#legend .sub { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+.row { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; padding: 1px 0; }
+.row input { margin: 0; accent-color: var(--accent); }
+.sw { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.cnt { margin-left: auto; font-family: var(--font-mono); color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+#bar { left: 0; right: 0; bottom: 0; border-radius: 0; border-width: 1px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
+       padding-block: 10px calc(10px + env(safe-area-inset-bottom, 0px));
+       padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+#bar > button { background: var(--accent); color: #1a1200; border: 0; border-radius: 4px; font: 600 13px var(--font-ui); padding: 6px 14px; cursor: pointer; min-width: 64px; }
+#bar > button:focus-visible, .seg button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+#bar input[type=range] { flex: 1 1 200px; min-width: 120px; accent-color: var(--accent); }
+.seg { display: flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.seg button { background: transparent; color: var(--muted); border: 0; font: 500 12px var(--font-ui); padding: 6px 10px; cursor: pointer; }
+.seg button[aria-pressed=true] { background: #262b3a; color: var(--fg); }
+.read { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.read b { color: var(--fg); font-weight: 500; }
+#status[hidden] { display: none; }
+#status { position: fixed; z-index: 3; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 14px; background: var(--bg); }
+#help { color: var(--muted); font-size: 11px; width: 100%; }
+@media (max-width: 520px) { #legend { max-width: 200px; font-size: 12px; } .read.wide { display: none; } }
+@media (prefers-reduced-motion: reduce) { #bar button { transition: none; } }
+</style>
+
+<canvas id="gl"></canvas>
+<div id="status">Loading simulation data…</div>
+<section id="legend" class="hud" aria-label="Legend">
+  <h1>Fly Brain Lesion Viewer</h1>
+  <div class="sub" id="sub">FlyWire v783, 138 639 neurons</div>
+  <div id="classes"></div>
+  <label class="row" style="margin-top:6px"><input type="checkbox" id="showLesioned" checked><span class="sw" style="background:#5a2a2a;border:1px solid var(--dan)"></span>lesioned neurons (hollow)</label>
+</section>
+<div id="bar" class="hud" role="toolbar" aria-label="Playback">
+  <button id="play" aria-label="Play or pause">Play</button>
+  <input type="range" id="t" min="0" max="99" value="0" step="1" aria-label="Time">
+  <span class="read"><b id="tms">0</b> ms</span>
+  <div class="seg" id="runs" role="group" aria-label="Condition"></div>
+  <span class="read"><b id="nact">0</b> firing now</span>
+  <span class="read wide">cumulative <b id="ncum">0</b></span>
+  <span id="help">drag: rotate · wheel / pinch: zoom · shift-drag: pan · keys: space, ← →</span>
+</div>
+
+<script>
+(async function () {
+  const $ = id => document.getElementById(id);
+  const colors = { 0: [0.30, 0.32, 0.40], 1: [0.31, 0.50, 0.95], 2: [1.00, 0.36, 0.36], 3: [0.27, 0.83, 0.61], 4: [0.71, 0.55, 1.00], 5: [1.00, 0.82, 0.40], 6: [1.00, 0.71, 0.28] };
+  const dimA = { 0: 0.10, 1: 0.18, 2: 0.55, 3: 0.55, 4: 0.16, 5: 0.35, 6: 0.6 };   // resting alpha per class
+  let data;
+  try {
+    const r = await fetch("data.json"); if (!r.ok) throw new Error(r.status);
+    data = await r.json();
+  } catch (e) {
+    $("status").textContent = "data.json not found. Run: python scripts/export_viewer.py, then serve the viewer folder (python -m http.server -d viewer).";
+    return;
+  }
+  $("status").hidden = true;
+  const n = data.meta.n, cls = data.cls, pos = data.pos, runNames = Object.keys(data.runs);
+  const nb = data.runs[runNames[0]].frames.length;
+  $("sub").textContent = `${data.meta.connectome} · ${n.toLocaleString()} neurons · ${data.meta.stimulus} at ${data.meta.rate_hz} Hz · APL×${data.meta.apl_scale}`;
+  $("t").max = nb - 1;
+
+  // ---- legend with per-class toggles and counts
+  const counts = {}; for (let i = 0; i < n; i++) counts[cls[i]] = (counts[cls[i]] || 0) + 1;
+  const visible = {};
+  data.class_names.forEach((name, k) => {
+    if (!counts[k]) return;
+    visible[k] = true;
+    const c = colors[k].map(v => Math.round(v * 255));
+    const row = document.createElement("label"); row.className = "row";
+    row.innerHTML = `<input type="checkbox" id="cls${k}" checked><span class="sw" style="background:rgb(${c})"></span>${name}<span class="cnt">${counts[k].toLocaleString()}</span>`;
+    row.querySelector("input").addEventListener("change", e => { visible[k] = e.target.checked; dirty = true; });
+    $("classes").appendChild(row);
+  });
+  const lesionedSet = new Uint8Array(n); data.lesioned.forEach(i => lesionedSet[i] = 1);
+  $("showLesioned").addEventListener("change", () => { dirty = true; });
+
+  // ---- condition switch
+  let run = runNames[0];
+  runNames.forEach(name => {
+    const b = document.createElement("button"); b.textContent = name; b.setAttribute("aria-pressed", name === run);
+    b.addEventListener("click", () => { run = name; [...$("runs").children].forEach(x => x.setAttribute("aria-pressed", x === b)); resetGlow(); setFrame(frame, true); });
+    $("runs").appendChild(b);
+  });
+
+  // ---- WebGL point cloud
+  const canvas = $("gl"), gl = canvas.getContext("webgl", { antialias: false, alpha: false });
+  if (!gl) { $("status").hidden = false; $("status").textContent = "WebGL is not available in this browser."; return; }
+  const vs = `attribute vec3 p; attribute vec4 c; uniform mat4 mvp; uniform float ps; varying vec4 vc;
+    void main(){ gl_Position = mvp*vec4(p,1.0); float w = max(gl_Position.w, 1.0); gl_PointSize = ps*(1.0+2.0*c.a)*(600.0/w); vc = c; }`;
+  const fs = `precision mediump float; varying vec4 vc;
+    void main(){ vec2 d = gl_PointCoord-0.5; float r = dot(d,d); if (r>0.25) discard; float e = smoothstep(0.25,0.05,r); gl_FragColor = vec4(vc.rgb*(0.5+0.6*vc.a), vc.a*e); }`;
+  const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); return o; };
+  const prog = gl.createProgram(); gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(prog); gl.useProgram(prog);
+  const P = new Float32Array(n * 3); for (let i = 0; i < n * 3; i++) P[i] = pos[i] * data.meta.pos_scale_um;
+  const C = new Float32Array(n * 4);
+  const pb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, pb); gl.bufferData(gl.ARRAY_BUFFER, P, gl.STATIC_DRAW);
+  const lp = gl.getAttribLocation(prog, "p"); gl.enableVertexAttribArray(lp); gl.vertexAttribPointer(lp, 3, gl.FLOAT, false, 0, 0);
+  const cb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, cb); gl.bufferData(gl.ARRAY_BUFFER, C, gl.DYNAMIC_DRAW);
+  const lc = gl.getAttribLocation(prog, "c"); gl.enableVertexAttribArray(lc); gl.vertexAttribPointer(lc, 4, gl.FLOAT, false, 0, 0);
+  const uMvp = gl.getUniformLocation(prog, "mvp"), uPs = gl.getUniformLocation(prog, "ps");
+  gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE); gl.clearColor(0.043, 0.051, 0.071, 1);
+
+  // ---- camera (orbit around the brain centre)
+  let yaw = 0.3, pitch = -0.9, dist = 900, panX = 0, panY = 0;
+  const m4 = () => {
+    const f = 1 / Math.tan(0.5), aspect = canvas.width / canvas.height, near = 10, far = 6000;
+    const cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    // rotate yaw about z then pitch about x, translate back by dist
+    const R = [cy, sy * cp, sy * sp, 0, -sy, cy * cp, cy * sp, 0, 0, -sp, cp, 0, panX, panY, -dist, 1];
+    const Pm = [f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) / (near - far), -1, 0, 0, 2 * far * near / (near - far), 0];
+    const out = new Float32Array(16);
+    for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) { let s = 0; for (let k = 0; k < 4; k++) s += Pm[k * 4 + j] * R[i * 4 + k]; out[i * 4 + j] = s; }
+    return out;
+  };
+  let drag = null;
+  canvas.addEventListener("pointerdown", e => { drag = { x: e.clientX, y: e.clientY, pan: e.shiftKey || e.button === 2 }; canvas.setPointerCapture(e.pointerId); });
+  canvas.addEventListener("pointermove", e => {
+    if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY;
+    if (drag.pan) { panX += dx * dist / canvas.height * 1.2; panY -= dy * dist / canvas.height * 1.2; } else { yaw += dx * 0.006; pitch = Math.max(-Math.PI, Math.min(0, pitch + dy * 0.006)); }
+    dirty = true;
+  });
+  canvas.addEventListener("pointerup", () => drag = null); canvas.addEventListener("contextmenu", e => e.preventDefault());
+  canvas.addEventListener("wheel", e => { e.preventDefault(); dist = Math.max(120, Math.min(4000, dist * Math.exp(e.deltaY * 0.0012))); dirty = true; }, { passive: false });
+  let pinch = null;
+  canvas.addEventListener("touchmove", e => { if (e.touches.length === 2) { const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); if (pinch) { dist = Math.max(120, Math.min(4000, dist * pinch / d)); dirty = true; } pinch = d; } }, { passive: true });
+  canvas.addEventListener("touchend", () => pinch = null);
+
+  // ---- frames: glow decays over ~4 bins so bursts read as trails
+  const glow = new Float32Array(n);
+  let frame = 0, playing = false, dirty = true, cum = new Uint8Array(n), cumN = 0;
+  function resetGlow() { glow.fill(0); cum.fill(0); cumN = 0; }
+  function setFrame(k, rebuildCum) {
+    frame = k;
+    if (rebuildCum) { cum.fill(0); cumN = 0; for (let j = 0; j <= k; j++) for (const i of data.runs[run].frames[j]) if (!cum[i]) { cum[i] = 1; cumN++; } }
+    for (let i = 0; i < n; i++) glow[i] *= 0.6;
+    const ids = data.runs[run].frames[k];
+    for (const i of ids) { glow[i] = 1; if (!cum[i]) { cum[i] = 1; cumN++; } }
+    $("t").value = k; $("tms").textContent = Math.round(k * data.meta.bin_ms); $("nact").textContent = ids.length.toLocaleString(); $("ncum").textContent = cumN.toLocaleString();
+    dirty = true;
+  }
+  function paint() {
+    const showL = $("showLesioned").checked, lesionRun = run !== runNames[0];
+    for (let i = 0; i < n; i++) {
+      const k = cls[i], c = colors[k], g = glow[i], o = i * 4;
+      let a = visible[k] ? dimA[k] + (1 - dimA[k]) * g : 0;
+      if (lesionRun && lesionedSet[i]) { a = showL ? 0.5 : 0; C[o] = 0.55; C[o + 1] = 0.15; C[o + 2] = 0.15; C[o + 3] = a; continue; }
+      C[o] = c[0]; C[o + 1] = c[1]; C[o + 2] = c[2]; C[o + 3] = a;
+    }
+    gl.bindBuffer(gl.ARRAY_BUFFER, cb); gl.bufferSubData(gl.ARRAY_BUFFER, 0, C);
+  }
+  function resize() { const r = Math.min(devicePixelRatio || 1, 2); canvas.width = innerWidth * r; canvas.height = innerHeight * r; gl.viewport(0, 0, canvas.width, canvas.height); dirty = true; }
+  addEventListener("resize", resize); resize();
+  let last = 0; const fps = 12;
+  function loop(ts) {
+    if (playing && ts - last > 1000 / fps) { last = ts; setFrame((frame + 1) % nb, false); }
+    if (dirty) { dirty = false; paint(); gl.clear(gl.COLOR_BUFFER_BIT); gl.uniformMatrix4fv(uMvp, false, m4()); gl.uniform1f(uPs, 2.2 * (canvas.width / innerWidth)); gl.drawArrays(gl.POINTS, 0, n); }
+    requestAnimationFrame(loop);
+  }
+  const toggle = () => { playing = !playing; $("play").textContent = playing ? "Pause" : "Play"; };
+  $("play").addEventListener("click", toggle);
+  $("t").addEventListener("input", e => { playing = false; $("play").textContent = "Play"; resetGlow(); setFrame(+e.target.value, true); });
+  addEventListener("keydown", e => { if (e.target.tagName === "INPUT") return; if (e.code === "Space") { e.preventDefault(); toggle(); } if (e.code === "ArrowRight") setFrame(Math.min(nb - 1, frame + 1), false); if (e.code === "ArrowLeft") { resetGlow(); setFrame(Math.max(0, frame - 1), true); } });
+  setFrame(0, true); requestAnimationFrame(loop);
+})();
+</script>
