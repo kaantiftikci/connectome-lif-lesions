@@ -696,3 +696,41 @@ inhibitör sinaps yapan iki nöron olarak tanımlandı (2.565 ve 2.547 KC hedefi
 5.112 sinaps 5 kat ölçeklendi). Sonuç referansla birebir: r = 0.963, 5 Hz üstü
 333 nörondan 320'si, 7 yanlış pozitif. Seyrek rejim müdahalesi tat devresine
 dokunmuyor; önbaskıda duyarlılık analizi olarak raporlanabilir.
+
+## 22. Pekiştireç → dopamin yolunu ileten en küçük değişiklik (2026-10-29)
+
+`scripts/reinforcer_path.py` (rates / paths / boost), seyrek rejim (APL×5).
+Sonuç dosyaları: `results/reinforcer_rates.csv`, `results/boost_bitter_PPL1.csv`,
+`results/boost_sugar_PAM.csv`; günlükler `results/reinforcer_paths_{sugar,bitter}.log`.
+
+**Hız / küme taraması.** Şeker (32 GRN) 150–600 Hz'de 366–491 nöron
+etkinleşiyor, PAM/PPL1 0 Hz; 1000 Hz'de ağ çekiciye düşüyor (5.897 etkin)
+ve PPL1 ancak o zaman 13 Hz'e çıkıyor. Şeker+düşük-tuz (57 GRN) her hızda
+çekici (5.7 k etkin). Su hiçbir hızda DAN'a ulaşmıyor. Acı (42 GRN) 600 Hz'de
+PPL1'in %12'sini 5 Hz üstüne çıkarıyor (ortalama 1.4 Hz); 150 Hz'de 0.
+
+**Nerede kopuyor.** Şeker GRN'leri 414 nörona doğrudan sinaps yapıyor, 121'i
+ateşliyor (SEZ ara nöronları CB0192, CB0248, CB0616… 85–200 Hz). Bu etkin
+küme PAM'a projeksiyon yapan hiçbir nöronu anlamlı sürmüyor: GRN'den 2
+sıçramada PAM'a giden en iyi röle 0.3–1.9 mV girdi alıyor (1–7 sinaps).
+Acıda ise etkin küme (113 nöron) PPL1'e projeksiyon yapan röleleri (CB0135,
+SMP026, DNpe053, LAL154, SMP154) 2–4 mV/10 ms sürüyor, eşiğin altında.
+
+**En küçük düzeltme (boost).** Etkin küme → röle (20 nöron) → hedef DAN
+kenarları k kat ölçeklendi:
+
+| US → hedef | sıçrama | k | hedef Hz (150 Hz US) | etkin nöron | yan etki |
+|---|---|---|---|---|---|
+| acı → PPL1 | giriş | 4 | 17.3 | 5.272 (çekici) | PPL2 42 Hz |
+| acı → PPL1 | giriş | 8 | 26.3 | 760 | PPL2 11 Hz |
+| acı → PPL1 | her iki | 4 | 33.6 (%50'si >5 Hz) | 822 | PPL2 12 Hz, koku KC oranı değişmedi |
+| acı → PPL1 | çıkış | 16 | 0 | 113 | — |
+| şeker → PAM | her iki | 16 | 5.4 (%18'i >5 Hz) | 469 | — |
+
+Yorum: acı→PPL1 yolu **vardır ve dört kat güçlendirilmiş 20 röleyle iletir**
+(deneysel olarak test edilebilir bir öngörü: bu röleler darboğaz). Şeker→PAM
+yolu iki sıçramada 16 kata kadar ölçeklemeyle bile iletmiyor; ödül sinyali
+konnektomun bu modeldeki iki-sinapslı yollarında yok, muhtemelen oktopamin/
+çok-sinapslı veya modülatör yollardan geliyor (OA-VUMa2, OA-VPM3/4 röle
+listelerinde görünüyor). Öğrenme indeksi deneyi bu nedenle yalnızca acı
+(ceza) kolunda, k=4 düzeltmesiyle koşuluyor (`learning_index.py --boost 4`).

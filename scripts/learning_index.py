@@ -25,7 +25,7 @@ import numpy as np, pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from sinek.data import load_flywire, group_indices, build_stimuli      # noqa: E402
 from sinek.data.flywire import Connectome                              # noqa: E402
-from sinek.lesion import LesionSpec, apply_lesion, apl_scaled          # noqa: E402
+from sinek.lesion import LesionSpec, apply_lesion, apl_scaled, scale_edges  # noqa: E402
 from sinek.sim import simulate, firing_rates                           # noqa: E402
 from sinek.neuromod import ModulationParams, ModulatedNetwork, simulate_modulated  # noqa: E402
 
@@ -87,7 +87,7 @@ def cmd_curves(cn, args):
     stim = {s.name: s for s in build_stimuli(cn)}
     _G.update(cn=cn, mpar=mpar, groups=groups,
               cs=stim["odor_DM1"].targets,
-              us={"sugar": (stim["sugar"].targets, 150.0), "bitter": (stim["bitter"].targets, 150.0)})
+              us={u: (stim[u].targets, 150.0) for u in args.us})
     jobs = [(g, f, s) for g in (list(args.groups) + [f"RND{s}" for s in args.controls])
             for f in (0.0, 0.5, 1.0) for s in range(args.seeds if f > 0 else 1)]
     rows = []
@@ -110,6 +110,19 @@ if __name__ == "__main__":
     ap.add_argument("--seeds", type=int, default=2)
     ap.add_argument("--procs", type=int, default=3)
     ap.add_argument("--out", default="results/learning.csv")
+    ap.add_argument("--us", nargs="+", default=["sugar", "bitter"])
+    ap.add_argument("--boost", type=float, default=1.0,
+                    help="scale both hops of the US -> relay -> DAN route by this factor (see reinforcer_path.py boost)")
+    ap.add_argument("--boost-us", default="bitter"); ap.add_argument("--boost-target", default="PPL1")
     args = ap.parse_args()
     cn = apl_scaled(load_flywire(), args.apl_scale)
+    if args.boost != 1.0:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from reinforcer_path import active_relays
+        T = cn.select(cell_type__startswith=args.boost_target); us_idx = cn.select(cell_sub_class=args.boost_us)
+        A, relays, _ = active_relays(cn, us_idx, T)
+        W = scale_edges(cn, A, relays, args.boost)
+        W = scale_edges(Connectome(ids=cn.ids, W=W, meta=cn.meta, name=cn.name), relays, T, args.boost)
+        cn = Connectome(ids=cn.ids, W=W, meta=cn.meta, name=f"{cn.name}_boost{args.boost:g}")
+        print(f"boost x{args.boost}: {A.size} active {args.boost_us} neurons -> {relays.size} relays -> {args.boost_target}", flush=True)
     {"diagnose": cmd_diagnose, "curves": cmd_curves}[args.cmd](cn, args)
