@@ -34,9 +34,20 @@ Bilimsel ana sonuç: mevcut parametrelerle konnektom kısıtlı LIF modelleri
 pekiştirmeyi dopamin nöronlarına iletmez; dopamine bağlı öğrenme ve
 nörodejenerasyon bu modelle simüle edilemez.
 
-**Açık.** Erkek beynin seyrek rejimde çalışma noktası (koşuluyor);
-şeker→PAM yolunda hangi röle nöronunun eşik altında kaldığı; GPU ile büyük
-tarama; 3B görselleştirme.
+**Sonradan eklenen (bölüm 17, 22, 23).** Erkek beyin seyrek rejimde de aynı
+tabloyu veriyor (PPL1 9.0, RND307 9.9, taban 10.4). Pekiştireç yolu izlendi:
+acı→PPL1 yolu 20 röle nöronuyla var ve bu rölelerin giriş-çıkış sinapsları
+4 kat güçlendirilince 150 Hz acı PPL1'i 34 Hz'e çıkarıyor (darboğazı
+adlandıran, test edilebilir bir öngörü); şeker→PAM iki-sinaps yolu 16 kat
+güçlendirmeyle bile iletmiyor. Jo (2026) nöron-kaybı protokolü her iki
+rejimde de sıralamasını koruyor (hub > shuffled > antihub), ama tüm-beyin
+aktivite okuması APL kaybında işaret değiştiriyor. Önbaskı buna göre
+"model ne söyleyebilir, ne söyleyemez" çerçevesine alındı.
+
+**Açık.** Acı→PPL1 düzeltmesiyle öğrenme indeksi (koşuluyor); w_syn
+duyarlılığı (sırada); erkek için düşük tabanlı çalışma noktası (0.35/0.45
+ölçekleri sırada); GPU ile büyük tarama (M4'te CPU ile koşuluyor;
+`docs/gpu_runbook.md`); 3B görselleştirme (`viewer/`, yayınlandı).
 
 ---
 

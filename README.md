@@ -13,7 +13,16 @@ python scripts/validate_vs_shiu.py --shiu-dir <Drosophila_brain_model klonu>
 python scripts/progressive_curve.py --groups PPL1 PAM KC
 python scripts/run_lesion_sweep.py --n 500 --procs 4
 python scripts/train_surrogate.py
+python scripts/reinforcer_path.py rates|paths|boost --apl-scale 5    # pekiştireç → DAN yolu
+python scripts/jo_retest.py --s 0.5 --reps 8                        # Jo (2026) nöron-kaybı protokolü, iki rejim
+python scripts/export_viewer.py && python -m http.server -d viewer  # 3B izleyici
 ```
+
+Ana bulgu (ayrıntı `docs/PLAN.md` bölüm 0): modelin dopamin özgüllüğü koku
+çekicisinin artefaktı; seyrek rejimde (APL×5) dopamin lezyonları gürültü
+tabanının altında; pekiştireçler dopamin nöronlarına ulaşmıyor (acı→PPL1
+yolu 20 rölenin 4 kat güçlendirilmesiyle iletiyor, şeker→PAM yolu iletmiyor).
+GPU/M4 koşum notları: `docs/gpu_runbook.md`.
 
 Kaynak notları: her işçi konnektomu çatallama (fork) ile paylaşır, ama
 16 GB'lık bir makinede 3 işçi + eş zamanlı vekil/NPE eğitimi belleği aşıp
