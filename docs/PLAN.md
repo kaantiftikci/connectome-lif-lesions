@@ -1,5 +1,45 @@
 # sinek — Araştırma Planı
 
+## 0. Durum özeti: ne iddia edildi, ne çürüdü, ne kaldı (2026-10-29)
+
+Bu belge iki günlük bir çalışmanın günlüğüdür; bölümler yazıldıkları
+sırayla durur ve 8-15 arası bölümler sonradan çürüyen bir çerçeve içinde
+yazılmıştır. Yayına esas okuma bu özet ve bölüm 18-21'dir; önbaskı taslağı
+ayrıca Claude Docs'ta.
+
+**İddia edilen (faz 1-2, bölüm 8-14).** Konnektom + LIF modelinde dopamin
+kümelerinin kaybı hücre tipi çözünürlüğünde okunur: PPL1 kaybı aynı
+büyüklükteki rastgele kayıptan 6 kat büyük iz bırakır, etki üç etiketli
+hattan geçer, ters model bu hatları fenotipten geri bulur, gövdeli okuma
+yürüme hızında %13 düşüş verir.
+
+**Çürüyen (bölüm 18-20).** Bu özgüllüğün tamamı koku uyaranının tetiklediği
+beyin geneli bir çekici durumun ürünüdür: KC'lerin %75'i ateşler, MBON'lar
+doyar, dopamin nöronu doymuş MBON'u açıp kapatan anahtara dönüşür. KC
+seyrekliği gerçekçi düzeye (%3.8) çekilince dopamin etkileri gürültü
+tabanının altına iner (PPL1 1.74, PAM 1.12, taban 1.91; rastgele 307 nöron
+1.84). Dopamin modülatör olarak ele alınsa da değişmez. Nedeni: pekiştireçler
+(şeker, acı, su) ve mekanosensör girdiler dopamin nöronlarını hiç sürmez
+(0 Hz); modeldeki tek dopamin sürücüsü koku çekicisidir. Şeker→PAM yolu
+grafta 2 sinapta vardır ama dinamikte iletmez.
+
+**Kalan (geçerli katkılar).** Doğrulanmış ve 2.2× hızlı simülatör (r = 0.963,
+APL ölçeklemesiyle de aynı); hücre tipi çözünürlüklü, iç içe, kontrol noktalı
+lezyon çerçevesi; konnektomdan türetilen kompartmanlı dopamin modülasyon
+katmanı ve koşullanma uydurması (DAN doğrudan sürüldüğünde mekanizma
+çalışır: PPL101→MBON11 %59 bastırma); vekil + NPE ters çıkarım hattı;
+NeuroMechFly gövdeli okuma; MaleCNS yükleyici ve cinsiyetler arası uyaran
+eşlemesi; çekici rejiminin haritası ve seyrek rejim reçetesi (APL×5).
+Bilimsel ana sonuç: mevcut parametrelerle konnektom kısıtlı LIF modelleri
+pekiştirmeyi dopamin nöronlarına iletmez; dopamine bağlı öğrenme ve
+nörodejenerasyon bu modelle simüle edilemez.
+
+**Açık.** Erkek beynin seyrek rejimde çalışma noktası (koşuluyor);
+şeker→PAM yolunda hangi röle nöronunun eşik altında kaldığı; GPU ile büyük
+tarama; 3B görselleştirme.
+
+---
+
 **Başlık (çalışma):** Konnektom kısıtlı sinek beyninde hücre tipi çözünürlüklü
 ilerleyici lezyonlar ve amortize ters model: davranış fenotipinden hasar
 örüntüsünü çıkarmak.
