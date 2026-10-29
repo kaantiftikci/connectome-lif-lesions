@@ -25,11 +25,15 @@ Paket düzeni:
 | `sinek.readout` | uyaran bataryası altında fenotip vektörü |
 | `sinek.surrogate` | θ→x MLP topluluğu, duyarlılık ve ters tarama |
 | `sinek.inference` | sbi ile nöral posterior tahmini |
+| `sinek.neuromod` | konnektomdan türetilen MB kompartmanları, dopamin kapılı kazanç ve plastisite |
+| `sinek.embodied` | inen nöron hızları → NeuroMechFly yürüyüş |
+| `sinek.data.malecns` | MaleCNS v1.0 yükleyici (neuPrint token) |
+| `sinek.sim.lif_torch` | GPU'ya hazır torch arka ucu |
 
 Sonuçlar ve şekiller: `artifacts/figures/` (şekil 1 ilerleyici lezyon
 eğrileri, şekil 2 vekil duyarlılık haritası, şekil 3 posterior geri bulma),
 veri dosyaları `artifacts/*.npz|csv.gz`. Ayrıntılı sonuç bölümleri için
-`docs/PLAN.md` 8-14.
+`docs/PLAN.md` 8-15.
 
 Gövdeli okuma (faz 2) için ek kurulum:
 
