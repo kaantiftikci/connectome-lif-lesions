@@ -31,6 +31,8 @@ args = ap.parse_args()
 
 cn = load_flywire()
 groups = group_indices(cn)
+from sinek.data.groups import CX_DA_GROUP
+groups.update(group_indices(cn, CX_DA_GROUP))
 m = cn.meta
 pool = m.loc[(m["super_class"] == "central") & (~m["cell_class"].isin(["DAN", "Kenyon_Cell"])), "idx"].to_numpy()
 rng = np.random.default_rng(12345)

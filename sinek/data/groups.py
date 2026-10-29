@@ -26,6 +26,12 @@ DA_GROUPS: dict[str, dict] = {
     "PPM1": {"cell_type__startswith": "PPM1"},
 }
 
+# Dopaminergic neurons of the central complex (fan-shaped body tangential cells,
+# ExR2/ExR3 ring neurons; the PPM3-cluster targets implicated in fly locomotor
+# deficits), ~61 neurons in FlyWire v783.  Not part of DA_GROUPS so earlier
+# sweeps keep their group lists; used by the embodied experiment.
+CX_DA_GROUP: dict[str, dict] = {"CXDAN": {"cell_class": "CX", "top_nt": "dopamine"}}
+
 # Non-dopaminergic controls with comparable size, to test specificity.
 CONTROL_GROUPS: dict[str, dict] = {
     "KC":     {"cell_class": "Kenyon_Cell"},      # tauopathy-model target (mushroom body)
