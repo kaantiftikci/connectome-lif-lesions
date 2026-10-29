@@ -166,3 +166,20 @@ def build_malecns_tables(cache_dir: str | Path = "data/raw/malecns", statuses=("
 def load_malecns_flat(cache_dir: str | Path = "data/raw/malecns", **kw) -> Connectome:
     ann, edges = build_malecns_tables(cache_dir)
     return build_connectome(ann, edges, **kw)
+
+
+def map_stimuli_from_female(male: Connectome, female: Connectome, stimuli=None) -> list:
+    """Carry the female stimulus battery over to the male brain by cell type:
+    a male neuron is a target when its ``flywireType`` (or type) is one of the
+    female target cell types.  Keeps rates.  Coverage on v1.0: sugar 32->23,
+    water 30->17, bitter 42->38, ORN_DM1 68->74, wind/gravity 481->559,
+    head bristle 305->863."""
+    from .groups import build_stimuli
+    from ..readout.phenotype import Stimulus
+    out = []
+    fm, mm = female.meta, male.meta
+    for s in build_stimuli(female, stimuli):
+        types = set(fm.loc[s.targets, "cell_type"].dropna().astype(str))
+        sel = mm["flywireType"].astype(str).isin(types) | mm["cell_type"].astype(str).isin(types)
+        out.append(Stimulus(s.name, mm.loc[sel, "idx"].to_numpy(), s.rate_hz))
+    return out

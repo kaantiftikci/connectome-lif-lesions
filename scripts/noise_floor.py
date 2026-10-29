@@ -15,10 +15,20 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--seeds", type=int, default=3)
 ap.add_argument("--duration", type=float, default=500.0)
 ap.add_argument("--out", default="results/noise_floor.npz")
+ap.add_argument("--sex", choices=["female", "male"], default="female")
+ap.add_argument("--count-scale", type=float, default=0.581)
+ap.add_argument("--odor-rate", type=float, default=None)
 args = ap.parse_args()
 
-cn = load_flywire()
-stim = build_stimuli(cn)
+if args.sex == "male":
+    from sinek.data.malecns import load_malecns_flat, map_stimuli_from_female
+    female = load_flywire(); cn = load_malecns_flat(count_scale=args.count_scale); stim = map_stimuli_from_female(cn, female); del female
+else:
+    cn = load_flywire(); stim = build_stimuli(cn)
+if args.odor_rate is not None:
+    for s_ in stim:
+        if s_.name == "odor_DM1":
+            s_.rate_hz = args.odor_rate
 readouts = readout_groups(cn)
 names = phenotype_names(stim, readouts)
 X = []
