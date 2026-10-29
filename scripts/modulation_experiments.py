@@ -51,7 +51,9 @@ def _condition_job(a):
     dans = _G["groups"][dan_group]
     pair = dict(odor); pair.update({int(i): 100.0 for i in dans})
     net = ModulatedNetwork(cn, ModulationParams(kappa=kappa, eta=eta, alpha_fast=0.0))
-    pre_rec, rb = simulate_modulated(net, 600.0, poisson=odor, seed=0)
+    _, rb = simulate_modulated(net, 600.0, poisson=odor, seed=0)
+    net.set_baseline(rb)                                   # tonic DAN level under odour alone
+    pre_rec, rb = simulate_modulated(net, 600.0, poisson=odor, seed=0, rbar=rb)
     pre = mbon_rates(pre_rec, cn, 200.0)
     _, rb = simulate_modulated(net, 1000.0, poisson=pair, seed=1, plastic=True, rbar=rb)
     _, rb = simulate_modulated(net, 400.0, poisson=None, seed=2, rbar=rb)      # rest: dopamine decays
@@ -67,9 +69,10 @@ def _condition_job(a):
 
 
 def cmd_condition(cn, args):
-    _G.update(cn=cn, stim={s.name: s for s in build_stimuli(cn)}, groups=group_indices(cn, {"PPL103": {"cell_type": "PPL103"}, "PAM08": {"cell_type": "PAM08"}}))
-    jobs = [(k, e, g, t) for g, t in (("PPL103", "MBON31"), ("PAM08", "MBON29"))
-            for k in (0.0, 0.01, 0.03, 0.1) for e in (0.0, 1e-4, 3e-4, 1e-3)]
+    _G.update(cn=cn, stim={s.name: s for s in build_stimuli(cn)}, groups=group_indices(cn, {"PPL101": {"cell_type": "PPL101"}, "PAM11": {"cell_type": "PAM11"}}))
+    # PPL101 = PPL1-gamma1pedc -> MBON11 (aversive); PAM11 = PAM-alpha1 -> MBON07 (appetitive, Hige et al. 2015)
+    jobs = [(k, e, g, t) for g, t in (("PPL101", "MBON11"), ("PAM11", "MBON07"))
+            for k in (0.0, 0.003, 0.01, 0.03) for e in (0.0, 3e-5, 1e-4, 3e-4)]
     rows = []
     t0 = time.time()
     with mp.get_context("fork").Pool(args.procs) as pool:
@@ -89,10 +92,11 @@ def _curve_job(a):
     group, frac, lseed = a
     cn = _G["cn"]
     W, hit = apply_lesion(cn, _G["groups"], LesionSpec({group: frac}, seed=lseed), keep_pattern=True)
-    net = ModulatedNetwork(cn, _G["mp"], W=W)
     feats = []
     for s in _G["stim"]:
-        rec, _ = simulate_modulated(net, 500.0, poisson=s.targets, poisson_rate=s.rate_hz, seed=0)
+        net = ModulatedNetwork(cn, _G["mp"], W=W)
+        net.set_baseline(_G["baseline"][s.name])
+        rec, _ = simulate_modulated(net, 500.0, poisson=s.targets, poisson_rate=s.rate_hz, seed=0, rbar=_G["baseline"][s.name])
         r = firing_rates(rec, 100.0)
         feats.append(np.log1p(np.array([r[idx].mean() if idx.size else 0.0 for idx in _G["readouts"].values()])))
     return group, frac, lseed, sum(len(v) for v in hit.values()), np.concatenate(feats)
@@ -103,6 +107,14 @@ def cmd_curves(cn, args):
     mpar = ModulationParams(kappa=fit["kappa"], eta=0.0, alpha_fast=0.0)   # acute gain only; no training during the battery
     print("modulation params:", mpar)
     _G.update(cn=cn, groups=group_indices(cn), stim=build_stimuli(cn), readouts=readout_groups(cn), mp=mpar)
+    # tonic DAN baseline per stimulus from the intact modulated network
+    base = {}
+    for s_ in _G["stim"]:
+        net = ModulatedNetwork(cn, mpar)
+        _, rb = simulate_modulated(net, 400.0, poisson=s_.targets, poisson_rate=s_.rate_hz, seed=0)
+        base[s_.name] = rb
+    _G["baseline"] = base
+    print("baselines measured", flush=True)
     names = phenotype_names(_G["stim"], _G["readouts"])
     jobs = [(g, f, ls) for g in args.groups for f in (0.0, 0.2, 0.4, 0.6, 0.8, 1.0) for ls in range(args.lesion_seeds if f > 0 else 1)]
     rows = []; t0 = time.time()
