@@ -30,11 +30,8 @@ if args.odor_rate is not None:
     for s_ in stim:
         if s_.name == "odor_DM1":
             s_.rate_hz = args.odor_rate
-if args.apl_scale != 1.0:
-    from sinek.lesion import scale_edges
-    from sinek.data.flywire import Connectome
-    cn = Connectome(ids=cn.ids, W=scale_edges(cn, cn.select(cell_type="APL"), cn.select(cell_class="Kenyon_Cell"), args.apl_scale),
-                    meta=cn.meta, name=f"{cn.name}_apl{args.apl_scale}")
+from sinek.lesion import apl_scaled   # noqa: E402
+cn = apl_scaled(cn, args.apl_scale)
 readouts = readout_groups(cn)
 names = phenotype_names(stim, readouts)
 X = []

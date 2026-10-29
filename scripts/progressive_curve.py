@@ -16,7 +16,7 @@ import numpy as np, pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from sinek.data import load_flywire, group_indices, build_stimuli, readout_groups   # noqa: E402
-from sinek.lesion import LesionSpec, apply_lesion                                        # noqa: E402
+from sinek.lesion import LesionSpec, apply_lesion, apl_scaled                            # noqa: E402
 from sinek.readout import Stimulus, phenotype_vector, phenotype_names                    # noqa: E402
 
 _G = {}
@@ -62,11 +62,7 @@ if __name__ == "__main__":
         for s_ in stim:
             if s_.name == "odor_DM1":
                 s_.rate_hz = args.odor_rate
-    if args.apl_scale != 1.0:
-        from sinek.lesion import scale_edges
-        from sinek.data.flywire import Connectome
-        W_apl = scale_edges(cn, cn.select(cell_type="APL"), cn.select(cell_class="Kenyon_Cell"), args.apl_scale)
-        cn = Connectome(ids=cn.ids, W=W_apl, meta=cn.meta, name=f"{cn.name}_apl{args.apl_scale}")
+    cn = apl_scaled(cn, args.apl_scale)
     groups = group_indices(cn)
     m = cn.meta
     pool_mask = (m["super_class"] == "central") & (m["cell_class"] != "DAN") & (m["cell_class"] != "Kenyon_Cell")

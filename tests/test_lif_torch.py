@@ -26,3 +26,14 @@ def test_torch_poisson_rates_match_in_distribution():
     ra = firing_rates(simulate(W, 3000.0, poisson=np.array([0]), seed=1))
     rb = firing_rates(simulate_torch(W, 3000.0, poisson=np.array([0]), seed=1))
     assert abs(ra[0] - rb[0]) < 25 and abs(ra[1] - rb[1]) < 0.3 * max(ra[1], 1)
+
+
+def test_index_add_propagation_matches_csr():
+    rng = np.random.default_rng(5)
+    n = 30
+    W = sp.random(n, n, density=0.3, random_state=5, format="csr")
+    W.data = (rng.choice([-1, 1], size=W.nnz) * rng.integers(5, 80, size=W.nnz)) * 0.275
+    drive = {0: 1e9, 3: 1e9}
+    a = simulate_torch(W.tocsr(), 100.0, poisson=drive, seed=0, propagate="csr")
+    b = simulate_torch(W.tocsr(), 100.0, poisson=drive, seed=0, propagate="index_add")
+    assert np.array_equal(a.counts(), b.counts())

@@ -123,3 +123,13 @@ def scale_edges(cn: Connectome, pre_idx: np.ndarray, post_idx: np.ndarray, facto
     sel = pre_mask[row_of] & post_mask[W.indices]
     W.data[sel] *= factor
     return W
+
+
+def apl_scaled(cn: Connectome, scale: float) -> Connectome:
+    """Connectome with APL->Kenyon-cell inhibition multiplied by ``scale``.
+    scale=5 is the sparse-coding operating point used throughout (odour drives
+    ~4% of KCs instead of the ~75% attractor); scale=1 returns ``cn`` itself."""
+    if scale == 1.0:
+        return cn
+    W = scale_edges(cn, cn.select(cell_type="APL"), cn.select(cell_class="Kenyon_Cell"), scale)
+    return Connectome(ids=cn.ids, W=W, meta=cn.meta, name=f"{cn.name}_apl{scale:g}")

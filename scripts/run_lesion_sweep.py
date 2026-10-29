@@ -5,6 +5,8 @@ x = phenotype vector.  Runs in parallel over processes; appends to an .npz so
 it can be resumed and merged across machines.
 
 Run:  python scripts/run_lesion_sweep.py --n 200 --procs 4 --out results/sweep.npz
+      python scripts/run_lesion_sweep.py --group-set subtype --apl-scale 5 --n 1000 --procs 8 --resume --out results/sweep_subtype_apl5.npz
+      python scripts/run_lesion_sweep.py --backend torch --device cuda --procs 1 ...   # single GPU
 """
 import argparse, sys, time
 import multiprocessing as mp
@@ -13,16 +15,16 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from sinek.data import load_flywire, group_indices, build_stimuli, readout_groups   # noqa: E402
-from sinek.lesion import apply_lesion, lesion_vector, sample_lesions                     # noqa: E402
+from sinek.lesion import apply_lesion, lesion_vector, sample_lesions, apl_scaled                    # noqa: E402
 from sinek.readout import Stimulus, phenotype_vector, phenotype_names                    # noqa: E402
 
 _G = {}
 
 
-def _load(duration, trials, groups=None, backend="numpy", device="cpu"):
+def _load(duration, trials, groups=None, backend="numpy", device="cpu", apl_scale=1.0):
     """Load once in the parent; forked workers inherit the arrays copy-on-write,
     so the 1-2 GB connectome is shared instead of duplicated per process."""
-    cn = load_flywire()
+    cn = apl_scaled(load_flywire(), apl_scale)
     _G["cn"] = cn
     _G["groups"] = group_indices(cn, groups)
     _G["stim"] = build_stimuli(cn)
@@ -53,12 +55,13 @@ if __name__ == "__main__":
     ap.add_argument("--resume", action="store_true", help="continue from <out>.ckpt.npz (same --n/--seed/--groups)")
     ap.add_argument("--backend", choices=["numpy", "torch"], default="numpy")
     ap.add_argument("--device", default="cpu", help="torch device, e.g. cuda (use --procs 1 on a single GPU)")
+    ap.add_argument("--apl-scale", type=float, default=1.0, help="APL->KC inhibition factor; 5 = sparse regime")
     ap.add_argument("--out", default="results/sweep.npz")
     args = ap.parse_args()
 
     from sinek.data.groups import DA_GROUPS, CONTROL_GROUPS, SUBTYPE_GROUPS
     group_defs = {"default": {**DA_GROUPS, **CONTROL_GROUPS}, "subtype": SUBTYPE_GROUPS}[args.group_set]
-    cn = _load(args.duration, args.trials, group_defs, args.backend, args.device)
+    cn = _load(args.duration, args.trials, group_defs, args.backend, args.device, args.apl_scale)
     group_names = list(_G["groups"].keys())
     names = phenotype_names(_G["stim"], _G["readouts"])
     lesion_groups = args.groups or group_names

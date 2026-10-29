@@ -15,7 +15,7 @@ import numpy as np, pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from sinek.data import load_flywire, group_indices, build_stimuli, readout_groups   # noqa: E402
-from sinek.lesion import LesionSpec, apply_lesion                                    # noqa: E402
+from sinek.lesion import LesionSpec, apply_lesion, apl_scaled                        # noqa: E402
 from sinek.sim import simulate, firing_rates                                         # noqa: E402
 from sinek.neuromod import ModulationParams, ModulatedNetwork, simulate_modulated   # noqa: E402
 from sinek.readout import phenotype_names                                            # noqa: E402
@@ -140,15 +140,6 @@ def _add_controls(cn, groups, sizes):
     return groups
 
 
-def _apply_apl(cn, scale):
-    if scale == 1.0:
-        return cn
-    from sinek.lesion import scale_edges
-    from sinek.data.flywire import Connectome
-    W = scale_edges(cn, cn.select(cell_type="APL"), cn.select(cell_class="Kenyon_Cell"), scale)
-    return Connectome(ids=cn.ids, W=W, meta=cn.meta, name=f"{cn.name}_apl{scale}")
-
-
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["check", "condition", "curves"])
@@ -160,5 +151,5 @@ if __name__ == "__main__":
     ap.add_argument("--apl-scale", type=float, default=1.0)
     ap.add_argument("--out", default="results/progressive_modulated.csv")
     args = ap.parse_args()
-    cn = _apply_apl(load_flywire(), args.apl_scale)
+    cn = apl_scaled(load_flywire(), args.apl_scale)
     {"check": cmd_check, "condition": cmd_condition, "curves": cmd_curves}[args.cmd](cn, args)
