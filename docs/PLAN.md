@@ -734,3 +734,44 @@ konnektomun bu modeldeki iki-sinapslı yollarında yok, muhtemelen oktopamin/
 çok-sinapslı veya modülatör yollardan geliyor (OA-VUMa2, OA-VPM3/4 röle
 listelerinde görünüyor). Öğrenme indeksi deneyi bu nedenle yalnızca acı
 (ceza) kolunda, k=4 düzeltmesiyle koşuluyor (`learning_index.py --boost 4`).
+
+## 23. Jo (2026) nöron-kaybı protokolünün iki rejimde yeniden testi (2026-10-29)
+
+`scripts/jo_retest.py`; sonuçlar `results/jo_retest.csv`, özet
+`results/jo_retest_summary.csv`. Jo'nun kuralı: duyusal olmayan her nöron
+0.5·s·v olasılıkla kaldırılır; v = sinaptik temas sayısına göre yüzdelik
+sıra (hub haritası), aynı değerlerin karıştırılmışı (shuffled) veya tersi
+(antihub). s = 0.5, 8 tekrar × 3 harita × 2 rejim, koku = ORN_DM1 150 Hz,
+500 ms. Jo (MaleCNS, PN doğrudan sürülmüş, sinaps kaybı + eşik kayması da
+dahil): hub %31, shuffled %47, antihub %93; antihub/hub oranı 3.0.
+
+| Rejim | Harita | nöron kaybı | temas kaybı | koku-tetikli spike (sağlam=%100) | KC etkin | fenotip uzaklığı (taban) |
+|---|---|---|---|---|---|---|
+| çekici (APL×1) | hub | %12.2 | %33 | %52 (IQR 50–59) | 0.49 | 12.5 ± 1.3 (0.92) |
+| çekici | shuffled | %11.0 | %23 | %72 | 0.57 | 7.7 ± 1.6 |
+| çekici | antihub | %9.9 | %12 | %90 | 0.63 | 3.6 ± 0.2 |
+| seyrek (APL×5) | hub | %12.2 | %33 | %65 (IQR 62–94) | 0.16 | 12.9 ± 7.8 (1.31) |
+| seyrek | shuffled | %11.0 | %23 | %81 | 0.02 | 5.8 ± 0.8 |
+| seyrek | antihub | %9.9 | %12 | %97 | 0.03 | 1.9 ± 0.9 |
+
+antihub/hub oranı: çekici 1.7, seyrek 1.5 (Jo 3.0).
+
+**Yorum.** Jo'nun niteliksel sonucu (hub > shuffled > antihub; hasar, kaybedilen
+temas sayısını izler) her iki rejimde de yeniden üretiliyor; bu bulgu koku
+çekicisinin artefaktı değil. İki önemli fark:
+
+1. Oran bizde 1.5–1.7, Jo'da 3.0. Jo'nun protokolü sinaps kaybı ve eşik
+   kaymasını da içeriyor, PN'leri doğrudan sürüyor ve erkek konnektomda;
+   yalnızca nöron kaybı kısmının karşılığı bizim ölçümümüz.
+2. Seyrek rejimde hub haritası iki-modlu: iki APL nöronu sinaptik temas
+   sıralamasında en tepede (yüzdelik 1.0, kaldırılma olasılığı 0.25) ve 8
+   tekrarın 3'ünde biri kaldırılınca beyin çekiciye düşüyor (KC etkin oranı
+   0.01 → 0.41, MBON 3 → 90 Hz, "tüm-beyin aktivitesi" sağlamın %108'ine
+   çıkıyor). Yani tüm-beyin spike sayısı bu modelde hasarla artabilir de; bir
+   okuma olarak işaretini çalışma noktası belirliyor. Jo'nun modelinde
+   koku sonrası süren aktiviteyi adaptasyonla bastırma ihtiyacı (makalesinde
+   "üçüncü gereklilik karşılanamadı") aynı çekicinin oradaki izi.
+
+Sonuç: Jo'nun ana iddiası sağlam; bizim katkımız, tüm-beyin aktivite
+okumasının APL kaybında tersine döndüğünü ve rejimden bağımsız olmadığını
+göstermek.
