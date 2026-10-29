@@ -53,6 +53,10 @@ canvas#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block
   <button id="play" aria-label="Play or pause">Play</button>
   <input type="range" id="t" min="0" max="99" value="0" step="1" aria-label="Time">
   <span class="read"><b id="tms">0</b> ms</span>
+  <div class="seg" id="regime" role="group" aria-label="Regime">
+    <button data-file="data_sparse.json" aria-pressed="true">sparse (APL ×5)</button>
+    <button data-file="data_attractor.json" aria-pressed="false">attractor (APL ×1)</button>
+  </div>
   <div class="seg" id="runs" role="group" aria-label="Condition"></div>
   <span class="read"><b id="nact">0</b> firing now</span>
   <span class="read wide">cumulative <b id="ncum">0</b></span>
@@ -66,17 +70,17 @@ canvas#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block
   const dimA = { 0: 0.10, 1: 0.18, 2: 0.55, 3: 0.55, 4: 0.16, 5: 0.35, 6: 0.6 };   // resting alpha per class
   let data;
   try {
-    const r = await fetch("data.json"); if (!r.ok) throw new Error(r.status);
+    let r = await fetch("data_sparse.json"); if (!r.ok) r = await fetch("data.json"); if (!r.ok) throw new Error(r.status);
     data = await r.json();
   } catch (e) {
     $("status").textContent = "data.json not found. Run: python scripts/export_viewer.py, then serve the viewer folder (python -m http.server -d viewer).";
     return;
   }
   $("status").hidden = true;
-  const n = data.meta.n, cls = data.cls, pos = data.pos, runNames = Object.keys(data.runs);
-  const nb = data.runs[runNames[0]].frames.length;
-  $("sub").textContent = `${data.meta.connectome} · ${n.toLocaleString()} neurons · ${data.meta.stimulus} at ${data.meta.rate_hz} Hz · APL×${data.meta.apl_scale}`;
-  $("t").max = nb - 1;
+  const n = data.meta.n, cls = data.cls, pos = data.pos; let runNames = Object.keys(data.runs);
+  let nb = data.runs[runNames[0]].frames.length;
+  const setSub = () => { $("sub").textContent = `${data.meta.connectome} · ${n.toLocaleString()} neurons · ${data.meta.stimulus} at ${data.meta.rate_hz} Hz · APL×${data.meta.apl_scale} · intact run: ${data.runs[runNames[0]].n_active.toLocaleString()} neurons active`; };
+  setSub(); $("t").max = nb - 1;
 
   // ---- legend with per-class toggles and counts
   const counts = {}; for (let i = 0; i < n; i++) counts[cls[i]] = (counts[cls[i]] || 0) + 1;
@@ -95,11 +99,28 @@ canvas#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block
 
   // ---- condition switch
   let run = runNames[0];
-  runNames.forEach(name => {
-    const b = document.createElement("button"); b.textContent = name; b.setAttribute("aria-pressed", name === run);
-    b.addEventListener("click", () => { run = name; [...$("runs").children].forEach(x => x.setAttribute("aria-pressed", x === b)); resetGlow(); setFrame(frame, true); });
-    $("runs").appendChild(b);
-  });
+  function buildRuns() {
+    $("runs").innerHTML = "";
+    runNames.forEach(name => {
+      const b = document.createElement("button"); b.textContent = name; b.setAttribute("aria-pressed", name === run);
+      b.addEventListener("click", () => { run = name; [...$("runs").children].forEach(x => x.setAttribute("aria-pressed", x === b)); resetGlow(); setFrame(frame, true); });
+      $("runs").appendChild(b);
+    });
+  }
+  buildRuns();
+  [...$("regime").children].forEach(b => b.addEventListener("click", async () => {
+    if (b.getAttribute("aria-pressed") === "true") return;
+    b.disabled = true;
+    try {
+      const r = await fetch(b.dataset.file); if (!r.ok) throw new Error(r.status);
+      const d = await r.json();
+      data.runs = d.runs; data.meta = d.meta; data.lesioned = d.lesioned; lesionedSet.fill(0); d.lesioned.forEach(i => lesionedSet[i] = 1);
+      runNames = Object.keys(data.runs); run = runNames[0]; nb = data.runs[run].frames.length; $("t").max = nb - 1;
+      [...$("regime").children].forEach(x => x.setAttribute("aria-pressed", x === b));
+      buildRuns(); setSub(); playing = false; $("play").textContent = "Play"; resetGlow(); setFrame(0, true);
+    } catch (e) { $("sub").textContent = "could not load " + b.dataset.file; }
+    b.disabled = false;
+  }));
 
   // ---- WebGL point cloud
   const canvas = $("gl"), gl = canvas.getContext("webgl", { antialias: false, alpha: false });

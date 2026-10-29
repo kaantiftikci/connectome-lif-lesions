@@ -5,7 +5,8 @@ spikes, and writes viewer/data.json with soma positions (FlyWire annotation
 coordinates, 4x4x40 nm voxels -> um), neuron classes and per-frame spike
 lists.  Serve the viewer folder with any static server:
 
-  python scripts/export_viewer.py --stimulus odor_DM1 --lesion PPL1 --apl-scale 5
+  python scripts/export_viewer.py --apl-scale 5 --out viewer/data_sparse.json
+  python scripts/export_viewer.py --apl-scale 1 --out viewer/data_attractor.json
   python -m http.server -d viewer 8000     # then open http://localhost:8000
 """
 import argparse, json, sys, time
