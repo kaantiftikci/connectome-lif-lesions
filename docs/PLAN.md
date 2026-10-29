@@ -361,3 +361,73 @@ parametresi, bilinen öğrenme fenotiplerinden öğrenme; (b) DN→yürüme hız
 eşlemesini gerçek yürüme kayıtlarıyla kısıtlama; (c) MaleCNS yükleyici
 (neuPrint token, yerelde) ve cinsiyet karşılaştırması; (d) GPU'da 1000+
 örnekli tarama.
+
+## 15. Faz 3 sonuçları: dopamin modülatör olarak (2026-10-29)
+
+Kod: `sinek/neuromod/` (kompartmanlar konnektomdan türetilir: DAN→MBON
+doğrudan sinapsı ≥ 2 mV; akut kazanç g = exp(−κ(r̄ − b)), b sağlam beyindeki
+tonik DAN düzeyi; faz artışına bağlı dopamin kapılı plastisite),
+`sinek/sim/lif.py` pencereli/durum taşıyan simülasyon,
+`scripts/modulation_experiments.py`. Ayrıca: `sinek/data/malecns.py`
+(neuPrint yükleyici, çevrimdışı sahte tablo testi; token yerelde) ve
+`sinek/sim/lif_torch.py` (GPU'ya hazır torch arka ucu, CPU'da NumPy ile
+eşdeğerlik testi).
+
+**Koşullanma uydurması** (`artifacts/conditioning_grid_v1.csv`). Koku
+(ORN_DM1) ile kompartman DAN'larının 1 s eşleştirilmesi, sonra koku tek
+başına; hedef: hedef MBON'da ~%50 bastırma, hedef dışı < %15.
+
+| κ, η | PPL101→MBON11 (γ1pedc, aversif) bastırma | PAM11→MBON07 (α1, apetitif) bastırma | hedef dışı |
+|---|---|---|---|
+| 0.003, 1e-4 (seçilen) | **0.59** | 0.19 | 0.16 / 0.03 |
+| 0.003, 3e-4 | 0.96 | 0.90 | 0.28 / 0.12 |
+| 0.03, 1e-4 | 0.33 | 0.00 | 0.39 / 0.56 |
+
+Akut kazanç κ'nın küçük olması gerekiyor: 0.03'te hedef dışı MBON'lar
+çöküyor çünkü modelde DAN'lar koku altında 100-300 Hz ateşliyor (doyum).
+MBON07 341 Hz'de refrakter tavanına yakın olduğu için ağırlık bastırması
+hıza az yansıyor; apetitif hat için hedefe ulaşılamadı.
+
+**İlerleyici lezyonlar, modülasyonlu** (`artifacts/progressive_v2_modulated.csv`,
+`fig4_modulation_curves.png`; 3 lezyon sırası, tek tohum):
+
+| Grup | Model | %20 | %40 | %60 | %80 | %100 | %60'ta sıralar arası aralık |
+|---|---|---|---|---|---|---|---|
+| PPL1 | referans | 1.49 | 2.37 | 3.52 | 4.09 | 6.19 | 1.96-6.28 |
+| PPL1 | modülatör | 1.48 | 1.79 | 1.91 | 2.21 | 2.65 | **1.46-2.23** |
+| PAM | referans | 1.58 | 2.53 | 2.62 | 2.94 | 3.00 | 2.13-2.98 |
+| PAM | modülatör | 1.78 | 2.15 | 2.88 | 3.46 | 4.26 | 2.30-3.59 |
+
+Faz 1a'nın ya-hep-ya-hiç davranışı gitti: eğriler kademeli, PAM plato
+yapmıyor, lezyon sırasına duyarlılık 4 kat azaldı. Etkinin yönü değişti:
+MBON'lar susmak yerine disinhibisyonla artıyor (MBON31 0→1.25, MBON29
+0→2.77 log-hız).
+
+**Gövdeli okuma, modülasyonlu** (`artifacts/embodied_v3_combo_modulated.csv`):
+
+| Koşul | Referans, yürüme değişimi | Modülatör, yürüme değişimi |
+|---|---|---|
+| PPL1 %100 | −13 % | **+6 %** |
+| PPL1 %60 | −1 % | +3 % |
+| PAM %100 | −4 % | +2 % |
+| KC %100 | −32 % | −20 % |
+| RND16 / RND307 | −1 % / +5 % | 0 % / +5 % |
+| CX dopaminerjik (61 nöron) %100, referans | −1 % | — |
+
+**Ana sonuç ve açık problem.** Modülasyon katmanı faz 1'in eksik bıraktığı
+kademeliliği sağlıyor ama davranış işaretini tersine çeviriyor: PPL1 kaybı
+referans modelde yürüyüşü düşürür (doğru yön, yanlış biçim), modülatör
+modelde artırır (doğru biçim, yanlış yön; gerçek sinek Parkinson
+modellerinde azalma). Merkezi kompleksin dopaminerjik hücreleri (sinek
+lokomotor bozukluğunda sorumlu tutulan PPM3 hedefleri) referans modelde bu
+batarya altında hiç etki yapmıyor. Yani lokomotor bozukluğun modeldeki
+yolu henüz bulunmadı; üç aday: (1) dopaminin MB dışında da modülatör
+olması (merkezi kompleks, LAL), (2) tonik dopaminin DN uyarılabilirliğini
+doğrudan ayarlaması, (3) lezyonun kronik etkilerinin (kompanzasyon,
+sinaptik yeniden ölçekleme) eksikliği. Üçü de aynı katmanla test edilebilir;
+sıradaki deneyler bunlar.
+
+**Durum:** faz 3a, 3b, 3c, 3d bu ortamda yapılabilen kısımlarıyla tamam.
+Yapılamayanlar: MaleCNS verisi (ağ ve token), GPU taraması (donanım),
+literatür tırmanma değerleriyle nicel karşılaştırma (birincil makaleler
+ağ dışı).
