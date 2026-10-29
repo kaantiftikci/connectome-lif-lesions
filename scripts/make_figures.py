@@ -44,7 +44,7 @@ for g in order:
 if nf is not None:
     ax.axhline(nf, color="gray", lw=1, ls=":", label="noise floor (intact repeats)")
 ax.set_xlabel("neurons lost in group (%)"); ax.set_ylabel("phenotype distance from intact (L2, log-rate features)")
-ax.set_title("Progressive lesions: silent reserve vs linear loss"); ax.legend(fontsize=8, ncol=2)
+ax.set_title("Progressive lesions (5 lesion orders x 2 simulation seeds)"); ax.legend(fontsize=8, ncol=2)
 fig.tight_layout(); fig.savefig(out / "fig1_reserve_curves.png", dpi=160); plt.close(fig)
 summ.to_csv(out / "fig1_reserve_curves.csv", index=False)
 
