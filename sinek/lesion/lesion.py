@@ -110,3 +110,16 @@ def sample_lesions(group_names: list[str], n: int, seed: int = 0, mode: str = "r
         fr = rng.random(len(group_names)) * on
         specs.append(LesionSpec({g: float(f) for g, f in zip(group_names, fr)}, mode=mode, seed=seed + i))
     return specs
+
+
+def scale_edges(cn: Connectome, pre_idx: np.ndarray, post_idx: np.ndarray, factor: float) -> sp.csr_matrix:
+    """Copy of cn.W with synapses from pre_idx onto post_idx multiplied by factor
+    (sparsity pattern kept).  Used for targeted circuit modifications such as
+    scaling Kenyon-cell recurrence."""
+    W = cn.W.copy()
+    pre_mask = np.zeros(cn.n, bool); pre_mask[pre_idx] = True
+    post_mask = np.zeros(cn.n, bool); post_mask[post_idx] = True
+    row_of = np.repeat(np.arange(cn.n), np.diff(W.indptr))
+    sel = pre_mask[row_of] & post_mask[W.indices]
+    W.data[sel] *= factor
+    return W
