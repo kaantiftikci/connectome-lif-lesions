@@ -19,6 +19,7 @@ ap.add_argument("--progressive", default="results/progressive.csv")
 ap.add_argument("--noise", default="results/noise_floor.npz")
 ap.add_argument("--report", default="results/surrogate_report.npz")
 ap.add_argument("--out", default="artifacts/figures")
+ap.add_argument("--modulated", default=None, help="progressive csv from the dopamine-modulated model (fig 4)")
 args = ap.parse_args()
 out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
 
@@ -74,3 +75,27 @@ if Path(args.report).exists():
     fig.suptitle("NPE recovery of known lesions (held-out simulations, 90% CI)", y=0.995)
     fig.tight_layout(rect=(0, 0, 1, 0.985)); fig.savefig(out / "fig3_posterior_recovery.png", dpi=160); plt.close(fig)
 print("figures written to", out)
+
+# ---- fig 4: reference LIF vs dopamine-modulated model
+if args.modulated and Path(args.modulated).exists():
+    def _curves(csv):
+        d = pd.read_csv(csv)
+        if "lesion_seed" not in d:
+            d["lesion_seed"] = 0; d["sim_seed"] = 0
+        pv = d.pivot_table(index=["group", "fraction", "lesion_seed", "sim_seed"], columns="feature", values="value")
+        b = pv.xs(0.0, level="fraction").mean()
+        dd = pv.apply(lambda x: np.linalg.norm(x - b), axis=1).rename("L2").reset_index()
+        return dd.groupby(["group", "fraction"])["L2"].agg(["mean", "min", "max"]).reset_index()
+    ref, mod = _curves(args.progressive), _curves(args.modulated)
+    groups_m = [g for g in ["PPL1", "PAM"] if g in mod.group.unique()]
+    fig, axes = plt.subplots(1, len(groups_m), figsize=(4.2 * len(groups_m), 3.8), squeeze=False)
+    for ax, g in zip(axes[0], groups_m):
+        for name, d, c in (("reference LIF (dopamine = fast excitation)", ref, "tab:gray"), ("dopamine as modulator", mod, "tab:red")):
+            s_ = d[d.group == g]
+            ax.plot(s_.fraction * 100, s_["mean"], "o-", color=c, label=name)
+            ax.fill_between(s_.fraction * 100, s_["min"], s_["max"], color=c, alpha=0.2)
+        ax.set_title(g); ax.set_xlabel("neurons lost (%)"); ax.set_ylabel("phenotype distance (L2)")
+    axes[0][0].legend(fontsize=8)
+    fig.suptitle("Range over lesion orders shrinks when dopamine modulates instead of drives", y=1.0)
+    fig.tight_layout(); fig.savefig(out / "fig4_modulation_curves.png", dpi=160); plt.close(fig)
+    print("fig4 written")
