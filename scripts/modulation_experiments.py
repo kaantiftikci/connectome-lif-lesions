@@ -71,7 +71,8 @@ def _condition_job(a):
 
 def cmd_condition(cn, args):
     _G.update(cn=cn, stim={s.name: s for s in build_stimuli(cn)}, groups=group_indices(cn, {"PPL101": {"cell_type": "PPL101"}, "PAM11": {"cell_type": "PAM11"}}))
-    # PPL101 = PPL1-gamma1pedc -> MBON11 (aversive); PAM11 = PAM-alpha1 -> MBON07 (appetitive, Hige et al. 2015)
+    # Compartment pairs chosen from connectivity: PPL101 is MBON11's strongest DAN input (124 mV, aversive output),
+    # PAM11 is MBON07's (98-113 mV, appetitive output). Greek compartment names deliberately not asserted.
     jobs = [(k, e, g, t) for g, t in (("PPL101", "MBON11"), ("PAM11", "MBON07"))
             for k in (0.0, 0.003, 0.01, 0.03) for e in (0.0, 3e-5, 1e-4, 3e-4)]
     rows = []

@@ -400,9 +400,14 @@ eşdeğerlik testi).
 
 **Koşullanma uydurması** (`artifacts/conditioning_grid_v1.csv`). Koku
 (ORN_DM1) ile kompartman DAN'larının 1 s eşleştirilmesi, sonra koku tek
-başına; hedef: hedef MBON'da ~%50 bastırma, hedef dışı < %15.
+başına; hedef: hedef MBON'da ~%50 bastırma, hedef dışı < %15. Kompartman
+çiftleri bağlantıdan seçildi: PPL101, MBON11'in en güçlü dopaminerjik girdisi
+(124 mV; MBON11 glutamaterjik, aversif çıkış); PAM11, MBON07'nin (98-113 mV;
+kolinerjik, apetitif çıkış). Hemibrain kodlarının Yunanca kompartman adlarıyla
+(γ1pedc, α1 vb.) eşleşmesi annotasyon dosyasında yok ve bu çalışmada
+doğrulanmadı; metin boyunca adlar bağlantı tabanlıdır.
 
-| κ, η | PPL101→MBON11 (γ1pedc, aversif) bastırma | PAM11→MBON07 (α1, apetitif) bastırma | hedef dışı |
+| κ, η | PPL101→MBON11 (aversif kompartman) bastırma | PAM11→MBON07 (apetitif kompartman) bastırma | hedef dışı |
 |---|---|---|---|
 | 0.003, 1e-4 (seçilen) | **0.59** | 0.19 | 0.16 / 0.03 |
 | 0.003, 3e-4 | 0.96 | 0.90 | 0.28 / 0.12 |
