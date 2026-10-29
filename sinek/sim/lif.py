@@ -167,7 +167,8 @@ def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
              poisson: dict[int, float] | np.ndarray | None = None,
              poisson_rate: float | None = None,
              seed: int | None = 0, record: bool = True, eps: float = 1e-3,
-             state: LIFState | None = None, return_state: bool = False):
+             state: LIFState | None = None, return_state: bool = False,
+             v_th_offset: np.ndarray | None = None):
     """Active-set implementation: only neurons that are away from rest, carry
     synaptic input, or are refractory are updated each step.  Identical
     dynamics to :func:`simulate_dense` up to ``eps`` (mV): a neuron is put to
@@ -178,9 +179,12 @@ def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
         or ``params.r_poi``), or a dict {index: rate_hz}.
     state : continue from a previous window (times keep counting from 0 of the
         first window); with ``return_state`` the call returns (record, state).
+    v_th_offset : optional per-neuron threshold shift in mV (e.g. +2 on Kenyon
+        cells), added to ``params.v_th``.
     """
     n = W.shape[0]
     p = params
+    vth = p.v_th + (np.zeros(n) if v_th_offset is None else np.asarray(v_th_offset, dtype=np.float64))
     dt = p.dt
     n_steps = int(round(duration / dt))
     D = int(round(p.t_dly / dt))
@@ -237,7 +241,7 @@ def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
         va, ga = v[act], g[act]
         v[act] = p.v_0 + (va - p.v_0 - a * ga) * e_m + a * ga * e_s
         g[act] = ga * e_s
-        spk = act[v[act] > p.v_th]
+        spk = act[v[act] > vth[act]]
         if spk.size:
             v[spk] = p.v_rst
             g[spk] = 0.0

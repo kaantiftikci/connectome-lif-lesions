@@ -30,7 +30,8 @@ def phenotype_names(stimuli: list[Stimulus], readouts: dict[str, np.ndarray]) ->
 def phenotype_vector(W: sp.csr_matrix, stimuli: list[Stimulus], readouts: dict[str, np.ndarray],
                      duration: float = 500.0, t_start: float = 100.0, n_trials: int = 1,
                      params: LIFParams = LIFParams(), seed: int = 0,
-                     log: bool = True, backend: str = "numpy", device: str = "cpu") -> np.ndarray:
+                     log: bool = True, backend: str = "numpy", device: str = "cpu",
+                     v_th_offset: np.ndarray | None = None) -> np.ndarray:
     """Mean log(1+rate) of each readout group under each stimulus.
 
     backend: "numpy" (active-set, default) or "torch" (dense per step, use with
@@ -41,7 +42,7 @@ def phenotype_vector(W: sp.csr_matrix, stimuli: list[Stimulus], readouts: dict[s
             return simulate_torch(W_, dur, p_, poisson=tg, poisson_rate=rate, seed=sd, device=device)
     else:
         def run(W_, dur, p_, tg, rate, sd):
-            return simulate(W_, dur, p_, poisson=tg, poisson_rate=rate, seed=sd)
+            return simulate(W_, dur, p_, poisson=tg, poisson_rate=rate, seed=sd, v_th_offset=v_th_offset)
     feats = []
     for s in stimuli:
         acc = np.zeros(len(readouts))
