@@ -108,6 +108,22 @@ kararlı rejimde kalmalı; bu yüzden batarya küçük, tanımlı popülasyonlar
 kullanır (32 şeker, 30 su, 42 acı, 68 ORN_DM1). Kaçak eşiğinin lezyonla
 nasıl kaydığı başlı başına bir sonuç olarak raporlanacak.
 
+### 5b. Koku uyaranı bir çekici durumdur (2026-10-29 düzeltmesi)
+
+Bölüm 5'teki "ORN_DM1 kararlı" ifadesi eksikti. ORN_DM1 sürüşü, hızdan
+bağımsız olarak (40, 75, 150 Hz'de aynı), dişide ~9.950, erkekte ~11.600
+nöronluk kalıcı bir yüksek aktivite durumunu tetikliyor; MBON ortalaması
+dişide 161 Hz, erkekte 272 Hz. Bu, modelin bistabil doğasının (bölüm 5)
+koku girişiyle tetiklenen hali: ORN_DA1 ve ORN_VM4'teki "kaçak" ile aynı
+olgu, yalnızca daha küçük bir çekici. Sonuçları: (a) koku altındaki tüm
+MBON ve dopamin ölçümleri (bölüm 8-15) bu rejimde alınmıştır, MBON
+doyumunun nedeni budur; (b) rejim her iki cinste de aynı olduğu için
+cinsiyet karşılaştırması simetriktir; (c) tat ve mekanosensör uyaranlar
+bu çekiciye girmez (dişi 400-1.000 aktif nöron). Koku altı sonuçlar
+"çekici durumda dopamin etkisi" olarak okunmalı. Gerçek koku cevabının
+seyrek olduğu biliniyor (KC'lerin ~%5'i); bu rejim modelin eksik inhibisyon
+veya adaptasyonunun işareti ve referans LIF'in bilinen sınırı.
+
 ## 6. Riskler
 
 * LIF modelinde nöromodülasyon, bazal ateşleme ve gap junction yok; dopamin

@@ -42,9 +42,24 @@ if __name__ == "__main__":
     ap.add_argument("--procs", type=int, default=4)
     ap.add_argument("--out", default="results/progressive.csv")
     ap.add_argument("--resume", action="store_true", help="skip (group, fraction, seeds) already present in --out")
+    ap.add_argument("--sex", choices=["female", "male"], default="female")
+    ap.add_argument("--count-scale", type=float, default=0.581, help="male synapse-count scale to align with FlyWire (MaleCNS release note)")
+    ap.add_argument("--odor-rate", type=float, default=None, help="override ORN_DM1 drive rate (Hz) in both sexes")
     args = ap.parse_args()
 
-    cn = load_flywire()
+    if args.sex == "male":
+        from sinek.data.malecns import load_malecns_flat, map_stimuli_from_female
+        female = load_flywire()
+        cn = load_malecns_flat(count_scale=args.count_scale)
+        stim = map_stimuli_from_female(cn, female)
+        del female
+    else:
+        cn = load_flywire()
+        stim = build_stimuli(cn)
+    if args.odor_rate is not None:
+        for s_ in stim:
+            if s_.name == "odor_DM1":
+                s_.rate_hz = args.odor_rate
     groups = group_indices(cn)
     m = cn.meta
     pool_mask = (m["super_class"] == "central") & (m["cell_class"] != "DAN") & (m["cell_class"] != "Kenyon_Cell")
@@ -53,7 +68,7 @@ if __name__ == "__main__":
     for size in args.controls:
         groups[f"RND{size}"] = np.sort(rng.choice(pool_idx, size=size, replace=False))
     _G.update(cn=cn, groups=groups, mode=args.mode, duration=args.duration,
-              stim=build_stimuli(cn), readouts=readout_groups(cn))
+              stim=stim, readouts=readout_groups(cn))
     names = phenotype_names(_G["stim"], _G["readouts"])
     all_groups = list(args.groups) + [f"RND{s}" for s in args.controls]
 
