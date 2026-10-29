@@ -464,3 +464,41 @@ sıradaki deneyler bunlar.
 Yapılamayanlar: MaleCNS verisi (ağ ve token), GPU taraması (donanım),
 literatür tırmanma değerleriyle nicel karşılaştırma (birincil makaleler
 ağ dışı).
+
+## 16. Literatürdeki tırmanma ve dopamin kaybı değerleri (2026-10-29)
+
+Birincil makalelerden (PMC tam metinleri, bu oturumda doğrudan okundu)
+derlenen nicel karşılaştırma. Hiçbiri tek bir "yüzde kaç nöron kaybında
+yüzde kaç tırmanma" sayısı vermiyor; fenotipler ayrı ölçülüp kümeye
+atfediliyor.
+
+| Çalışma | Model | Etkilenen DA kümesi | Tırmanma |
+|---|---|---|---|
+| Whitworth 2005 (PNAS, PMC1142368) | parkin null | PPL1 (1 günde anlamlı, 20 günde daha yaygın); diğer kümeler etkilenmez | hipomorf mutantlarda kısmi tırmanma defekti; kas kaynaklı |
+| Yang 2006 (PNAS, PMC1502310) | PINK1 RNAi | PPL1 belirgin, PPM orta (25 gün) | 10 güne dek tırmanma ciddi azalır, uçma tamamen gider |
+| Wang 2006 (PNAS, PMC1569195) | PINK1 RNAi | PAL, PPM1/2, PPM3, PPL2 belirgin; PPL1 daha az (10 gün) | yaşa bağlı ilerleyici |
+| Riemensperger 2013 (Cell Reports, 24239353) | pan-nöronal α-synuclein | yarım beyin başına 15 PAM nöronu, mantar gövdesi β′ lobu | β′ bloğu negatif geotaksiyi bozar; ilerleyici |
+
+Modelle karşılaştırma ve açık uyumsuzluk:
+* **Küme uyumu kısmen doğru.** parkin ve erken PINK1 modelleri PPL1'i
+  vurguluyor; modelde de PPL1 kaybı en duyarlı grup (bölüm 11, 13). Ama
+  Wang 2006 ve Riemensperger PAM/PPM3'ü öne çıkarıyor; modelde PAM etkisi
+  tek kompartmana (PAM08→MBON29) sıkışıyor, PPM3 (merkezi kompleks) hiç
+  etki vermiyor (bölüm 15). Yani model, parkin-benzeri PPL1 tablosuyla
+  uyumlu, α-synuclein-benzeri PAM/β′ tablosuyla değil.
+* **Devre uyumu dikkat çekici.** Riemensperger'in bulduğu "kritik PAM
+  nöronları mantar gövdesine projekte eder ve tırmanmayı sürer" ifadesi,
+  modelin tüm dopamin etkisini KC→MBON kompartmanlarında bulmasıyla aynı
+  anatomiyi işaret ediyor. Modelin eksiği bu projeksiyonun yürümeye nasıl
+  çevrildiği (inen nöron eşlemesi), mekanizmanın yeri değil.
+* **Yön hâlâ uyumsuz.** Literatürde tırmanma azalıyor; modelde referansta
+  azalıyor ama ya-hep-ya-hiç, modülatörde kademeli ama sıfır/pozitif
+  (bölüm 15). Literatür yön sorununu çözmüyor, sadece onaylıyor: modelin
+  üretmesi gereken işaret negatif ve kademeli.
+* **Zaman ekseni modelde yok.** Tüm deneysel defektler yaşa bağlı
+  (10-25 gün); model anlık. Kronik kompanzasyonun eksikliği (bölüm 15,
+  3. aday) bu yüzden ciddi; gerçek fenotip günler süren bir süreç.
+
+Not: Greene 2003 (PMC153051) tam metni PMC bot korumasına takıldığı için
+okunamadı; özeti parkin'de lokomotor defekt ve dorsomedial DA nöron
+değişikliği bildiriyor, yukarıdakilerle tutarlı.
