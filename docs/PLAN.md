@@ -986,3 +986,32 @@ eşiği d mV yükseltildi. Koku altında KC etkin oranı: +1/+2 mV 0.73/0.70,
 **Yorum.** Dopamin lezyonlarının gürültü tabanının altında kalması APL'nin
 nasıl ayarlandığına bağlı değil; KC seyrekliği hangi mekanizmayla
 sağlanırsa sağlansın sonuç aynı.
+
+## 31. Jo eğitim protokolü: PAM doğrudan sürülünce öğrenme ve sessiz rezerv (2026-10-29)
+
+`scripts/jo_training_protocol.py` (seyrek rejim, κ=0.003, η=1e-4): koku
+(ORN_DM1 150 Hz) + kalan PAM nöronlarının 100 Hz doğrudan sürülmesi 1 s;
+PAM ve RND307 lezyonları %0/25/50/75/100, 2 tohum. `artifacts/jo_training.csv`.
+Yol sorununu atlayan pozitif kontrol: öğretici sinyal kabloyla değil,
+doğrudan veriliyor.
+
+| MBON | ön hız | PAM %0 | %25 | %50 | %75 | %100 | RND307 %100 |
+|---|---|---|---|---|---|---|---|
+| MBON09 | 12.5 Hz | 1.00 | 1.00 | 1.00 | 1.00 | 0.06 | 1.00 |
+| MBON33 | 18.3 Hz | 0.55 | 0.46 | 0.46 | 0.59 | 0.21 | 0.64 |
+| MBON29 | 3.3 Hz | 1.00 | 1.00 | 0.50 | 0.50 | 0.00 | 1.00 |
+
+(değerler öğrenme indeksi (ön − son)/ön, iki tohumun ortalaması)
+
+**Yorum.** Modülatör katman doğrudan sürülen DAN'la nicel bir öğrenme
+eğrisi veriyor ve bu eğri bir **sessiz rezerv** gösteriyor: MBON09'daki
+bastırma PAM'ın %75'i kaybolana kadar tam, %100'de sıfır; rastgele 307
+nöron kaybı etkisiz. Mekanizma kompartman yakınsaması: MBON09'a birden çok
+PAM tipinden onlarca nöron ≥2 mV'lik sinaps yapıyor (aşağıdaki sayım) ve
+kazanç kalan DAN'ların toplam hızına bağlı olduğu için dörtte biri bile
+kapıyı açmaya yetiyor. Bu, Parkinson modellerindeki "belirtiler %60–80
+dopamin kaybından sonra görünür" gözlemiyle aynı biçimde bir eşik; ama
+burada rezerv pekiştireç yolunda değil DAN→MBON yakınsamasında, çünkü yol
+atlanıyor. Jo'nun "DAN'ı kaldırınca öğrenme kaybolur" totolojisinin ötesine
+geçen kısım, eşiğin konumu (%75–100 arası) ve kompartman yapısıyla
+açıklanabilmesi.
