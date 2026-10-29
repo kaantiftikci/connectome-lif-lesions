@@ -11,8 +11,9 @@ caches them as parquet; ``load_malecns`` builds the Connectome from the cache
 and ``build_connectome`` does the same from any pair of tables (used by the
 offline unit test).  Field mapping (male -> FlyWire-style meta columns):
 
-    type -> cell_type, class/superclass -> cell_class/super_class,
-    somaSide (L/R/M) -> side (left/right/center), predictedNt -> top_nt
+    type -> cell_type, class/superclass -> cell_class/super_class (labels mapped to the
+    FlyWire vocabulary: descending_neuron -> descending, cb_intrinsic -> central, ...),
+    rootSide (L/R/M) -> side (left/right/center), consensusNt (fallback predictedNt) -> top_nt
 
 Synaptic sign follows Shiu et al.: acetylcholine, dopamine, octopamine and
 serotonin excitatory (+1); GABA and glutamate inhibitory (-1).  Weights are
@@ -34,6 +35,12 @@ from .flywire import Connectome, W_SYN_MV
 EXCITATORY = {"acetylcholine", "dopamine", "octopamine", "serotonin", "ach", "da", "oa", "5ht", "unknown", ""}
 INHIBITORY = {"gaba", "glutamate", "glu"}
 SIDE = {"L": "left", "R": "right", "M": "center", "left": "left", "right": "right", "center": "center"}
+# neuPrint male-cns superclass labels -> FlyWire super_class vocabulary used by the selectors
+SUPERCLASS = {"descending_neuron": "descending", "ascending_neuron": "ascending", "cb_intrinsic": "central",
+              "ol_intrinsic": "optic", "vnc_intrinsic": "vnc", "visual_projection": "visual_projection",
+              "visual_centrifugal": "visual_centrifugal", "cb_sensory": "sensory", "ol_sensory": "sensory",
+              "vnc_sensory": "sensory", "sensory_ascending": "sensory_ascending", "cb_motor": "motor",
+              "vnc_motor": "motor", "vnc_efferent": "efferent"}
 
 
 def nt_sign(nt) -> int:
@@ -66,13 +73,13 @@ def build_connectome(neurons: pd.DataFrame, edges: pd.DataFrame, w_syn_mv: float
     meta = pd.DataFrame({
         "idx": np.arange(n), "root_id": ids,
         "cell_type": neurons.get("type", pd.Series([""] * n)).astype(str).replace({"None": "", "nan": ""}),
-        "super_class": neurons.get("superclass", pd.Series([""] * n)).astype(str).str.lower().replace({"none": "", "nan": ""}),
-        "side": neurons.get("somaSide", pd.Series([""] * n)).map(lambda s: SIDE.get(str(s), str(s))),
-        "top_nt": neurons.get("predictedNt", pd.Series([""] * n)).astype(str).str.lower(),
+        "super_class": neurons.get("superclass", pd.Series([""] * n)).astype(str).str.lower().replace({"none": "", "nan": ""}).map(lambda v: SUPERCLASS.get(v, v)),
+        "side": neurons.get("rootSide", neurons.get("somaSide", pd.Series([""] * n))).map(lambda s: SIDE.get(str(s), str(s))),
+        "top_nt": neurons.get("consensusNt", neurons.get("predictedNt", pd.Series([""] * n))).astype(str).str.lower(),
     })
     meta["cell_class"] = [infer_cell_class(t, c) for t, c in zip(meta["cell_type"], neurons.get("class", pd.Series([None] * n)))]
     for col in neurons.columns:
-        if col not in ("bodyId", "type", "class", "superclass", "somaSide", "predictedNt") and col not in meta:
+        if col not in ("bodyId", "type", "class", "superclass", "somaSide", "rootSide", "predictedNt", "consensusNt") and col not in meta:
             meta[col] = neurons[col].to_numpy()
     nt_by_i = meta["top_nt"].map(nt_sign).to_numpy()
     e = edges[edges["bodyId_pre"].isin(id2i) & edges["bodyId_post"].isin(id2i)]
@@ -86,9 +93,10 @@ def fetch_malecns(cache_dir: str | Path, server: str = "https://neuprint.janelia
                   token: str | None = None, min_weight: int = 1) -> Path:
     """Download neuron and adjacency tables with neuprint-python and cache them."""
     from neuprint import Client, NeuronCriteria as NC, fetch_neurons, fetch_adjacencies
-    token = token or os.environ.get("NEUPRINT_TOKEN")
-    if not token:
-        raise RuntimeError("set NEUPRINT_TOKEN (neuprint.janelia.org -> Account)")
+    # Token sources: explicit argument, NEUPRINT_TOKEN, or a proxy that injects the
+    # Authorization header itself (Claude cloud "network secrets"); in the last case
+    # any placeholder works because the proxy overwrites the header.
+    token = token or os.environ.get("NEUPRINT_TOKEN") or "proxy-injected"
     cache = Path(cache_dir); cache.mkdir(parents=True, exist_ok=True)
     c = Client(server, dataset=dataset, token=token)
     neurons, _ = fetch_neurons(NC(status="Traced", client=c), client=c)

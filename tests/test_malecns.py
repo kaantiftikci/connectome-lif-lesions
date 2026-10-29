@@ -11,8 +11,8 @@ def test_build_connectome_from_mock_tables():
         "bodyId": [10, 11, 12, 13, 14, 15],
         "type": ["PAM08", "KCg-m", "MBON29", "DNp09", "ORN_DM1", "PPL103"],
         "class": [None, None, None, None, None, "DAN"],
-        "superclass": ["central", "central", "central", "descending", "sensory", "central"],
-        "somaSide": ["L", "R", "L", "R", "M", "L"],
+        "superclass": ["cb_intrinsic", "cb_intrinsic", "cb_intrinsic", "descending_neuron", "cb_sensory", "cb_intrinsic"],
+        "rootSide": ["L", "R", "L", "R", "M", "L"],
         "predictedNt": ["dopamine", "acetylcholine", "glutamate", "acetylcholine", "acetylcholine", "dopamine"],
     })
     edges = pd.DataFrame({"bodyId_pre": [14, 11, 10, 12, 15, 99], "bodyId_post": [11, 12, 12, 13, 12, 12],
@@ -21,6 +21,7 @@ def test_build_connectome_from_mock_tables():
     assert cn.n == 6 and cn.W.nnz == 5                                   # unknown body 99 dropped
     assert cn.meta.loc[0, "cell_class"] == "DAN" and cn.meta.loc[1, "cell_class"] == "Kenyon_Cell"
     assert cn.meta.loc[0, "side"] == "left" and cn.meta.loc[4, "side"] == "center"
+    assert cn.meta.loc[3, "super_class"] == "descending" and cn.meta.loc[0, "super_class"] == "central"
     assert np.isclose(cn.W[2, 3], -10 * 0.275)                          # glutamatergic MBON -> inhibitory
     assert np.isclose(cn.W[0, 2], 60 * 0.275)
     g = group_indices(cn, DA_GROUPS)
