@@ -896,3 +896,26 @@ bölüm 10/13'te bulunan etiketli hatlar (doymuş MBON'u açıp kapatan DAN'lar)
 Çekici rejiminde 32 boyutlu lezyon vektörünün ~5 boyutu okunabilir, gerisi
 okunamaz; bu, artefakt bulgusunun büyük veriyle doğrulanması. Seyrek rejim
 taraması (APL×5, n = 1000) Mac'te sırada.
+
+## 27. Alt tip taraması n = 1000, seyrek rejim (APL×5) — ters model hiçbir şey öğrenmiyor (2026-10-29)
+
+M4'te 63 dakika. `artifacts/sweep_v4_subtype1000_apl5.npz`,
+`artifacts/surrogate_report_v4_subtype1000_apl5.npz`.
+
+| | çekici (bölüm 26) | seyrek (APL×5) |
+|---|---|---|
+| değişen özellik | 75 / 654 | 56 / 654 |
+| ridge 5-kat CV R² | 0.52 | −0.02 |
+| MLP topluluğu CV R² | 0.48 | −0.40 |
+| NPE \|hata\|, lezyonlu girdiler | 0.41 | 0.46 |
+| "hep 0.5" taban çizgisi | 0.26 | 0.26 |
+| tespit (medyan > 0.2) / yanlış alarm | 0.20 / 0.08 | 0.02 / 0.03 |
+| geri bulunan alt tip (r > 0.6) | 6 | 0 (en iyi PPL107 r = 0.50) |
+
+**Yorum.** Çekici rejiminde okunabilen altı etiketli hat (PPL101/103/105/106,
+PAM08/04) seyrek rejimde tamamen kayboluyor; vekil modelin R²'si sıfıra
+düşüyor, yani 32 boyutlu dopamin lezyon vektörü 654 boyutlu fenotipe
+hiç yansımıyor. Bölüm 18'deki "PPL1/PAM kaybı gürültü tabanının altında"
+bulgusunun 1000 rastgele karışık lezyonla, bütün alt tipler için
+doğrulanmış hâli. Bu, çalışmanın ana negatif sonucunun en güçlü kanıtı.
+Mac'te koşulacak başka iş kalmadı.
