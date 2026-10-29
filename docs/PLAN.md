@@ -216,3 +216,47 @@ Vekil 5 kat CV R²: ridge 0.46, MLP 0.43. Değişen özellik 46/436.
   lezyon %13 PAM, ama uyum zayıf; yani PPL1 imzası bu grup kümesi içinde
   benzersiz. Kontrol gruplarını da içeren taramada "MBON %8" çıkmıştı.
   Alt tip çözünürlüklü tarama bu soruyu asıl cevaplayacak.
+
+## 11. Faz 1a sonucu: tekrarlı ilerleyici lezyonlar (2026-10-29)
+
+6 uyaran × 109 okuma = 654 özellik; 5 lezyon sırası × 2 simülasyon tohumu;
+büyüklük eşleştirmeli rastgele kontroller RND16 ve RND307 (merkezi beyin,
+DAN ve KC hariç). Gürültü tabanı: sağlam tekrarlar arası L2 1.68, sağlam
+tekrarın ortalamadan uzaklığı 0.84. `artifacts/figures/fig1_reserve_curves.png`,
+`artifacts/progressive_v1_replicated.csv.gz`.
+
+| Grup | n | %20 | %40 | %60 | %80 | %100 | Yorum |
+|---|---|---|---|---|---|---|---|
+| PPL1 | 16 | 1.49±0.31 | 2.37±0.70 | 3.52±1.57 | 4.09±1.97 | 6.19±0.00 | büyük, sıraya bağlı (iki modlu) |
+| PAM | 307 | 1.58±0.66 | 2.53±0.65 | 2.62±0.39 | 2.94±0.02 | 3.00±0.02 | %40'ta doyuyor |
+| PPL2 | 8 | 1.02 | 0.96 | 1.01 | 0.95 | 1.04 | gürültü |
+| PPM1 | 16 | 0.85 | 0.86 | 0.86 | 0.87 | 0.87 | gürültü |
+| RND16 | 16 | 0.85 | 0.89 | 0.92 | 0.94 | 0.97 | gürültü |
+| RND307 | 307 | 1.29±0.36 | 1.49±0.33 | 1.63±0.29 | 1.59±0.27 | 1.77±0.24 | zayıf, gürültü sınırında |
+
+**Özgüllük cevabı:** PPL1 (16 nöron) tam kaybı, aynı büyüklükteki rastgele
+kayıptan 6 kat (6.19 / 0.97), PAM (307) 1.7 kat (3.00 / 1.77) daha büyük
+etki yapıyor. PPL2 ve PPM1 bu bataryada hiç görünmüyor.
+
+**"Sessiz rezerv" yeniden yorumu.** İlk tek-sıra deneyindeki sigmoid, sıralar
+üzerinden ortalama alınınca büyük varyansla geliyor: PPL1 %60 kayıpta
+L2 1.96 ile 6.28 arasında. Bağlantı izi nedenini gösteriyor: her PPL1 alt
+tipi bir MBON'u neredeyse tek başına sürüyor (etiketli hat):
+
+| Kaynak | Hedef | Toplam ağırlık (mV) | Rakip girdi |
+|---|---|---|---|
+| PPL105 | MBON13 | 78.6 | PPL103 1.4 |
+| PPL103 | MBON31 | 60.8 | PPL107 0.8 |
+| PAM08 | MBON29 | 56.4 | PAM01 11.6 |
+| PPL104 | MBON28 | 20.1 | PPL107 1.9 |
+
+Her hat anahtar gibi kapanıyor (MBON cevabı ya tam ya sıfır). Fenotip
+uzaklığı kesilen hat sayısını sayıyor; yüzde-kayıp eğrisi bu sayının
+sıralar üzerindeki beklentisi. Yani modelde dopamin kaybı için kademeli bir
+rezerv yok, hücre tipi düzeyinde ya hep ya hiç var. Gerçek sineklerde
+tırmanma kademeli azalıyor; bu fark modelin (dopamin = doğrudan uyarı)
+eksik bıraktığı kademeli nöromodülasyon katmanına işaret ediyor. Faz 3'ün
+gerekçesi doğrudan bu tablo.
+
+Not: eğri gerçekten "kaç hat kesildi" ise alt tip çözünürlüklü tarama (1c)
+grupları değil hatları öğrenmeli; tam da o tarama çalışıyor.
