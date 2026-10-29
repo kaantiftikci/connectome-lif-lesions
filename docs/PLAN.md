@@ -203,7 +203,9 @@ sağlam. `artifacts/sweep_v1_da80.npz`.
 Vekil 5 kat CV R²: ridge 0.46, MLP 0.43. Değişen özellik 46/436.
 
 * **PAM ve PPL1 kaybı fenotipten geri çıkarılabiliyor**, 80 örnekle bile
-  prior'un 2-3 katı daha iyi. Bu, "gözlenen fenotipten hasar örüntüsünü
+  prior'un 2-3 katı daha iyi. Yalnızca lezyonlu girişler üzerinden (adil
+  metrik, `train_surrogate.py` artık bunu basıyor): PAM korelasyon 0.97,
+  PPL1 0.95, PPL2 −0.22, PPM1 −0.11; tespit oranı 0.72, yanlış alarm 0.32. Bu, "gözlenen fenotipten hasar örüntüsünü
   çıkarma" fikrinin modelde çalıştığının ilk kanıtı.
 * **PPL2 ve PPM1 tanımlanamıyor:** bu uyaran bataryası altında çıktıya
   neredeyse hiç yansımıyorlar (duyarlılık 1.5-2.2). Ya batarya genişlemeli

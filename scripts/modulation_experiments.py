@@ -89,17 +89,17 @@ def cmd_condition(cn, args):
 
 
 def _curve_job(a):
-    group, frac, lseed = a
+    group, frac, lseed, sseed = a
     cn = _G["cn"]
     W, hit = apply_lesion(cn, _G["groups"], LesionSpec({group: frac}, seed=lseed), keep_pattern=True)
     feats = []
     for s in _G["stim"]:
         net = ModulatedNetwork(cn, _G["mp"], W=W)
         net.set_baseline(_G["baseline"][s.name])
-        rec, _ = simulate_modulated(net, 500.0, poisson=s.targets, poisson_rate=s.rate_hz, seed=0, rbar=_G["baseline"][s.name])
+        rec, _ = simulate_modulated(net, 500.0, poisson=s.targets, poisson_rate=s.rate_hz, seed=sseed, rbar=_G["baseline"][s.name])
         r = firing_rates(rec, 100.0)
         feats.append(np.log1p(np.array([r[idx].mean() if idx.size else 0.0 for idx in _G["readouts"].values()])))
-    return group, frac, lseed, sum(len(v) for v in hit.values()), np.concatenate(feats)
+    return group, frac, lseed, sseed, sum(len(v) for v in hit.values()), np.concatenate(feats)
 
 
 def cmd_curves(cn, args):
@@ -116,13 +116,14 @@ def cmd_curves(cn, args):
     _G["baseline"] = base
     print("baselines measured", flush=True)
     names = phenotype_names(_G["stim"], _G["readouts"])
-    jobs = [(g, f, ls) for g in args.groups for f in (0.0, 0.2, 0.4, 0.6, 0.8, 1.0) for ls in range(args.lesion_seeds if f > 0 else 1)]
+    jobs = [(g, f, ls, ss) for g in args.groups for f in (0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
+            for ls in range(args.lesion_seeds if f > 0 else 1) for ss in range(args.sim_seeds)]
     rows = []; t0 = time.time()
     with mp.get_context("fork").Pool(args.procs) as pool:
-        for i, (g, f, ls, n_hit, x) in enumerate(pool.imap_unordered(_curve_job, jobs)):
-            rows.extend({"group": g, "fraction": f, "lesion_seed": ls, "sim_seed": 0, "n_lesioned": n_hit, "feature": nm, "value": float(v)} for nm, v in zip(names, x))
+        for i, (g, f, ls, ss, n_hit, x) in enumerate(pool.imap_unordered(_curve_job, jobs)):
+            rows.extend({"group": g, "fraction": f, "lesion_seed": ls, "sim_seed": ss, "n_lesioned": n_hit, "feature": nm, "value": float(v)} for nm, v in zip(names, x))
             pd.DataFrame(rows).to_csv(args.out, index=False)
-            print(f"{i+1}/{len(jobs)} {g} {f} order {ls} [{time.time()-t0:.0f}s]", flush=True)
+            print(f"{i+1}/{len(jobs)} {g} {f} order {ls} seed {ss} [{time.time()-t0:.0f}s]", flush=True)
     print("wrote", args.out)
 
 
@@ -132,6 +133,7 @@ if __name__ == "__main__":
     ap.add_argument("--procs", type=int, default=3)
     ap.add_argument("--groups", nargs="+", default=["PPL1", "PAM"])
     ap.add_argument("--lesion-seeds", type=int, default=3)
+    ap.add_argument("--sim-seeds", type=int, default=2)
     ap.add_argument("--out", default="results/progressive_modulated.csv")
     args = ap.parse_args()
     cn = load_flywire()
