@@ -108,7 +108,7 @@ def cmd_curves(cn, args):
     fit = json.load(open("results/modulation_fit.json")) if Path("results/modulation_fit.json").exists() else {"kappa": 0.03, "eta": 0.0}
     mpar = ModulationParams(kappa=fit["kappa"], eta=0.0, alpha_fast=0.0)   # acute gain only; no training during the battery
     print("modulation params:", mpar)
-    _G.update(cn=cn, groups=group_indices(cn), stim=build_stimuli(cn), readouts=readout_groups(cn), mp=mpar)
+    _G.update(cn=cn, groups=_add_controls(cn, group_indices(cn), args.controls), stim=build_stimuli(cn), readouts=readout_groups(cn), mp=mpar)
     # tonic DAN baseline per stimulus from the intact modulated network
     base = {}
     mpar0 = ModulationParams(kappa=0.0, eta=0.0, alpha_fast=mpar.alpha_fast)   # tonic level with the gain off
@@ -130,14 +130,35 @@ def cmd_curves(cn, args):
     print("wrote", args.out)
 
 
+def _add_controls(cn, groups, sizes):
+    """Size-matched random central-neuron controls (non-DA, non-KC), same seed as progressive_curve.py."""
+    m = cn.meta
+    pool = m.loc[(m["super_class"] == "central") & (~m["cell_class"].isin(["DAN", "Kenyon_Cell"])), "idx"].to_numpy()
+    rng = np.random.default_rng(12345)
+    for size in sizes:
+        groups[f"RND{size}"] = np.sort(rng.choice(pool, size=size, replace=False))
+    return groups
+
+
+def _apply_apl(cn, scale):
+    if scale == 1.0:
+        return cn
+    from sinek.lesion import scale_edges
+    from sinek.data.flywire import Connectome
+    W = scale_edges(cn, cn.select(cell_type="APL"), cn.select(cell_class="Kenyon_Cell"), scale)
+    return Connectome(ids=cn.ids, W=W, meta=cn.meta, name=f"{cn.name}_apl{scale}")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["check", "condition", "curves"])
     ap.add_argument("--procs", type=int, default=3)
     ap.add_argument("--groups", nargs="+", default=["PPL1", "PAM"])
+    ap.add_argument("--controls", nargs="*", type=int, default=[])
     ap.add_argument("--lesion-seeds", type=int, default=3)
     ap.add_argument("--sim-seeds", type=int, default=2)
+    ap.add_argument("--apl-scale", type=float, default=1.0)
     ap.add_argument("--out", default="results/progressive_modulated.csv")
     args = ap.parse_args()
-    cn = load_flywire()
+    cn = _apply_apl(load_flywire(), args.apl_scale)
     {"check": cmd_check, "condition": cmd_condition, "curves": cmd_curves}[args.cmd](cn, args)
