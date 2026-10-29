@@ -53,8 +53,8 @@ for g, s in sorted(zip(groups, np.abs(J).sum(0)), key=lambda t: -t[1]):
 
 post = LesionPosterior(groups).fit(theta[tr], x[tr])
 err, rec_truth, rec_med, rec_lo, rec_hi = [], [], [], [], []
-for i in te[:40]:
-    s = post.summarize(x[i])
+for i in te[:30]:
+    s = post.summarize(x[i], n=1000)
     med = np.array([s[g][0] for g in groups]); lo = np.array([s[g][1] for g in groups]); hi = np.array([s[g][2] for g in groups])
     err.append(np.abs(med - theta[i])); rec_truth.append(theta[i]); rec_med.append(med); rec_lo.append(lo); rec_hi.append(hi)
 err = np.array(err)
