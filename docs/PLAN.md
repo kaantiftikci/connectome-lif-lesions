@@ -919,3 +919,26 @@ hiç yansımıyor. Bölüm 18'deki "PPL1/PAM kaybı gürültü tabanının altı
 bulgusunun 1000 rastgele karışık lezyonla, bütün alt tipler için
 doğrulanmış hâli. Bu, çalışmanın ana negatif sonucunun en güçlü kanıtı.
 Mac'te koşulacak başka iş kalmadı.
+
+## 28. Oktopamin yolu: şeker→PAM ödül sinyali sinaptik konnektomda yok (2026-10-29)
+
+`scripts/octopamine_path.py`, seyrek rejim; `artifacts/octopamine_path.csv`.
+Biyolojide şeker ödülü PAM'a oktopamin nöronları üzerinden (OA-VUMa2,
+OAMB reseptörü; Burke ve ark. 2012) taşınır. Konnektomda 43 OA-* nöronu
+var (VUMa1-8, VPM3/4, AL2, ASM).
+
+- Şeker GRN'lerinden hiçbir OA nöronuna doğrudan sinaps yok (0 mV).
+- Şekerin etkinleştirdiği ağ OA nöronlarını çoğunlukla **inhibe** ediyor
+  (hız-ağırlıklı girdi −0.3 … −7.5 mV/10 ms); hiçbiri şeker altında
+  ateşlemiyor.
+- OA→PAM sinapsları çok zayıf: en güçlüsü OA-VUMa6 (toplam 3.6 mV, 13 PAM),
+  OA-VPM3 (3.3 mV, 12 PAM); 43 nöronun 35'inin PAM'a hiç sinapsı yok.
+- 43 OA nöronunun tamamı 150 Hz'de doğrudan sürülünce PAM 0.5 Hz (%3'ü
+  5 Hz üstünde), PPL1 ise 18 Hz; şeker + OA birlikte: PAM 0.4 Hz.
+
+**Sonuç.** "Şeker→PAM yolu iki sinapsta var ama iletmiyor" ifadesi
+yanlıştı; doğrusu: ödül yolu **sinaptik kablolamada yok**. Oktopamin
+PAM'ı biyolojide sinaps dışı (hacim iletimi, OAMB) etkiler; konnektom
+bunu içermez. Bu, modelin yapısal bir sınırı: tek-ağırlıklı LIF'e
+parametre ayarıyla değil, ancak sinaps dışı bir modülasyon terimi
+eklenerek giderilebilir. Önbaskıdaki ilgili cümleler buna göre düzeltildi.
