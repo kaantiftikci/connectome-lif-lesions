@@ -46,8 +46,11 @@ aktivite okuması APL kaybında işaret değiştiriyor. Önbaskı buna göre
 
 **Açık.** Acı→PPL1 düzeltmesiyle öğrenme indeksi (koşuluyor); w_syn
 duyarlılığı (sırada); erkek için düşük tabanlı çalışma noktası (0.35/0.45
-ölçekleri sırada); GPU ile büyük tarama (M4'te CPU ile koşuluyor;
-`docs/gpu_runbook.md`); 3B görselleştirme (`viewer/`, yayınlandı).
+ölçekleri sırada); GPU ile büyük tarama (M4'te iki n=1000 tarama bitti, bölüm
+26–27; `docs/gpu_runbook.md`); 3B görselleştirme (`viewer/`, çekici ve seyrek
+rejim anahtarıyla yayınlandı); şekiller 1–7 önbaskı dokümanına gömüldü.
+Son tur (bölüm 28–30): oktopamin yolu, KC eşiğiyle seyrekleştirme, Brian2
+ile çekici doğrulaması, Jo eğitim protokolü.
 
 ---
 
