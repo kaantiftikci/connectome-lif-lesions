@@ -15,3 +15,15 @@ def test_phenotype_shape_and_response():
     d = dict(zip(names, x))
     assert d["a|r2"] > 0 and d["a|r3"] == 0 and d["a|r45"] == 0
     assert d["b|r3"] > 0 and d["b|r2"] == 0
+
+
+def test_phenotype_torch_backend_matches_numpy_shape():
+    import pytest
+    pytest.importorskip("torch")
+    n = 6
+    W = sp.csr_matrix((np.array([30.0, 30.0]), ([0, 1], [2, 3])), shape=(n, n))
+    stim = [Stimulus("a", np.array([0]))]
+    readouts = {"r2": np.array([2]), "r3": np.array([3])}
+    xa = phenotype_vector(W, stim, readouts, duration=200.0, t_start=50.0, seed=0)
+    xb = phenotype_vector(W, stim, readouts, duration=200.0, t_start=50.0, seed=0, backend="torch")
+    assert xa.shape == xb.shape == (2,) and xb[0] > 0 and xb[1] == 0

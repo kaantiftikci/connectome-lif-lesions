@@ -30,14 +30,23 @@ def phenotype_names(stimuli: list[Stimulus], readouts: dict[str, np.ndarray]) ->
 def phenotype_vector(W: sp.csr_matrix, stimuli: list[Stimulus], readouts: dict[str, np.ndarray],
                      duration: float = 500.0, t_start: float = 100.0, n_trials: int = 1,
                      params: LIFParams = LIFParams(), seed: int = 0,
-                     log: bool = True) -> np.ndarray:
-    """Mean log(1+rate) of each readout group under each stimulus."""
+                     log: bool = True, backend: str = "numpy", device: str = "cpu") -> np.ndarray:
+    """Mean log(1+rate) of each readout group under each stimulus.
+
+    backend: "numpy" (active-set, default) or "torch" (dense per step, use with
+    device="cuda" on a GPU; see sinek.sim.lif_torch)."""
+    if backend == "torch":
+        from ..sim.lif_torch import simulate_torch
+        def run(W_, dur, p_, tg, rate, sd):
+            return simulate_torch(W_, dur, p_, poisson=tg, poisson_rate=rate, seed=sd, device=device)
+    else:
+        def run(W_, dur, p_, tg, rate, sd):
+            return simulate(W_, dur, p_, poisson=tg, poisson_rate=rate, seed=sd)
     feats = []
     for s in stimuli:
         acc = np.zeros(len(readouts))
         for tr in range(n_trials):
-            rec = simulate(W, duration, params, poisson=s.targets, poisson_rate=s.rate_hz,
-                           seed=seed * 1000 + tr)
+            rec = run(W, duration, params, s.targets, s.rate_hz, seed * 1000 + tr)
             r = firing_rates(rec, t_start)
             acc += np.array([r[idx].mean() if idx.size else 0.0 for idx in readouts.values()])
         acc /= n_trials

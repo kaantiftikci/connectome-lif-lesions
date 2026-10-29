@@ -19,7 +19,7 @@ from sinek.readout import Stimulus, phenotype_vector, phenotype_names           
 _G = {}
 
 
-def _load(duration, trials, groups=None):
+def _load(duration, trials, groups=None, backend="numpy", device="cpu"):
     """Load once in the parent; forked workers inherit the arrays copy-on-write,
     so the 1-2 GB connectome is shared instead of duplicated per process."""
     cn = load_flywire()
@@ -28,13 +28,14 @@ def _load(duration, trials, groups=None):
     _G["stim"] = build_stimuli(cn)
     _G["readouts"] = readout_groups(cn)
     _G["duration"], _G["trials"] = duration, trials
+    _G["backend"], _G["device"] = backend, device
     return cn
 
 
 def _one(spec):
     W, _ = apply_lesion(_G["cn"], _G["groups"], spec)
     return phenotype_vector(W, _G["stim"], _G["readouts"], duration=_G["duration"], n_trials=_G["trials"],
-                            seed=spec.seed)
+                            seed=spec.seed, backend=_G["backend"], device=_G["device"])
 
 
 if __name__ == "__main__":
@@ -50,12 +51,14 @@ if __name__ == "__main__":
                     help="restrict lesioned groups (e.g. PAM PPL1 PPL2 PPM1); others stay intact")
     ap.add_argument("--group-set", choices=["default", "subtype"], default="default")
     ap.add_argument("--resume", action="store_true", help="continue from <out>.ckpt.npz (same --n/--seed/--groups)")
+    ap.add_argument("--backend", choices=["numpy", "torch"], default="numpy")
+    ap.add_argument("--device", default="cpu", help="torch device, e.g. cuda (use --procs 1 on a single GPU)")
     ap.add_argument("--out", default="results/sweep.npz")
     args = ap.parse_args()
 
     from sinek.data.groups import DA_GROUPS, CONTROL_GROUPS, SUBTYPE_GROUPS
     group_defs = {"default": {**DA_GROUPS, **CONTROL_GROUPS}, "subtype": SUBTYPE_GROUPS}[args.group_set]
-    cn = _load(args.duration, args.trials, group_defs)
+    cn = _load(args.duration, args.trials, group_defs, args.backend, args.device)
     group_names = list(_G["groups"].keys())
     names = phenotype_names(_G["stim"], _G["readouts"])
     lesion_groups = args.groups or group_names

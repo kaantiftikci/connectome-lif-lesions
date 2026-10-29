@@ -15,6 +15,12 @@ python scripts/run_lesion_sweep.py --n 500 --procs 4
 python scripts/train_surrogate.py
 ```
 
+Kaynak notları: her işçi konnektomu çatallama (fork) ile paylaşır, ama
+16 GB'lık bir makinede 3 işçi + eş zamanlı vekil/NPE eğitimi belleği aşıp
+oturumu düşürdü. `--procs 3` üst sınır, eğitimi taramalardan sonra ayrı
+çalıştırın. Uzun deneyler kontrol noktası yazar (`--resume`). GPU'da:
+`python scripts/run_lesion_sweep.py --backend torch --device cuda --procs 1`.
+
 Paket düzeni:
 
 | Modül | İş |

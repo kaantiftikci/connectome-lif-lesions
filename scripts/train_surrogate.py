@@ -58,9 +58,23 @@ for i in te[:30]:
     med = np.array([s[g][0] for g in groups]); lo = np.array([s[g][1] for g in groups]); hi = np.array([s[g][2] for g in groups])
     err.append(np.abs(med - theta[i])); rec_truth.append(theta[i]); rec_med.append(med); rec_lo.append(lo); rec_hi.append(hi)
 err = np.array(err)
-print("posterior-median recovery error per group (held-out):")
-for g, e in zip(groups, err.mean(0)):
-    print(f"  {g:6s} {e:.3f}")
+T, M = np.array(rec_truth), np.array(rec_med)
+on = T > 0
+print("posterior recovery on held-out simulations:")
+print(f"  lesioned entries: {int(on.sum())} of {T.size}")
+if on.any():
+    print(f"  mean |err| on lesioned entries: NPE {np.abs(M - T)[on].mean():.3f}   "
+          f"predict-zero baseline {T[on].mean():.3f}   prior-median(0.5) baseline {np.abs(0.5 - T[on]).mean():.3f}")
+    print(f"  detection (posterior median > 0.2): lesioned {float((M[on] > 0.2).mean()):.2f}, "
+          f"false alarms on intact entries {float((M[~on] > 0.2).mean()) if (~on).any() else 0.0:.2f}")
+print("  per group, lesioned entries only (n, |err|, corr):")
+for j, g in enumerate(groups):
+    k = int(on[:, j].sum())
+    if k >= 3:
+        c = np.corrcoef(M[:, j], T[:, j])[0, 1] if M[:, j].std() > 0 else float("nan")
+        print(f"    {g:14s} n={k:2d}  err {np.abs(M[:, j] - T[:, j])[on[:, j]].mean():.2f}  corr {c:.2f}")
+    else:
+        print(f"    {g:14s} n={k:2d}  (too few lesioned held-out samples)")
 if args.report:
     Path(args.report).parent.mkdir(parents=True, exist_ok=True)
     np.savez(args.report, groups=np.array(groups), features=np.array([f for f, k in zip(feat_names, keep) if k]),
