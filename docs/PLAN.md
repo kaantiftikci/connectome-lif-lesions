@@ -26,11 +26,18 @@ Shiu et al. 2024'ün LIF modeliyle artık şu sorular sorulabilir:
 
 ## 2. Benzer çalışma ve fark
 
-arXiv 2610.19153 (Ekim 2026) MaleCNS üzerinde amiloid benzeri hasar
-(eşik düşürme, sinaps ve nöron kaybı) uygular; hasar rastgele ya da hub
-derecesine göre seçilir, büyüklükler varsayılır, okuma kokuya verilen
-tüm-beyin aktivitesidir, davranış ve gerçek fenotiplerle karşılaştırma yoktur,
-öğrenme yoktur.
+arXiv 2610.19153 (Taeho Jo, "Simulating Alzheimer's amyloid-like pathology
+on a fly central nervous system connectome", 13 Ekim 2026; özet birincil
+kaynaktan doğrulandı 2026-10-29) MaleCNS üzerinde 166.700 nöronlu LIF
+(referans modelle hız korelasyonu 0.9997) ile amiloid benzeri üç hasar
+(eşik düşürme, sinaps kaybı, nöron kaybı) uygular; büyüklükler varsayılır;
+nöronlar bağlantı derecesine göre (az bağlantılı / rastgele / çok bağlantılı)
+seçilir; 1.424 simüle sinek; okuma koku ile uyarılan tüm-beyin aktivitesi,
+dev lif hızı ve bir öğrenme indeksi. Bulgular: kaybolan nöron sayısı
+bozukluğu kötü öngörüyor, kaybolan temas sayısı ve komuta nöronları
+belirleyici (%12 nöron kaybında aktivite %93 / %47 / %31). Hücre tipine
+göre hedefleme, ilerleyici seyir, gövdeli davranış, gerçek fenotiplerle
+karşılaştırma, makine öğrenmesi ve ters çıkarım yok.
 
 | Boyut | 2610.19153 | sinek |
 |---|---|---|
