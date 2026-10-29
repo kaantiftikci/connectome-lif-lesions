@@ -25,3 +25,15 @@ Paket düzeni:
 | `sinek.readout` | uyaran bataryası altında fenotip vektörü |
 | `sinek.surrogate` | θ→x MLP topluluğu, duyarlılık ve ters tarama |
 | `sinek.inference` | sbi ile nöral posterior tahmini |
+
+Sonuçlar ve şekiller: `artifacts/figures/` (şekil 1 ilerleyici lezyon
+eğrileri, şekil 2 vekil duyarlılık haritası, şekil 3 posterior geri bulma),
+veri dosyaları `artifacts/*.npz|csv.gz`. Ayrıntılı sonuç bölümleri için
+`docs/PLAN.md` 8-14.
+
+Gövdeli okuma (faz 2) için ek kurulum:
+
+```
+pip install "flygym @ git+https://github.com/NeLy-EPFL/flygym.git@v2.1.1"
+MUJOCO_GL= python scripts/embodied_lesion.py --stimuli combo
+```

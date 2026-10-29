@@ -307,3 +307,57 @@ Yorum ve sınırlar:
 * Bu modelde sol lokomotor DN hızı (29 Hz) sağdan (9 Hz) çok yüksek;
   DM1 koku girdisi çift taraflı olduğu için bu asimetri konnektomdan
   geliyor, incelenmeli.
+
+## 13. Faz 1c sonucu: alt tip çözünürlüklü tarama ve ters model (2026-10-29)
+
+240 lezyon, 32 dopaminerjik alt tip (PAM01-15, PPL101-108, PPL201-204,
+PPM1201-1205), seyreklik 0.85 (örnek başına ~5 alt tip), 6 uyaran × 109
+okuma. `artifacts/sweep_v2_subtype240.npz`, `artifacts/surrogate_report_v2_subtype.npz`,
+`artifacts/figures/fig2_sensitivity.png`, `fig3_posterior_recovery.png`.
+
+| Ölçüm | Değer |
+|---|---|
+| Değişen özellik | 68 / 654 |
+| Vekil 5 kat CV R² | ridge 0.33, MLP 0.31 |
+| Duyarlılık, ilk üç | **PPL103 10.5**, PPL105 4.8, PAM08 4.6; geri kalan 29 alt tip 1.3-2.3 (gürültü düzeyi) |
+| NPE, lezyonlu girişlerde ortanca hatası | 0.475 (sıfır-tahmin taban çizgisi 0.489, prior ortancası 0.268) |
+| NPE, sağlam girişlerde hata | 0.009 |
+| Alt tip bazında anlamlı geri bulma | PPL103 (r = 0.98, hata 0.20), PPL104 (r = 0.55); diğerleri yok |
+
+**Yorum.** Vekil modelin duyarlılık haritası, bağlantı iziyle (bölüm 11)
+elle bulunan üç etiketli hattı (PPL103→MBON31, PPL105→MBON13,
+PAM08→MBON29) veriden bağımsız olarak en üste koyuyor; yöntem çalışıyor.
+Ters model ise bu veri büyüklüğünde yalnızca en güçlü hattı öğreniyor ve
+geri kalan 29 alt tip için seyrek prior'a çöküyor ("hepsi sıfır" diyor).
+Nedeni belirsizlik değil, bilgi yokluğu: bu batarya altında 29 alt tipin
+kaybı okumalara yansımıyor, dolayısıyla hiçbir ters model onları bulamaz.
+Doğru sonuç şu: **bu LIF modelinde dopaminerjik kaybın okunabilir izi 3
+alt tiple sınırlı.** Daha fazla alt tipi görünür kılmak için ya uyaran
+bataryası o alt tiplerin devrelerini sürmeli ya da (faz 3) dopaminin
+modülatör etkisi modele girmeli.
+
+## 14. Faz 1 ve 2 kapanış özeti
+
+Yapılanlar (hepsi `claude/lesion-inverse-model` dalında, testler geçiyor):
+1. Doğrulanmış simülatör (Shiu referansıyla r = 0.963), 2.2× hızlı,
+   bellek paylaşımlı paralel koşu, kontrol noktalı deneyler.
+2. 6 uyaranlık kararlı batarya; kaçak rejim haritası.
+3. Tekrarlı ilerleyici lezyonlar + büyüklük eşleştirmeli kontroller (şekil 1).
+4. Etiketli-hat mekanizması: dopamin kaybı modelde ya hep ya hiç, kademeli
+   rezerv yok.
+5. Alt tip taraması; vekil duyarlılık haritası (şekil 2); NPE geri bulma
+   (şekil 3), sınırlarıyla.
+6. Gövdeli okuma: PPL1 tam kaybı yürüme/tırmanma hızını %13, KC %32
+   düşürüyor; kontroller ±5 %.
+
+Ana bilimsel mesaj: konnektom + LIF, dopaminerjik kaybın *nereye*
+yansıyacağını hücre tipi çözünürlüğünde söylüyor (3 etiketli hat, belirli
+MBON'lar, lokomotor DN'ler) ama *kademeli* davranışsal bozulmayı
+üretemiyor. Bu, modelin eksik bıraktığı nöromodülasyonun ölçülebilir bir
+sonucu ve faz 3'ün doğrudan gerekçesi.
+
+Faz 3 için sıradaki iş: (a) KC→MBON sinapslarında dopamin kapılı kazanç
+parametresi, bilinen öğrenme fenotiplerinden öğrenme; (b) DN→yürüme hızı
+eşlemesini gerçek yürüme kayıtlarıyla kısıtlama; (c) MaleCNS yükleyici
+(neuPrint token, yerelde) ve cinsiyet karşılaştırması; (d) GPU'da 1000+
+örnekli tarama.
