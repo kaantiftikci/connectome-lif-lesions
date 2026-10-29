@@ -71,6 +71,6 @@ if Path(args.report).exists():
         ax.set_title(f"{g}  (|err| {err:.2f})", fontsize=9); ax.set_xlabel("true loss fraction"); ax.set_ylabel("posterior median")
     for j in range(k, nrow * ncol):
         axes[j // ncol][j % ncol].axis("off")
-    fig.suptitle("NPE recovery of known lesions (held-out simulations, 90% CI)")
-    fig.tight_layout(); fig.savefig(out / "fig3_posterior_recovery.png", dpi=160); plt.close(fig)
+    fig.suptitle("NPE recovery of known lesions (held-out simulations, 90% CI)", y=0.995)
+    fig.tight_layout(rect=(0, 0, 1, 0.985)); fig.savefig(out / "fig3_posterior_recovery.png", dpi=160); plt.close(fig)
 print("figures written to", out)
