@@ -967,3 +967,22 @@ Bulgu simülatörümüze bağlı değil. Hızlar orijinal kodda yaklaşık %30�
 daha düşük (muhtemelen Poisson girdisinin ve sinaptik "g" değişkeninin
 ayrıntılarındaki küçük farklar; şeker doğrulamasında r = 0.963 bunun
 sıralamayı etkilemediğini gösteriyor); çekicinin varlığı ve ölçeği aynı.
+
+## 30. Seyrekleştirme yönteminden bağımsızlık: KC eşiği +32 mV (2026-10-29)
+
+`scripts/kc_threshold_check.py` (simülatöre nöron-başına `v_th_offset`
+eklendi); `artifacts/kc_threshold.csv`. APL yerine Kenyon hücrelerinin
+eşiği d mV yükseltildi. Koku altında KC etkin oranı: +1/+2 mV 0.73/0.70,
++4 0.65, +8 0.52, +12 0.36, +16 0.25, **+32 0.034**, +48 0.002. Çekici
+şaşırtıcı derecede sağlam: KC'leri susturmak için 32 mV (eşik aralığının
+4.5 katı) gerekiyor. +32 mV'de etkin nöron 5.664 (APL×5: 5.674), MBON
+9.8 Hz (10.4), PPL1 13.9 Hz (16.3): APL×5 ile aynı çalışma noktası.
+
+| seyrekleştirme | taban | PPL1 %100 | PAM %100 | RND16 %100 |
+|---|---|---|---|---|
+| APL×5 (bölüm 18, 5×2) | 1.91 | 1.74 | 1.12 | 1.16 |
+| KC eşiği +32 mV (1 sıra, 2 tohum) | 1.67 | 1.22 | 1.15 | 0.88 |
+
+**Yorum.** Dopamin lezyonlarının gürültü tabanının altında kalması APL'nin
+nasıl ayarlandığına bağlı değil; KC seyrekliği hangi mekanizmayla
+sağlanırsa sağlansın sonuç aynı.
