@@ -852,5 +852,18 @@ mekanizmasının (doymuş MBON'ları açıp kapatan DAN) geri gelmesi demek.
 
 **Erkek çalışma noktası (bölüm 17 devamı).** APL×5 ile sinaps ölçeği
 taraması: 0.581 → taban 10.4; 0.45 → 6.06; 0.35 → 1.81 (dişi 1.91 ile
-aynı düzey). 0.35 ölçeğinde PPL1/PAM eğrileri koşuluyor
-(`results/progressive_male_s035_apl5.csv`).
+aynı düzey). 0.35 ölçeğinde PPL1/PAM eğrileri (3 lezyon sırası × 1 tohum,
+`artifacts/progressive_v7_male_s035_apl5.csv`, şekil 5 yenilendi):
+
+| Grup | %20 | %60 | %80 | %100 | taban |
+|---|---|---|---|---|---|
+| PPL1 | 1.06 | 1.09 | 2.73 | 2.67 | 1.81 |
+| PAM | 0.00 | 0.00 | 0.00 | 0.00 | |
+| RND16 | 0.94 | 0.63 | 0.85 | 0.57 | |
+| RND307 | 0.72 | 1.19 | 1.15 | 1.14 | |
+
+Erkekte bu çalışma noktasında PPL1'in %80+ kaybı tabanın 1.5 katına çıkıyor
+ve rastgele 307 nöron kaybının üstünde (dişide tabanın altındaydı); PAM ise
+hiç ateşlemediği için (0.3'teki gibi) PAM lezyonu tanım gereği sıfır etki
+veriyor. Yani erkek modelde dopamin sorusu için PPL1 okunabilir, PAM
+okunamaz; tek simülasyon tohumuyla ölçüldüğü için küçük bir etki.
