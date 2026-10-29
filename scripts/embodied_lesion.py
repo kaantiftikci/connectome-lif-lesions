@@ -36,6 +36,12 @@ rng = np.random.default_rng(12345)
 for size in (16, 307):
     groups[f"RND{size}"] = np.sort(rng.choice(pool, size=size, replace=False))   # same seed as progressive_curve.py
 stim = {s.name: s for s in build_stimuli(cn)}
+# "combo": odour + wind/gravity together.  Under a single modality the mushroom-body
+# output never reaches the descending neurons; with both, MB lesions change 140-200 DNs.
+from sinek.readout import Stimulus
+_combo = {int(i): 150.0 for i in stim["odor_DM1"].targets}
+_combo.update({int(i): 150.0 for i in stim["wind_gravity"].targets})
+stim["combo"] = Stimulus("combo", _combo, 150.0)
 sides_all = descending_sides(cn)
 sides_loc = descending_sides(cn, LOCOMOTOR_DN_TYPES)
 print(f"DNs: all L/R {len(sides_all['left'])}/{len(sides_all['right'])}, locomotor L/R {len(sides_loc['left'])}/{len(sides_loc['right'])}")
@@ -43,7 +49,8 @@ print(f"DNs: all L/R {len(sides_all['left'])}/{len(sides_all['right'])}, locomot
 def dn_rates(W, stim_name):
     acc_all = np.zeros(2); acc_loc = np.zeros(2)
     for s in range(args.seeds):
-        rec = simulate(W, args.brain_ms, poisson=stim[stim_name].targets, poisson_rate=stim[stim_name].rate_hz, seed=500 + s)
+        tg = stim[stim_name].targets
+        rec = simulate(W, args.brain_ms, poisson=tg, poisson_rate=None if isinstance(tg, dict) else stim[stim_name].rate_hz, seed=500 + s)
         r = firing_rates(rec, t_start=100.0)
         acc_all += descending_rates(r, sides_all); acc_loc += descending_rates(r, sides_loc)
     return acc_all / args.seeds, acc_loc / args.seeds
