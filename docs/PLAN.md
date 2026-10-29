@@ -867,3 +867,32 @@ ve rastgele 307 nöron kaybının üstünde (dişide tabanın altındaydı); PAM
 hiç ateşlemediği için (0.3'teki gibi) PAM lezyonu tanım gereği sıfır etki
 veriyor. Yani erkek modelde dopamin sorusu için PPL1 okunabilir, PAM
 okunamaz; tek simülasyon tohumuyla ölçüldüğü için küçük bir etki.
+
+## 26. Alt tip taraması n = 1000 (Mac mini M4, çekici rejimi) (2026-10-29)
+
+Kullanıcının M4'ünde 8 işçiyle 65 dakikada koşuldu (10 simülasyon / 32 s;
+bulut konteynerinin 10 katı). `artifacts/sweep_v3_subtype1000.npz`,
+`artifacts/surrogate_report_v3_subtype1000.npz`, şekiller
+`artifacts/figures_n1000/`. Varsayılan rejim (APL×1), çünkü `--apl-scale`
+tarama başladığında henüz yoktu.
+
+| | n = 240 (bölüm 13) | n = 1000 |
+|---|---|---|
+| değişen özellik | — | 75 / 654 |
+| ridge 5-kat CV R² | 0.33 | 0.52 |
+| MLP topluluğu CV R² | — | 0.48 |
+| NPE \|hata\|, lezyonlu girdiler | 0.475 | 0.406 |
+| "hep 0.5" taban çizgisi | 0.268 | 0.258 |
+| tespit (medyan > 0.2) lezyonlu / yanlış alarm | — | 0.20 / 0.08 |
+
+Geri bulunan alt tipler (korelasyon): PPL101 0.91, PPL103 0.89, PPL105 0.87,
+PPL106 0.70, PAM08 0.67, PAM04 0.64; geri kalan 26 alt tipte |r| < 0.6,
+çoğu 0 civarı. Duyarlılık sıralaması aynı: PPL103 9.8, PPL105 5.1, PAM08 3.4,
+sonra uzun kuyruk (0.5–1.8).
+
+**Yorum.** Dört kat veri vekili iyileştiriyor (R² 0.33 → 0.52) ama ters
+model hâlâ önemsiz taban çizgisini geçemiyor; bilgi taşıyan yalnızca
+bölüm 10/13'te bulunan etiketli hatlar (doymuş MBON'u açıp kapatan DAN'lar).
+Çekici rejiminde 32 boyutlu lezyon vektörünün ~5 boyutu okunabilir, gerisi
+okunamaz; bu, artefakt bulgusunun büyük veriyle doğrulanması. Seyrek rejim
+taraması (APL×5, n = 1000) Mac'te sırada.
