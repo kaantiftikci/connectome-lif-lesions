@@ -542,15 +542,17 @@ yetmedi (yüzde 67). Yalnızca APL→KC inhibisyonunu 5 kat artırmak KC
 aktivasyonunu yüzde 3.8'e, MBON ortalamasını 10 Hz'e indirdi (biyolojik
 seyreklik ~yüzde 5); beyin geneli çekici (5.9 bin aktif nöron) sürüyor.
 
-Bu rejimde ilerleyici lezyonlar (3 sıra × 1 tohum,
+Bu rejimde ilerleyici lezyonlar (5 sıra × 2 tohum, güncellendi 2026-10-29;
 `artifacts/progressive_v4_sparse_apl5.csv`, gürültü tabanı 1.91):
 
-| Grup | Çekici rejimi, %100 kayıp | Seyrek rejim, %100 kayıp |
+| Grup | Çekici rejimi, %100 kayıp | Seyrek rejim, %100 kayıp (ort ± sd) |
 |---|---|---|
-| PPL1 | 6.19 | 1.62 (taban altı) |
-| PAM | 3.00 | 1.24 (taban altı) |
-| RND16 | 0.97 | 1.12 |
-| RND307 | 1.77 | 2.19 |
+| PPL1 | 6.19 | 1.74 ± 0.20 (taban altı) |
+| PAM | 3.00 | 1.12 ± 0.22 (taban altı) |
+| RND16 | 0.97 | 1.16 ± 0.08 |
+| RND307 | 1.77 | 1.84 ± 0.15 |
+
+(İlk 3×1 koşuda PPL1 1.62, PAM 1.24, RND307 2.19 idi; sonuç değişmedi.)
 
 Sonuç: bölüm 11 ve 13'teki dopamin özgüllüğü (PPL1 ≫ rastgele, etiketli
 hatlar) MBON doyumunun ürünü. MBON'lar doyumdan çıkınca dopaminerjik kayıp
