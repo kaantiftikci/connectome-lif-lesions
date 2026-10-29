@@ -559,3 +559,26 @@ Referans LIF'te dopamin etkisi, DAN→MBON hızlı sinapslarının doymuş MBON'
 kapatmasından ibaretti. Modülatör katman (bölüm 15) ve seyrek rejim birlikte
 test edilmeli; bu, projenin sıradaki deneyi. Bölüm 11, 13 ve 14'ün
 sonuçları "çekici rejiminde" ibaresiyle okunmalı.
+
+## 19. Modülatör katman seyrek rejimde: pasif batarya yetmiyor (2026-10-29)
+
+Seyrek MB rejiminde (APL×5) hem referans hem modülatör modelde ilerleyici
+lezyonlar (`artifacts/progressive_v5_modulated_sparse.csv`, gürültü tabanı 1.91):
+
+| Grup, %100 kayıp | Çekici referans | Seyrek referans | Seyrek modülatör |
+|---|---|---|---|
+| PPL1 | 6.19 | 1.62 | 0.89 |
+| PAM | 3.00 | 1.24 | 1.12 |
+| RND307 | 1.77 | 2.19 | — |
+
+Üç koşul birlikte tek sonucu veriyor: **pasif duyusal batarya altında
+dopaminerjik kayıp, MBON'lar doymadıkça bu modelde okunamıyor; modülasyon
+bunu değiştirmiyor.** Faz 1'in dopamin özgüllüğü yalnızca çekici rejimin
+MBON doyumunun ürünüydü. Modülatör katman kademeliliği sağlıyor ama pasif
+uyaran dopamin devresini zaten zayıf sürdüğü için görünür bir iz bırakmıyor.
+
+Bu, dopaminin modeldeki asıl rolüne işaret ediyor: dopamin öğrenme
+sinyalidir, pasif duyusal cevabın sürücüsü değil. Dolayısıyla dopamin
+kaybını okumak için fenotip davranış değil **öğrenme** olmalı. Sıradaki
+deney (bölüm 20) tam bunu test ediyor: doğal pekiştireçle (şeker=ödül,
+acı=ceza) koşullanma ve lezyonun öğrenme indeksini ne kadar düşürdüğü.
