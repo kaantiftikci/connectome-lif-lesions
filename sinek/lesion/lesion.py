@@ -57,8 +57,10 @@ def lesioned_neurons(groups: dict[str, np.ndarray], spec: LesionSpec) -> dict[st
     return out
 
 
-def apply_lesion(cn: Connectome, groups: dict[str, np.ndarray], spec: LesionSpec):
-    """Return (W_lesioned, removed) where removed maps group -> neuron indices."""
+def apply_lesion(cn: Connectome, groups: dict[str, np.ndarray], spec: LesionSpec, keep_pattern: bool = False):
+    """Return (W_lesioned, removed) where removed maps group -> neuron indices.
+    ``keep_pattern`` keeps zeroed entries explicit so the CSR layout matches cn.W
+    (needed by the neuromodulation layer, which indexes into W.data)."""
     hit = lesioned_neurons(groups, spec)
     n = cn.n
     if spec.mode == "synapse_scale":
@@ -73,6 +75,14 @@ def apply_lesion(cn: Connectome, groups: dict[str, np.ndarray], spec: LesionSpec
     for idx in hit.values():
         keep[idx] = 0.0
     K = sp.diags(keep)
+    if keep_pattern:
+        W = cn.W.copy()
+        row_of = np.repeat(np.arange(n), np.diff(W.indptr))
+        dead = keep[row_of] == 0
+        if spec.mode == "remove":
+            dead |= keep[W.indices] == 0
+        W.data[dead] = 0.0
+        return W, hit
     if spec.mode == "remove":
         W = (K @ cn.W @ K).tocsr()
     else:  # silence_out
