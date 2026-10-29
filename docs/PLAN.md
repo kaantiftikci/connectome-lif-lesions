@@ -582,3 +582,50 @@ sinyalidir, pasif duyusal cevabın sürücüsü değil. Dolayısıyla dopamin
 kaybını okumak için fenotip davranış değil **öğrenme** olmalı. Sıradaki
 deney (bölüm 20) tam bunu test ediyor: doğal pekiştireçle (şeker=ödül,
 acı=ceza) koşullanma ve lezyonun öğrenme indeksini ne kadar düşürdüğü.
+
+## 20. Kritik bulgu: pekiştireçler dopamin nöronlarına ulaşmıyor (2026-10-29)
+
+Öğrenme deneyinin ön tanısı beklenmedik ama kesin bir sonuç verdi.
+Dopaminerjik kümelerin (PAM, PPL1) her uyaran altındaki ateşleme hızı:
+
+| Uyaran | PAM (çekici) | PPL1 (çekici) | PAM (seyrek) | PPL1 (seyrek) |
+|---|---|---|---|---|
+| şeker (ödül) | 0.0 | 0.0 | 0.0 | 0.0 |
+| acı (ceza) | 0.0 | 0.0 | 0.0 | 0.0 |
+| su | 0.0 | 0.0 | 0.0 | 0.0 |
+| koku DM1 | 53.0 | 206.4 | 0.6 | 16.3 |
+| rüzgar/yerçekimi | 0.0 | 0.0 | 0.0 | 0.0 |
+| baş kılı | 0.0 | 0.0 | 0.0 | 0.0 |
+
+Graf yapısında şeker→PAM yolu var (2 sinapta 69, 3 sinapta 225 PAM
+erişilebilir), ama LIF'te sinyal yayılmıyor: PAM, ölçeklemesiz bile
+şeker altında 0 Hz. Şeker yalnızca ~418 nöronluk yerel SEZ kümesini
+sürüyor, röle nöronları eşiği aşmıyor.
+
+**Sonuç.** Bu modelde dopamin nöronlarını süren tek şey koku çekicisi.
+Pekiştireçler (şeker ödülü, acı cezası) dopamin nöronlarına hiç ulaşmıyor.
+Biyolojide şeker→PAM ödül yolu iyi kurulmuştur (Liu 2012, Burke 2012); model
+bunu üretmiyor. Dolayısıyla:
+
+1. Faz 1'in dopamin "özgüllüğü" tamamen koku çekicisinin ürünü (bölüm 18-19
+   bunu zaten göstermişti; bu bölüm nedenini veriyor: çekici dışında DAN'lar
+   sessiz).
+2. Doğal pekiştireçle öğrenme deneyi (görev 18) bu modelde yapılamaz: US,
+   DAN'lara ulaşmıyor. Yapay öğretme sinyali (DAN'ları doğrudan sürmek)
+   enjekte edilen etkiyi geri ölçmek olur, döngüsel; biyoloji testi değil.
+
+**Projenin asıl sonucu.** Konnektom + basitleştirilmiş LIF, dopamine bağlı
+davranışı (ödül öğrenmesi, Parkinson defekti) modellemek için yetersiz,
+çünkü pekiştirmeyi dopamin nöronlarına yönlendiremiyor. Bunu düzeltmek için
+ya daha zengin dinamik (nöromodülasyon, uyarlanma, gerçekçi sinaptik
+kazanç) ya da öğretme sinyalinin doğrudan enjekte edilmesi gerekir. Bu,
+negatif ama sağlam bir sonuç: alandaki 80+ hobi projesinin hiçbiri bu
+sınırı ölçmedi.
+
+### Yöntemsel katkı olarak kalan
+
+Dopamin modülasyon katmanı (bölüm 15) ve koşullanma uydurması (bölüm 15)
+hâlâ geçerli araçlar: DAN'lar doğrudan sürüldüğünde (yapay öğretme sinyali)
+kompartman MBON'u beklendiği gibi bastırılıyor (PPL101→MBON11 %59). Bu, yol
+işlediğinde mekanizmanın doğru olduğunu gösterir; eksik olan, duyusal
+girdinin bu yolu sürmesi.
