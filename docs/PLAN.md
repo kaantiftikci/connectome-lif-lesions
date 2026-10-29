@@ -260,3 +260,50 @@ gerekçesi doğrudan bu tablo.
 
 Not: eğri gerçekten "kaç hat kesildi" ise alt tip çözünürlüklü tarama (1c)
 grupları değil hatları öğrenmeli; tam da o tarama çalışıyor.
+
+## 12. Faz 2 sonucu: gövdeli okuma (2026-10-29)
+
+Hat: lezyon → tüm-beyin LIF → inen nöron (DN) hızları (sol/sağ) → sağlam
+beyne göre sürücü → NeuroMechFly v2 (flygym 2.1.1) hibrit dönüş kontrolcüsü
+→ düz zeminde ve 30° eğimde 1 s yürüyüş. `sinek/embodied/`,
+`scripts/embodied_lesion.py`, `artifacts/embodied_v*.csv`. Kontrolcü
+sürücüye doğrusal cevap veriyor (1.0 → 12.8 mm/s, 0.5 → 6.5, 0.2 → 2.1); 30°
+eğimde tırmanıyor, 45°'de kayıyor.
+
+**Tek modaliteli uyaranla negatif sonuç.** Yalnızca mekanosensör uyaran
+(rüzgar/yerçekimi ya da baş kılı) altında PPL1 %60/%100, PAM %100 ve KC %100
+lezyonları DN hızlarını hiç değiştirmiyor (iki ondalığa kadar aynı); yürüyüş
+aynı. Mantar gövdesi çıkışı bu uyaranlarda DN'lere hiç ulaşmıyor.
+
+**Birleşik uyaranla (koku DM1 + rüzgar/yerçekimi) kademeli sonuç.** MB
+lezyonları 140-200 DN'yi >0.5 Hz değiştiriyor, ama DN popülasyon
+ortalaması yalnızca %1-3 oynuyor; etki belirli DN'lerde. Yürüme rolü
+yayınlanmış DN tipleri (DNp09, DNa01-03, DNb01-02, DNg13; 8+8 nöron)
+üzerinden sürücü alınınca:
+
+| Koşul | Lokomotor DN sürücü (L/R) | Düz, mm/s | 30° eğim, mm/s | Değişim |
+|---|---|---|---|---|
+| sağlam | 1.00 / 1.00 | 12.75 | 11.88 | — |
+| PPL1 %60 | 0.99 / 0.96 | 12.57 | 11.66 | −1 % |
+| PPL1 %100 | 0.86 / 0.98 | 11.05 | 10.45 | **−13 %** |
+| PAM %100 | 0.96 / 0.97 | 12.27 | 11.39 | −4 % |
+| KC %100 | 0.72 / 1.00 | 8.71 | 8.69 | **−32 %** |
+| RND16 | 0.99 / 0.99 | 12.65 | 11.76 | −1 % |
+| RND307 | 1.07 / 1.05 | 13.42 | 12.59 | +5 % |
+
+Yorum ve sınırlar:
+* Model ilk kez davranış düzeyinde bir fark üretiyor: PPL1 kaybı yürüme ve
+  tırmanma hızını düşürüyor, aynı büyüklükteki rastgele kayıp düşürmüyor.
+  Yön doğru, büyüklük küçük: gerçek Parkinson-model sineklerde tırmanma
+  kaybı 20-30 günde yaygın olarak %30-60 düzeyinde raporlanıyor (arama
+  özetleri; birincil makaleler bu oturumdan okunamadı, yerelde doğrulanmalı).
+* %60 PPL1 kaybında neredeyse hiç etki yok, %100'de var: faz 1a'daki
+  etiketli-hat bulgusunun davranış karşılığı. Gerçek sinekteki kademeli
+  düşüşü üretmek için faz 3 (nöromodülasyon) gerekiyor.
+* Beyin→beden eşlemesi varsayımsal: 8+8 nöronluk alt küme, 3 beyin tohumu,
+  belirleyici kontrolcü. DN'lerin yürüme hızına ağırlıkları öğrenilmiş
+  değil; faz 3'te DN→hız eşlemesini gerçek yürüme kayıtlarıyla kısıtlamak
+  doğal bir sonraki adım.
+* Bu modelde sol lokomotor DN hızı (29 Hz) sağdan (9 Hz) çok yüksek;
+  DM1 koku girdisi çift taraflı olduğu için bu asimetri konnektomdan
+  geliyor, incelenmeli.
