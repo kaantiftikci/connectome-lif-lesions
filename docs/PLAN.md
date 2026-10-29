@@ -570,8 +570,25 @@ dolayısıyla "erkekte PPL1 etkisi daha küçük" denemez; "bu çalışma noktas
 okunamıyor" denir. Erkek modelin asıl bulgusu, aynı per-sinaps ağırlıkta
 dişiden belirgin daha uyarılabilir olması ve kararlı bir çalışma noktasının
 dopamin devrelerini sessizleştirmesi. Temiz karşılaştırma için her iki
-cinsin de seyrek MB rejiminde (bölüm 18, APL kazancı) koşulması gerekiyor;
-bu, dişi için başlatıldı, erkek için sıradaki iş.
+cinsin de seyrek MB rejiminde (bölüm 18, APL kazancı) koşulması gerekiyor.
+
+**Erkek, seyrek rejimde (APL×5, ölçek 0.581; 2026-10-29).** Gürültü tabanı
+20.4'ten 10.4'e iniyor (`results/noise_floor_male_apl5.npz`), yine de dişinin
+5 katı. 3 lezyon sırası × 1 tohum, %100 kayıpta uzaklıklar
+(`artifacts/progressive_v6_male_apl5.csv`):
+
+| Grup | Erkek APL×5 (taban 10.4) | Dişi APL×5 (taban 1.91) |
+|---|---|---|
+| PPL1 | 8.97 | 1.74 |
+| PAM | 1.21 | 1.12 |
+| RND16 | 4.35 | 1.16 |
+| RND307 | 9.86 | 1.84 |
+
+Her iki cinste de aynı tablo: seyrek rejimde dopamin lezyonları gürültü
+tabanının altında ve boyut-eşli rastgele kontrolden ayırt edilemiyor. Erkek
+modelde tabanın hâlâ yüksek olması, çalışma noktasının (sinaps ölçeği) ayrı
+bir tarama gerektirdiğini gösteriyor (0.35 ve 0.45 ölçeklerinde APL×5 taban
+ölçümü sırada).
 
 ## 18. Seyrek mantar gövdesi rejimi: dopamin etkileri kayboluyor (2026-10-29)
 
