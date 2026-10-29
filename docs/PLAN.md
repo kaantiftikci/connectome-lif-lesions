@@ -945,3 +945,25 @@ PAM'ı biyolojide sinaps dışı (hacim iletimi, OAMB) etkiler; konnektom
 bunu içermez. Bu, modelin yapısal bir sınırı: tek-ağırlıklı LIF'e
 parametre ayarıyla değil, ancak sinaps dışı bir modülasyon terimi
 eklenerek giderilebilir. Önbaskıdaki ilgili cümleler buna göre düzeltildi.
+
+## 29. Çekicinin Shiu'nun kendi Brian2 koduyla doğrulanması (2026-10-29)
+
+`scripts/brian2_attractor_check.py`: aynı 68 ORN_DM1 nöronu, 150 Hz, 500 ms,
+Shiu ve ark. 2024'ün orijinal `model.run_trial()` fonksiyonuyla (Brian2
+2.11, cython), hiçbir değişiklik yapılmadan. Koşu 201 s. Sonuç
+`artifacts/brian2_odor_DM1.npz`.
+
+| | Shiu Brian2 (orijinal kod) | bizim NumPy simülatörü |
+|---|---|---|
+| KC'lerin 5 Hz üstü oranı | %64.4 (ort. 32.6 Hz) | %74.8 |
+| MBON ortalama | 85 Hz | 161 Hz |
+| PPL1 ortalama | 113 Hz (%81'i etkin) | 206 Hz |
+| PAM ortalama | 21 Hz (%39'u etkin) | 45 Hz |
+| 5 Hz üstü nöron | 7.946 | 9.945 |
+
+**Yorum.** Beyin geneli çekici orijinal kodda da ortaya çıkıyor: KC'lerin
+üçte ikisi, MBON'ların üçte ikisi, PPL1'in %81'i koku altında ateşliyor.
+Bulgu simülatörümüze bağlı değil. Hızlar orijinal kodda yaklaşık %30–50
+daha düşük (muhtemelen Poisson girdisinin ve sinaptik "g" değişkeninin
+ayrıntılarındaki küçük farklar; şeker doğrulamasında r = 0.963 bunun
+sıralamayı etkilemediğini gösteriyor); çekicinin varlığı ve ölçeği aynı.
