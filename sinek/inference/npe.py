@@ -41,8 +41,12 @@ class LesionPosterior:
         import torch
         if self._posterior is None:
             raise RuntimeError("call fit first")
-        s = self._posterior.sample((n,), x=torch.as_tensor(x_obs, dtype=torch.float32), show_progress_bars=False)
-        return s.numpy()
+        # Direct sampling without prior-support rejection: with many lesion fractions
+        # exactly 0 the flow puts mass just outside [0,1]^K and rejection sampling in
+        # K~30 dims accepts <1% of proposals.  Clipping to the box is the cheap fix.
+        s = self._posterior.sample((n,), x=torch.as_tensor(x_obs, dtype=torch.float32),
+                                   show_progress_bars=False, reject_outside_prior=False)
+        return np.clip(s.detach().cpu().numpy(), 0.0, 1.0)
 
     def summarize(self, x_obs: np.ndarray, n: int = 2000) -> dict[str, tuple[float, float, float]]:
         s = self.sample(x_obs, n)
