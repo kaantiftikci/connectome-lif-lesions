@@ -50,9 +50,10 @@ def _condition_job(a):
     odor = {int(i): 150.0 for i in stim["odor_DM1"].targets}
     dans = _G["groups"][dan_group]
     pair = dict(odor); pair.update({int(i): 100.0 for i in dans})
+    net0 = ModulatedNetwork(cn, ModulationParams(kappa=0.0, eta=0.0, alpha_fast=0.0))
+    _, rb = simulate_modulated(net0, 600.0, poisson=odor, seed=0)   # tonic DAN level, gain off
     net = ModulatedNetwork(cn, ModulationParams(kappa=kappa, eta=eta, alpha_fast=0.0))
-    _, rb = simulate_modulated(net, 600.0, poisson=odor, seed=0)
-    net.set_baseline(rb)                                   # tonic DAN level under odour alone
+    net.set_baseline(rb)
     pre_rec, rb = simulate_modulated(net, 600.0, poisson=odor, seed=0, rbar=rb)
     pre = mbon_rates(pre_rec, cn, 200.0)
     _, rb = simulate_modulated(net, 1000.0, poisson=pair, seed=1, plastic=True, rbar=rb)
@@ -109,8 +110,9 @@ def cmd_curves(cn, args):
     _G.update(cn=cn, groups=group_indices(cn), stim=build_stimuli(cn), readouts=readout_groups(cn), mp=mpar)
     # tonic DAN baseline per stimulus from the intact modulated network
     base = {}
+    mpar0 = ModulationParams(kappa=0.0, eta=0.0, alpha_fast=mpar.alpha_fast)   # tonic level with the gain off
     for s_ in _G["stim"]:
-        net = ModulatedNetwork(cn, mpar)
+        net = ModulatedNetwork(cn, mpar0)
         _, rb = simulate_modulated(net, 400.0, poisson=s_.targets, poisson_rate=s_.rate_hz, seed=0)
         base[s_.name] = rb
     _G["baseline"] = base

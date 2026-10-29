@@ -13,7 +13,7 @@ offline unit test).  Field mapping (male -> FlyWire-style meta columns):
 
     type -> cell_type, class/superclass -> cell_class/super_class (labels mapped to the
     FlyWire vocabulary: descending_neuron -> descending, cb_intrinsic -> central, ...),
-    rootSide (L/R/M) -> side (left/right/center), consensusNt (fallback predictedNt) -> top_nt
+    somaSide (fallback rootSide; L/R/M) -> side (left/right/center), consensusNt (fallback predictedNt) -> top_nt
 
 Synaptic sign follows Shiu et al.: acetylcholine, dopamine, octopamine and
 serotonin excitatory (+1); GABA and glutamate inhibitory (-1).  Weights are
@@ -33,7 +33,7 @@ import scipy.sparse as sp
 from .flywire import Connectome, W_SYN_MV
 
 EXCITATORY = {"acetylcholine", "dopamine", "octopamine", "serotonin", "ach", "da", "oa", "5ht", "unknown", ""}
-INHIBITORY = {"gaba", "glutamate", "glu"}
+INHIBITORY = {"gaba", "glutamate", "glu", "histamine"}   # histamine: photoreceptor -> HisCl, inhibitory (not present in the FlyWire sign table)
 SIDE = {"L": "left", "R": "right", "M": "center", "left": "left", "right": "right", "center": "center"}
 # neuPrint male-cns superclass labels -> FlyWire super_class vocabulary used by the selectors
 SUPERCLASS = {"descending_neuron": "descending", "ascending_neuron": "ascending", "cb_intrinsic": "central",
@@ -74,12 +74,14 @@ def build_connectome(neurons: pd.DataFrame, edges: pd.DataFrame, w_syn_mv: float
         "idx": np.arange(n), "root_id": ids,
         "cell_type": neurons.get("type", pd.Series([""] * n)).astype(str).replace({"None": "", "nan": ""}),
         "super_class": neurons.get("superclass", pd.Series([""] * n)).astype(str).str.lower().replace({"none": "", "nan": ""}).map(lambda v: SUPERCLASS.get(v, v)),
-        "side": neurons.get("rootSide", neurons.get("somaSide", pd.Series([""] * n))).map(lambda s: SIDE.get(str(s), str(s))),
+        "side": (neurons["somaSide"] if "somaSide" in neurons else neurons.get("rootSide", pd.Series([""] * n))).map(lambda s: SIDE.get(str(s), str(s))),
         "top_nt": neurons.get("consensusNt", neurons.get("predictedNt", pd.Series([""] * n))).astype(str).str.lower(),
     })
     meta["cell_class"] = [infer_cell_class(t, c) for t, c in zip(meta["cell_type"], neurons.get("class", pd.Series([None] * n)))]
+    meta["cell_sub_class"] = neurons.get("subclass", pd.Series([None] * n)).to_numpy()
+    meta["hemibrain_type"] = neurons.get("hemibrainType", pd.Series([None] * n)).to_numpy()
     for col in neurons.columns:
-        if col not in ("bodyId", "type", "class", "superclass", "somaSide", "rootSide", "predictedNt", "consensusNt") and col not in meta:
+        if col not in ("bodyId", "type", "class", "superclass", "somaSide", "rootSide", "predictedNt", "consensusNt", "subclass", "hemibrainType", "somaLocation", "tosomaLocation") and col not in meta:
             meta[col] = neurons[col].to_numpy()
     nt_by_i = meta["top_nt"].map(nt_sign).to_numpy()
     e = edges[edges["bodyId_pre"].isin(id2i) & edges["bodyId_post"].isin(id2i)]
@@ -110,3 +112,57 @@ def fetch_malecns(cache_dir: str | Path, server: str = "https://neuprint.janelia
 def load_malecns(cache_dir: str | Path = "data/raw/malecns", **kw) -> Connectome:
     cache = Path(cache_dir)
     return build_connectome(pd.read_parquet(cache / "neurons.parquet"), pd.read_parquet(cache / "edges.parquet"), **kw)
+
+
+# ---------------------------------------------------------------------------
+# Flat-file route (no neuPrint queries): the official release ships the full
+# connectome as Apache Feather files on Google Cloud Storage
+# (https://male-cns.janelia.org/download/):
+#   body-annotations-male-cns-v1.0-minconf-0.5.feather   (14 MB)
+#   body-neurotransmitters-male-cns-v1.0.feather         (42 MB)
+#   connectome-weights-male-cns-v1.0-minconf-0.5.feather (1.0 GB, 152 M segment pairs)
+GCS_BASE = "https://storage.googleapis.com/flyem-male-cns/v1.0/connectome-data/flat-connectome"
+FLAT_FILES = {"annotations": "body-annotations-male-cns-v1.0-minconf-0.5.feather",
+              "nt": "body-neurotransmitters-male-cns-v1.0.feather",
+              "weights": "connectome-weights-male-cns-v1.0-minconf-0.5.feather"}
+
+
+def fetch_malecns_flat(cache_dir: str | Path = "data/raw/malecns") -> Path:
+    """Download the three flat files (needs storage.googleapis.com reachable)."""
+    import urllib.request
+    cache = Path(cache_dir); cache.mkdir(parents=True, exist_ok=True)
+    for f in FLAT_FILES.values():
+        if not (cache / f).exists():
+            urllib.request.urlretrieve(f"{GCS_BASE}/{f}", cache / f)
+    return cache
+
+
+def build_malecns_tables(cache_dir: str | Path = "data/raw/malecns", statuses=("Traced",)) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Neuron table (traced neurons with a superclass) and traced-to-traced edge
+    table from the flat files; the edge table is cached as edges_traced.parquet."""
+    import pyarrow.compute as pc
+    import pyarrow.feather as pf
+    cache = Path(cache_dir)
+    ann = pf.read_table(cache / FLAT_FILES["annotations"]).to_pandas()
+    ann = ann[ann["status"].isin(statuses) & ann["superclass"].notna()].copy()
+    nt = pf.read_table(cache / FLAT_FILES["nt"], columns=["body", "consensus_nt", "predicted_nt"]).to_pandas()
+    ann = ann.merge(nt.rename(columns={"body": "bodyId", "consensus_nt": "consensusNt", "predicted_nt": "predictedNt"}),
+                    on="bodyId", how="left")
+    edges_path = cache / "edges_traced.parquet"
+    if edges_path.exists():
+        edges = pd.read_parquet(edges_path)
+    else:
+        ids = pa_array = None
+        import pyarrow as pa
+        ids = pa.array(ann["bodyId"].to_numpy(np.int64))
+        w = pf.read_table(cache / FLAT_FILES["weights"])
+        mask = pc.and_(pc.is_in(w["body_pre"], value_set=ids), pc.is_in(w["body_post"], value_set=ids))
+        w = w.filter(mask).to_pandas()
+        edges = w.rename(columns={"body_pre": "bodyId_pre", "body_post": "bodyId_post"})
+        edges.to_parquet(edges_path)
+    return ann, edges
+
+
+def load_malecns_flat(cache_dir: str | Path = "data/raw/malecns", **kw) -> Connectome:
+    ann, edges = build_malecns_tables(cache_dir)
+    return build_connectome(ann, edges, **kw)
