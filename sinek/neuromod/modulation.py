@@ -12,12 +12,18 @@ This layer implements that:
 * the DAN->KC and DAN->MBON fast synapses are scaled by ``alpha_fast``
   (0 removes them),
 * every ``window`` ms, each MBON's KC inputs are multiplied by an acute gain
-  g_m = exp(-kappa * rbar_m), where rbar_m is the low-pass (tau_da) mean
-  firing rate of the DANs in MBON m's compartment,
+  g_m = exp(-kappa * (rbar_m - b_m)), clipped to [0, g_max], where rbar_m is
+  the low-pass (tau_da) mean rate of the DANs in MBON m's compartment and
+  b_m the tonic level measured in the intact brain under the same stimulus
+  (``set_baseline``).  Intact: g = 1.  Pairing (rbar > b): depression.
+  DAN loss (rbar < b): disinhibition that grows with the fraction lost,
 * if ``plastic``, the KC->MBON baseline weights are depressed by
-  eta * rbar_KC * rbar_DAN * window (dopamine-gated, activity-dependent).
+  eta * rbar_KC * max(rbar_DAN - b, 0) * window: dopamine-gated,
+  activity-dependent, and driven by the phasic increase over tonic level
+  (the model's DANs sit at 100-300 Hz under odour alone, so an absolute rule
+  would depress every compartment at once).
 
-Partial DAN loss now reduces rbar_m in proportion, so the MBON output changes
+Partial DAN loss now moves rbar_m in proportion, so the MBON output changes
 gradually instead of switching off: the mechanism phase 1 found missing.
 """
 from __future__ import annotations
@@ -40,6 +46,7 @@ class ModulationParams:
     alpha_fast: float = 0.0    # residual scale of DAN->KC/MBON fast synapses
     window: float = 20.0       # ms between gain updates
     min_w_mv: float = 2.0      # DAN->MBON weight that defines compartment membership
+    g_max: float = 3.0         # cap on disinhibition
 
 
 class ModulatedNetwork:
@@ -65,6 +72,11 @@ class ModulatedNetwork:
         row_of_pos = np.repeat(np.arange(cn.n), np.diff(cn.W.indptr))
         self.kc_pre = {j: row_of_pos[self.kc_syn[j]] for j in self.mbons}
         self.gain = {j: 1.0 for j in self.mbons}
+        self.baseline = {j: 0.0 for j in self.mbons}
+
+    def set_baseline(self, rbar: dict[int, float]):
+        """Tonic compartment-DAN rates of the intact brain under the current stimulus."""
+        self.baseline = {j: float(rbar.get(j, 0.0)) for j in self.mbons}
 
     def lesion_rates(self, rates: np.ndarray, rbar: dict[int, float], dt_s: float) -> dict[int, float]:
         a = np.exp(-1000.0 * dt_s / self.p.tau_da)
@@ -75,7 +87,7 @@ class ModulatedNetwork:
 
     def apply_gain(self, rbar: dict[int, float]):
         for j in self.mbons:
-            self.gain[j] = float(np.exp(-self.p.kappa * rbar[j]))
+            self.gain[j] = float(np.clip(np.exp(-self.p.kappa * (rbar[j] - self.baseline[j])), 0.0, self.p.g_max))
             self.W.data[self.kc_syn[j]] = self.w0[j] * self.gain[j]
 
     def apply_plasticity(self, rates: np.ndarray, rbar: dict[int, float], dt_s: float):
@@ -83,7 +95,7 @@ class ModulatedNetwork:
             return
         for j in self.mbons:
             pre = rates[self.kc_pre[j]]
-            dep = 1.0 - self.p.eta * pre * rbar[j] * dt_s
+            dep = 1.0 - self.p.eta * pre * max(rbar[j] - self.baseline[j], 0.0) * dt_s
             self.w0[j] = self.w0[j] * np.clip(dep, 0.0, 1.0)
 
 
