@@ -818,3 +818,39 @@ değil: MBON14'ün koku yanıtı seyrek rejimde 1 Hz'in altında, "indeks 1.0"
 veriyor ama nicel bir öğrenme eğrisi için MBON-α3'ün koku yanıtının
 güçlendirilmesi (KC→MBON ağırlığı veya daha fazla KC girdisi) gerekir; bu
 model-dışı bir ayar olduğu için burada yapılmadı.
+
+## 25. Parametre sağlamlığı: w_syn 0.20 / 0.275 / 0.35 (2026-10-29)
+
+`scripts/param_robustness.py`; sonuç `artifacts/param_robustness.csv`.
+İki ana iddia, miras sinaptik ağırlık ±%27 değiştirilerek yeniden ölçüldü.
+
+| w_syn (mV) | APL | koku: KC etkin | etkin nöron | MBON Hz | PPL1 Hz |
+|---|---|---|---|---|---|
+| 0.20 | ×1 | 0.64 | 7.784 | 104 | 146 |
+| 0.20 | ×5 | 0.026 | 4.303 | 5.5 | 7.3 |
+| 0.275 | ×1 | 0.75 | 9.945 | 161 | 206 |
+| 0.275 | ×5 | 0.037 | 5.674 | 10.4 | 16.3 |
+| 0.35 | ×1 | 0.79 | 11.486 | 200 | 240 |
+| 0.35 | ×5 | 0.046 | 7.489 | 15.8 | 23.0 |
+
+Seyrek rejimde (APL×5) lezyon iddiası (1 lezyon sırası, 2 sağlam tohum):
+
+| w_syn | gürültü tabanı | PPL1 %100 | RND16 %100 |
+|---|---|---|---|
+| 0.20 | 1.24 | 0.56 | 0.63 |
+| 0.275 | 1.55 | 0.96 | 0.83 |
+| 0.35 | 6.66 | 9.61 | 3.94 |
+
+**Yorum.** İddia A (koku çekicisi, APL×5 ile seyrekleşme) üç ağırlıkta da
+geçerli. İddia B (PPL1 kaybı gürültü tabanının altında) referans ağırlıkta
+ve altında geçerli; %27 daha güçlü sinapslarda ağ çekici sınırına yaklaşıyor
+(etkin nöron 7.5 k, taban 6.66) ve PPL1 kaybı tabanı aşıyor (9.6, RND16 3.9).
+Yani "dopamin etkisi yok" sonucu çalışma noktasına bağlı: çekiciye
+yaklaştıkça dopamin lezyonu yine görünür oluyor, ama bu görünürlük çekici
+mekanizmasının (doymuş MBON'ları açıp kapatan DAN) geri gelmesi demek.
+Önbaskıda bu sınırlama açıkça belirtildi.
+
+**Erkek çalışma noktası (bölüm 17 devamı).** APL×5 ile sinaps ölçeği
+taraması: 0.581 → taban 10.4; 0.45 → 6.06; 0.35 → 1.81 (dişi 1.91 ile
+aynı düzey). 0.35 ölçeğinde PPL1/PAM eğrileri koşuluyor
+(`results/progressive_male_s035_apl5.csv`).
