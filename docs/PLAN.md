@@ -433,20 +433,20 @@ MBON'lar susmak yerine disinhibisyonla artıyor (MBON31 0→1.25, MBON29
 
 **Gövdeli okuma, modülasyonlu** (`artifacts/embodied_v3_combo_modulated.csv`):
 
-| Koşul | Referans, yürüme değişimi | Modülatör, yürüme değişimi |
-|---|---|---|
-| PPL1 %100 | −13 % | **+6 %** |
-| PPL1 %60 | −1 % | +3 % |
-| PAM %100 | −4 % | +2 % |
-| KC %100 | −32 % | −20 % |
-| RND16 / RND307 | −1 % / +5 % | 0 % / +5 % |
-| CX dopaminerjik (61 nöron) %100, referans | −1 % | — |
+| Koşul | Referans, yürüme değişimi | Modülatör (taban çizgisi düzeltilmiş) | Modülatör, ilk koşu |
+|---|---|---|---|
+| PPL1 %100 | −13 % | **+4 %** | +6 % |
+| PPL1 %60 | −1 % | +3 % | +3 % |
+| PAM %100 | −4 % | −1 % | +2 % |
+| KC %100 | −32 % | −25 % | −20 % |
+| RND16 / RND307 | −1 % / +5 % | 0 % / −1 % | 0 % / +5 % |
+| CX dopaminerjik (61 nöron) %100, referans | −1 % | — | — |
 
 **Ana sonuç ve açık problem.** Modülasyon katmanı faz 1'in eksik bıraktığı
 kademeliliği sağlıyor ama davranış işaretini tersine çeviriyor: PPL1 kaybı
 referans modelde yürüyüşü düşürür (doğru yön, yanlış biçim), modülatör
-modelde artırır (doğru biçim, yanlış yön; gerçek sinek Parkinson
-modellerinde azalma). Merkezi kompleksin dopaminerjik hücreleri (sinek
+modelde kontrol gürültüsü içinde kalır ya da hafifçe artırır (doğru biçim,
+yanlış ya da sıfır yön; gerçek sinek Parkinson modellerinde azalma). Merkezi kompleksin dopaminerjik hücreleri (sinek
 lokomotor bozukluğunda sorumlu tutulan PPM3 hedefleri) referans modelde bu
 batarya altında hiç etki yapmıyor. Yani lokomotor bozukluğun modeldeki
 yolu henüz bulunmadı; üç aday: (1) dopaminin MB dışında da modülatör
