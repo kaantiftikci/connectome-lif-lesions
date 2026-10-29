@@ -71,3 +71,19 @@ def test_active_set_matches_dense_on_small_network():
     ra, rb = firing_rates(a), firing_rates(b)
     assert a.times.size > 10
     assert np.abs(ra - rb).max() <= 2.0      # identical up to the eps sleep rule
+
+
+def test_windowed_simulation_matches_single_run():
+    rng = np.random.default_rng(7)
+    n = 30
+    W = sp.random(n, n, density=0.2, random_state=7, format="csr")
+    W.data = (rng.choice([-1, 1], size=W.nnz) * rng.integers(5, 60, size=W.nnz)) * 0.275
+    W = W.tocsr()
+    drive = np.array([0, 1])
+    full = simulate(W, 300.0, poisson=drive, seed=3)
+    rec1, st = simulate(W, 120.0, poisson=drive, seed=3, return_state=True)
+    rec2 = simulate(W, 180.0, poisson=drive, state=st)
+    assert rec2.duration == 300.0
+    t = np.concatenate([rec1.times, rec2.times]); i = np.concatenate([rec1.ids, rec2.ids])
+    assert t.size == full.times.size
+    assert np.allclose(np.sort(t), np.sort(full.times)) and np.array_equal(np.bincount(i, minlength=n), full.counts())

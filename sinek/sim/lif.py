@@ -150,10 +150,24 @@ def simulate_dense(W: sp.csr_matrix, duration: float, params: LIFParams = LIFPar
     return SpikeRecord(times=times, ids=ids, n=n, duration=duration)
 
 
+@dataclass
+class LIFState:
+    """Full network state so a simulation can be continued in windows (used by
+    the neuromodulation layer, which changes weights between windows)."""
+    v: np.ndarray
+    g: np.ndarray
+    ref_until: np.ndarray
+    awake: np.ndarray
+    buf: list
+    k: int                      # steps simulated so far
+    rng: np.random.Generator
+
+
 def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
              poisson: dict[int, float] | np.ndarray | None = None,
              poisson_rate: float | None = None,
-             seed: int | None = 0, record: bool = True, eps: float = 1e-3) -> SpikeRecord:
+             seed: int | None = 0, record: bool = True, eps: float = 1e-3,
+             state: LIFState | None = None, return_state: bool = False):
     """Active-set implementation: only neurons that are away from rest, carry
     synaptic input, or are refractory are updated each step.  Identical
     dynamics to :func:`simulate_dense` up to ``eps`` (mV): a neuron is put to
@@ -162,8 +176,9 @@ def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
     W : csr (n, n), W[pre, post] in mV (signed).
     poisson : neuron indices driven by Poisson input (all at ``poisson_rate``
         or ``params.r_poi``), or a dict {index: rate_hz}.
+    state : continue from a previous window (times keep counting from 0 of the
+        first window); with ``return_state`` the call returns (record, state).
     """
-    rng = np.random.default_rng(seed)
     n = W.shape[0]
     p = params
     dt = p.dt
@@ -173,11 +188,16 @@ def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
     e_s = np.exp(-dt / p.tau)
     a = p.tau / (p.tau - p.t_mbr)
 
-    v = np.full(n, p.v_0, dtype=np.float64)
-    g = np.zeros(n, dtype=np.float64)
+    if state is None:
+        rng = np.random.default_rng(seed)
+        v = np.full(n, p.v_0, dtype=np.float64)
+        g = np.zeros(n, dtype=np.float64)
+        ref_until = np.full(n, -np.inf)
+        awake = np.zeros(n, dtype=bool)
+        k0 = 0
+    else:
+        rng, v, g, ref_until, awake, k0 = state.rng, state.v, state.g, state.ref_until, state.awake, state.k
     rfc = np.full(n, p.t_rfc, dtype=np.float64)
-    ref_until = np.full(n, -np.inf)
-    awake = np.zeros(n, dtype=bool)
 
     poi_idx = np.empty(0, dtype=np.int64)
     poi_p = np.empty(0)
@@ -193,10 +213,10 @@ def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
     w_poi = p.w_syn * p.f_poi
 
     empty = (np.empty(0, dtype=np.int64), np.empty(0, dtype=W.data.dtype))
-    buf = [empty] * (D + 1)
+    buf = [empty] * (D + 1) if state is None else state.buf
     t_list, i_list = [], []
 
-    for k in range(n_steps):
+    for k in range(k0, k0 + n_steps):
         t = k * dt
         slot = k % (D + 1)
         post, w = buf[slot]
@@ -239,4 +259,7 @@ def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
     else:
         times = np.empty(0)
         ids = np.empty(0, dtype=np.int64)
-    return SpikeRecord(times=times, ids=ids, n=n, duration=duration)
+    rec = SpikeRecord(times=times, ids=ids, n=n, duration=(k0 + n_steps) * dt)
+    if return_state:
+        return rec, LIFState(v=v, g=g, ref_until=ref_until, awake=awake, buf=buf, k=k0 + n_steps, rng=rng)
+    return rec
