@@ -414,17 +414,20 @@ MBON07 341 Hz'de refrakter tavanına yakın olduğu için ağırlık bastırmas�
 hıza az yansıyor; apetitif hat için hedefe ulaşılamadı.
 
 **İlerleyici lezyonlar, modülasyonlu** (`artifacts/progressive_v2_modulated.csv`,
-`fig4_modulation_curves.png`; 3 lezyon sırası, tek tohum):
+`fig4_modulation_curves.png`; 3 lezyon sırası × 2 simülasyon tohumu; tonik
+taban çizgisi kazanç kapalıyken ölçüldü, 2026-10-29 düzeltmesi):
 
-| Grup | Model | %20 | %40 | %60 | %80 | %100 | %60'ta sıralar arası aralık |
-|---|---|---|---|---|---|---|---|
-| PPL1 | referans | 1.49 | 2.37 | 3.52 | 4.09 | 6.19 | 1.96-6.28 |
-| PPL1 | modülatör | 1.48 | 1.79 | 1.91 | 2.21 | 2.65 | **1.46-2.23** |
-| PAM | referans | 1.58 | 2.53 | 2.62 | 2.94 | 3.00 | 2.13-2.98 |
-| PAM | modülatör | 1.78 | 2.15 | 2.88 | 3.46 | 4.26 | 2.30-3.59 |
+| Grup | Model | %0 | %20 | %40 | %60 | %80 | %100 | %60'ta sıralar arası aralık |
+|---|---|---|---|---|---|---|---|---|
+| PPL1 | referans | 0.84 | 1.49 | 2.37 | 3.52 | 4.09 | 6.19 | 1.96-6.28 |
+| PPL1 | modülatör | 0.85 | 1.21 | 1.56 | 1.62 | 2.03 | 2.23 | **1.46-1.81** |
+| PAM | referans | 0.84 | 1.58 | 2.53 | 2.62 | 2.94 | 3.00 | 2.13-2.98 |
+| PAM | modülatör | 0.85 | 1.21 | 1.63 | 2.80 | 3.10 | 4.00 | 2.11-3.52 |
 
-Faz 1a'nın ya-hep-ya-hiç davranışı gitti: eğriler kademeli, PAM plato
-yapmıyor, lezyon sırasına duyarlılık 4 kat azaldı. Etkinin yönü değişti:
+(Düzeltme öncesi koşu `results/progressive_modulated_oldbaseline.csv`; aynı
+biçim, PPL1 tam kayıpta 2.63, PAM 4.17.) Faz 1a'nın ya-hep-ya-hiç davranışı
+gitti: eğriler kademeli, PAM plato yapmıyor, PPL1'de lezyon sırasına
+duyarlılık 12 kat azaldı (aralık genişliği 4.3 → 0.35). Etkinin yönü değişti:
 MBON'lar susmak yerine disinhibisyonla artıyor (MBON31 0→1.25, MBON29
 0→2.77 log-hız).
 
