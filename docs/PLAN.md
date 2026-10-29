@@ -1007,7 +1007,8 @@ doğrudan veriliyor.
 eğrisi veriyor ve bu eğri bir **sessiz rezerv** gösteriyor: MBON09'daki
 bastırma PAM'ın %75'i kaybolana kadar tam, %100'de sıfır; rastgele 307
 nöron kaybı etkisiz. Mekanizma kompartman yakınsaması: MBON09'a birden çok
-PAM tipinden onlarca nöron ≥2 mV'lik sinaps yapıyor (aşağıdaki sayım) ve
+PAM tipinden 52 nöron ≥2 mV'lik sinaps yapıyor (PAM12 23, PAM14 15, PAM13 12,
+PAM08 2; toplam 244 mV) ve
 kazanç kalan DAN'ların toplam hızına bağlı olduğu için dörtte biri bile
 kapıyı açmaya yetiyor. Bu, Parkinson modellerindeki "belirtiler %60–80
 dopamin kaybından sonra görünür" gözlemiyle aynı biçimde bir eşik; ama
