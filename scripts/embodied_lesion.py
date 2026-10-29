@@ -56,9 +56,10 @@ if args.modulated:
     fit = json.load(open("results/modulation_fit.json"))
     _mod = ModulationParams(kappa=fit["kappa"], eta=0.0, alpha_fast=0.0)
     _baseline = {}
+    _mod0 = ModulationParams(kappa=0.0, eta=0.0, alpha_fast=0.0)      # tonic level with the gain off
     for st in args.stimuli:
         tg = stim[st].targets
-        net = ModulatedNetwork(cn, _mod)
+        net = ModulatedNetwork(cn, _mod0)
         _, rb = simulate_modulated(net, 400.0, poisson=tg, poisson_rate=None if isinstance(tg, dict) else stim[st].rate_hz, seed=0)
         _baseline[st] = rb
     print("modulation on:", _mod, flush=True)
