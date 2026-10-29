@@ -6,6 +6,12 @@ and exists only for testing.
 
 Differences from the NumPy version: Poisson draws come from torch's RNG, so
 spike trains match in distribution, not sample by sample.
+
+Spike propagation has two implementations selected by ``propagate``:
+  "csr"       sparse CSR mat-vec (CUDA, CPU)
+  "index_add" gather over the edge list + index_add_ (works on Apple MPS,
+              which has no sparse kernels; O(nnz) per step so slower)
+  "auto"      "index_add" on mps, "csr" elsewhere
 """
 from __future__ import annotations
 
@@ -17,8 +23,10 @@ from .lif import LIFParams, SpikeRecord
 
 def simulate_torch(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
                    poisson=None, poisson_rate: float | None = None, seed: int = 0,
-                   device: str = "cpu", record: bool = True) -> SpikeRecord:
+                   device: str = "cpu", record: bool = True, propagate: str = "auto") -> SpikeRecord:
     import torch
+    if propagate == "auto":
+        propagate = "index_add" if str(device).startswith("mps") else "csr"
     p = params
     dt = p.dt
     n = W.shape[0]
@@ -27,9 +35,15 @@ def simulate_torch(W: sp.csr_matrix, duration: float, params: LIFParams = LIFPar
     e_m, e_s = float(np.exp(-dt / p.t_mbr)), float(np.exp(-dt / p.tau))
     a = p.tau / (p.tau - p.t_mbr)
     gen = torch.Generator(device=device); gen.manual_seed(seed)
-    WT = W.T.tocsr().astype(np.float32)            # post x pre, so g_delta = WT @ spikes
-    Wt = torch.sparse_csr_tensor(torch.as_tensor(WT.indptr, dtype=torch.int64), torch.as_tensor(WT.indices, dtype=torch.int64),
-                                 torch.as_tensor(WT.data), size=(n, n), device=device)
+    if propagate == "csr":
+        WT = W.T.tocsr().astype(np.float32)        # post x pre, so g_delta = WT @ spikes
+        Wt = torch.sparse_csr_tensor(torch.as_tensor(WT.indptr, dtype=torch.int64), torch.as_tensor(WT.indices, dtype=torch.int64),
+                                     torch.as_tensor(WT.data), size=(n, n), device=device)
+    else:
+        C = W.tocoo()
+        e_pre = torch.as_tensor(C.row.astype(np.int64), device=device)
+        e_post = torch.as_tensor(C.col.astype(np.int64), device=device)
+        e_w = torch.as_tensor(C.data.astype(np.float32), device=device)
     v = torch.full((n,), p.v_0, device=device)
     g = torch.zeros(n, device=device)
     rfc = torch.full((n,), p.t_rfc, device=device)
@@ -62,7 +76,10 @@ def simulate_torch(W: sp.csr_matrix, duration: float, params: LIFParams = LIFPar
         if bool(spk.any()):
             idx = torch.nonzero(spk).squeeze(1)
             v[idx] = p.v_rst; g[idx] = 0.0; ref_until[idx] = t + rfc[idx]
-            buf[(k + D) % (D + 1)] += torch.mv(Wt, spk.to(torch.float32))
+            if propagate == "csr":
+                buf[(k + D) % (D + 1)] += torch.mv(Wt, spk.to(torch.float32))
+            else:
+                buf[(k + D) % (D + 1)].index_add_(0, e_post, e_w * spk.to(torch.float32)[e_pre])
             if record:
                 t_list.append(np.full(idx.numel(), t)); i_list.append(idx.cpu().numpy())
     times = np.concatenate(t_list) if t_list else np.empty(0)

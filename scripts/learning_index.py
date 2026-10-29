@@ -25,18 +25,11 @@ import numpy as np, pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from sinek.data import load_flywire, group_indices, build_stimuli      # noqa: E402
 from sinek.data.flywire import Connectome                              # noqa: E402
-from sinek.lesion import LesionSpec, apply_lesion, scale_edges         # noqa: E402
+from sinek.lesion import LesionSpec, apply_lesion, apl_scaled          # noqa: E402
 from sinek.sim import simulate, firing_rates                           # noqa: E402
 from sinek.neuromod import ModulationParams, ModulatedNetwork, simulate_modulated  # noqa: E402
 
 _G = {}
-
-
-def apply_apl(cn, scale):
-    if scale == 1.0:
-        return cn
-    W = scale_edges(cn, cn.select(cell_type="APL"), cn.select(cell_class="Kenyon_Cell"), scale)
-    return Connectome(ids=cn.ids, W=W, meta=cn.meta, name=f"{cn.name}_apl{scale}")
 
 
 def mbon_rates(rec, cn, t0=200.0):
@@ -118,5 +111,5 @@ if __name__ == "__main__":
     ap.add_argument("--procs", type=int, default=3)
     ap.add_argument("--out", default="results/learning.csv")
     args = ap.parse_args()
-    cn = apply_apl(load_flywire(), args.apl_scale)
+    cn = apl_scaled(load_flywire(), args.apl_scale)
     {"diagnose": cmd_diagnose, "curves": cmd_curves}[args.cmd](cn, args)
