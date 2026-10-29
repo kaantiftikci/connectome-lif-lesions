@@ -1,0 +1,30 @@
+{
+  "_source": "MBON numbering and compartment names after Aso et al. 2014 eLife 3:e04577 (Table 1); memory valence of compartments after Aso & Rubin 2016 eLife 5:e16135 and the reviews cited in the preprint. Transcribed from memory of the literature during a session without journal access: VERIFY against the papers before publication. Greek compartment names are literature labels, not derived from the connectome.",
+  "mbon": {
+    "MBON01": {"compartment": "γ5β'2a", "memory": "appetitive"},
+    "MBON02": {"compartment": "β2β'2a", "memory": "appetitive"},
+    "MBON03": {"compartment": "β'2mp", "memory": "appetitive"},
+    "MBON04": {"compartment": "β'2mp_bilateral", "memory": "appetitive"},
+    "MBON05": {"compartment": "γ4>γ1γ2", "memory": "appetitive"},
+    "MBON06": {"compartment": "β1>α", "memory": "appetitive"},
+    "MBON07": {"compartment": "α1", "memory": "appetitive"},
+    "MBON08": {"compartment": "γ3", "memory": "appetitive"},
+    "MBON09": {"compartment": "γ3β'1", "memory": "appetitive"},
+    "MBON10": {"compartment": "β'1", "memory": "appetitive"},
+    "MBON11": {"compartment": "γ1pedc>α/β", "memory": "aversive"},
+    "MBON12": {"compartment": "γ2α'1", "memory": "aversive"},
+    "MBON13": {"compartment": "α'2", "memory": "aversive"},
+    "MBON14": {"compartment": "α3", "memory": "aversive"},
+    "MBON15": {"compartment": "α'1", "memory": "unassigned"},
+    "MBON16": {"compartment": "α'3ap", "memory": "aversive"},
+    "MBON17": {"compartment": "α'3m", "memory": "aversive"},
+    "MBON18": {"compartment": "α2sc", "memory": "aversive"},
+    "MBON19": {"compartment": "α2p3p", "memory": "aversive"},
+    "MBON20": {"compartment": "γ1γ2", "memory": "unassigned"},
+    "MBON21": {"compartment": "γ4γ5", "memory": "appetitive"},
+    "MBON22": {"compartment": "calyx", "memory": "unassigned"},
+    "MBON23": {"compartment": "α2sp", "memory": "aversive"},
+    "MBON24": {"compartment": "β2γ5", "memory": "appetitive"}
+  },
+  "dan_valence_by_cluster": {"PAM": "appetitive (sugar/water reward)", "PPL1": "aversive (shock/bitter punishment)"}
+}

@@ -73,6 +73,24 @@ class ModulatedNetwork:
         self.kc_pre = {j: row_of_pos[self.kc_syn[j]] for j in self.mbons}
         self.gain = {j: 1.0 for j in self.mbons}
         self.baseline = {j: 0.0 for j in self.mbons}
+        # neurons with no surviving output are lesioned: they get no extrasynaptic drive
+        self.alive = np.asarray(abs(self.W).sum(axis=1)).ravel() > 0
+        self.extra: list[tuple[np.ndarray, np.ndarray, float]] = []
+
+    def add_extrasynaptic(self, source: np.ndarray, target: np.ndarray, gain: float):
+        """Volume (non-synaptic) drive: the mean rate of ``source`` neurons adds
+        ``gain`` x that rate to the effective dopamine rate of each surviving
+        ``target`` DAN.  Models e.g. octopaminergic reward signalling onto PAM
+        (Burke et al. 2012), which the synaptic connectome does not carry."""
+        self.extra.append((np.asarray(source), np.asarray(target)[self.alive[np.asarray(target)]], float(gain)))
+
+    def effective_rates(self, rates: np.ndarray) -> np.ndarray:
+        if not self.extra:
+            return rates
+        r = rates.copy()
+        for src, tgt, g in self.extra:
+            r[tgt] += g * rates[src].mean()
+        return r
 
     def set_baseline(self, rbar: dict[int, float]):
         """Tonic compartment-DAN rates of the intact brain under the current stimulus."""
@@ -80,6 +98,7 @@ class ModulatedNetwork:
 
     def lesion_rates(self, rates: np.ndarray, rbar: dict[int, float], dt_s: float) -> dict[int, float]:
         a = np.exp(-1000.0 * dt_s / self.p.tau_da)
+        rates = self.effective_rates(rates)
         for j in self.mbons:
             r = rates[self.comp[j]].mean() if self.comp[j].size else 0.0
             rbar[j] = a * rbar.get(j, 0.0) + (1 - a) * r
