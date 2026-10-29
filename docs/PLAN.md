@@ -1044,3 +1044,46 @@ açıklanamıyor; bu, iki hastalık mekanizmasının farklı hassasiyet kurallar
 izlediğine dair modelden gelen bir ayrım. Öngörü: PINK1/parkin sineklerinde
 PPL1 içinde kayıp sırası PPL101 → PPL103 → PPL107 olmalı; hücre tipi özgül
 sayımla test edilebilir.
+
+## 33. Pozitif kol: öğretici sinyal verilince konnektom hangi kompartmanların öğreneceğini söylüyor (2026-10-29)
+
+`scripts/compartment_map.py` + `analyze_compartment_map.py`; sonuçlar
+`artifacts/compartment_map_apl{5,3}.csv`, rezerv tabloları
+`artifacts/compartment_reserve_apl{5,3}.csv`, eşleşmesiz gürültü
+`artifacts/li_noise_apl{5,3}.csv`. Modülasyon katmanına sinaps dışı ödül
+terimi eklendi (`ModulatedNetwork.add_extrasynaptic`: şeker GRN hızı × 0.5,
+hayatta kalan her PAM'ın etkin dopamin hızına eklenir; oktopaminerjik
+sinyalin yerine geçer); acı için ×4 röle yolu. Koku (ORN_DM1) + pekiştireç
+1 s; indeks = (ön − son)/ön. Literatür haritası (Aso 2014/2016)
+`docs/literature_compartments.json`, doğrulanacak.
+
+**Şeker (ödül), öğrenen MBON'lar** (indeks ≥ 0.3, koku yanıtı ≥ 2 Hz;
+eşleşmesiz kontrolün en büyüğü parantezde):
+
+| Çalışma noktası | MBON | literatür kompartmanı | bellek | indeks | gürültü |
+|---|---|---|---|---|---|
+| APL×5 | MBON09 | γ3β'1 | iştah | 0.88 | 0.12 |
+| APL×5 | MBON33 | (atanmamış) | ? | 0.47 | 0.13 |
+| APL×3 | MBON07 | α1 | iştah | 1.00 | 0.03 |
+| APL×3 | MBON02 | β2β'2a | iştah | 0.89 | 0.06 |
+| APL×3 | MBON12 | γ2α'1 | ceza | 0.67 | 0.19 |
+
+Üç atanmış iştah kompartmanının üçü de öğreniyor (literatürle uyum);
+MBON12 ters yönde bir eşleşme (ceza kompartmanı şekerle bastırılıyor;
+PPL1 kaybıyla kaybolmuyor ve RND307 kontrolde de 0.59, yani PPL1 üzerinden
+değil, modelin bir artefaktı; olduğu gibi raporlandı). Kokuya yanıt veren
+ama öğrenmeyen MBON'lar: 10, 20, 21, 26, 33 (APL×3'te ayrıca 09, 11, 14).
+
+**Rezerv eşikleri (PAM kaybı; indeksin yarıya düştüğü ilk kayıp oranı):**
+MBON07 %100 (%90'da hâlâ 1.00), MBON02 %90, MBON09 %75, MBON33 %75.
+PPL1 kaybı hiçbirini etkilemiyor; RND307 %100 etkilemiyor. Eşik, yakınsayan
+PAM sayısıyla tek başına açıklanmıyor (MBON09 52 PAM, MBON07 20): belirleyici
+olan KC girdisi × kalan dopamin fazlası çarpımı.
+
+**Acı (ceza): hiçbir MBON öğrenmiyor.** Nedeni mekanik ve ilginç: acı tek
+başına PPL101'i 46 Hz'e çıkarıyor (giriş-sıçraması ×8), ama koku ile
+birlikte verilince PPL101 0 Hz (koku ağı, büyük olasılıkla MBON→DAN geri
+beslemesiyle, PPL1'i bastırıyor); eşleşme sırasında PPL1 hızı koku-tek
+başına ile aynı (33 vs 36 Hz), dolayısıyla fazlalık yok. Modelde koku ve
+ceza birbirini söndürüyor; biyolojide söndürmediği için bu, modelin MBON→DAN
+geri besleme ağırlıklarına dair test edilebilir bir sorun işareti.
