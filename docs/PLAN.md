@@ -629,3 +629,11 @@ hâlâ geçerli araçlar: DAN'lar doğrudan sürüldüğünde (yapay öğretme s
 kompartman MBON'u beklendiği gibi bastırılıyor (PPL101→MBON11 %59). Bu, yol
 işlediğinde mekanizmanın doğru olduğunu gösterir; eksik olan, duyusal
 girdinin bu yolu sürmesi.
+
+## 21. APL ölçeklemesi referans doğrulamayı değiştirmiyor (2026-10-29)
+
+`validate_vs_shiu.py --apl-scale 5`: 630 tablolarında APL, KC'lere en çok
+inhibitör sinaps yapan iki nöron olarak tanımlandı (2.565 ve 2.547 KC hedefi;
+5.112 sinaps 5 kat ölçeklendi). Sonuç referansla birebir: r = 0.963, 5 Hz üstü
+333 nörondan 320'si, 7 yanlış pozitif. Seyrek rejim müdahalesi tat devresine
+dokunmuyor; önbaskıda duyarlılık analizi olarak raporlanabilir.
