@@ -25,6 +25,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--shiu-dir", required=True)
 ap.add_argument("--trials", type=int, default=3)
 ap.add_argument("--duration", type=float, default=1000.0)
+ap.add_argument("--apl-scale", type=float, default=1.0, help="multiply APL->KC synapses (sensitivity check of the sparse regime)")
 args = ap.parse_args()
 d = Path(args.shiu_dir)
 
@@ -36,6 +37,20 @@ W = sp.csr_matrix((con["Excitatory x Connectivity"].to_numpy(float) * 0.275,
                    (con["Presynaptic_Index"].to_numpy(), con["Postsynaptic_Index"].to_numpy())), shape=(n, n))
 W.sum_duplicates()
 id2i = {int(r): k for k, r in enumerate(ids)}
+if args.apl_scale != 1.0:
+    # 630 tables carry no annotations; APL and KCs are identified through the 783 annotation file by root id
+    ann = pd.read_csv("data/raw/Supplemental_file1_neuron_annotations.tsv", sep="\t", low_memory=False)
+    apl = np.array([id2i[r] for r in ann.loc[ann["cell_type"].astype(str) == "APL", "root_id"] if int(r) in id2i], dtype=np.int64)
+    kcs = np.array([id2i[r] for r in ann.loc[ann["cell_class"].astype(str) == "Kenyon_Cell", "root_id"] if int(r) in id2i], dtype=np.int64)
+    row_of = np.repeat(np.arange(n), np.diff(W.indptr)); km = np.zeros(n, bool); km[kcs] = True
+    if apl.size < 2:   # APL root ids changed between releases: take the two neurons with most inhibitory synapses onto KCs
+        inh_kc = (W.data < 0) & km[W.indices]
+        cnt = np.bincount(row_of[inh_kc], minlength=n)
+        apl = np.argsort(cnt)[::-1][:2].astype(np.int64)
+        print(f"APL by signature: {cnt[apl].tolist()} inhibitory KC targets each")
+    pm = np.zeros(n, bool); pm[apl] = True
+    sel = pm[row_of] & km[W.indices]; W.data[sel] *= args.apl_scale
+    print(f"APL->KC scaled x{args.apl_scale}: {len(apl)} APL, {len(kcs)} KCs matched on 630 ids, {int(sel.sum())} synapses")
 sugar = np.array([id2i[r] for r in NEU_SUGAR])
 print(f"630 dataset: {n} neurons, {W.nnz} connections")
 
