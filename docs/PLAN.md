@@ -786,3 +786,35 @@ temas sayısını izler) her iki rejimde de yeniden üretiliyor; bu bulgu koku
 Sonuç: Jo'nun ana iddiası sağlam; bizim katkımız, tüm-beyin aktivite
 okumasının APL kaybında tersine döndüğünü ve rejimden bağımsız olmadığını
 göstermek.
+
+## 24. Acı→PPL1 düzeltmesiyle öğrenme indeksi (2026-10-29)
+
+`learning_index.py curves --us bitter --boost 4 --groups PPL1 --controls 16
+--seeds 2` (seyrek rejim, κ=0.003, η=1e-4). Sonuç
+`artifacts/learning_bitter_boost4.csv`. Koku (ORN_DM1 150 Hz) + acı (150 Hz)
+eşleşmesi 1 s; indeks = (ön − son)/ön, MBON tipi başına.
+
+| Grup | kayıp | tohum | MBON14 (PPL106 kompartmanı) | MBON20 | MBON33 |
+|---|---|---|---|---|---|
+| sağlam | 0 | — | 1.00 | 0.09 | 0.06 |
+| PPL1 | %50 | 0 | 1.00 | −0.05 | 0.07 |
+| PPL1 | %50 | 1 | 0.00 | 0.00 | −0.07 |
+| PPL1 | %100 | 0, 1 | 0.00 | −0.02 | 0.18 |
+| RND16 | %50, %100 | 0, 1 | 1.00 | 0.09 | 0.06 |
+
+Tanı koşusu (ön/son hızlar): sağlam ağda eşleşme sırasında PPL106 13.9 Hz,
+tüm PPL1 36 Hz; PPL1 kaldırılınca 0 Hz. MBON14 koku yanıtı sağlamda 0.83 Hz →
+eşleşme sonrası 0 Hz; PPL1 kaldırılınca zaten 0 Hz. MBON33 28.3 → 26.7 Hz,
+MBON20 78 → 72 Hz (küçük, tohumlar arası dalgalanma düzeyinde).
+
+**Dürüst yorum.** Düzeltme yolu çalışıyor: acı artık PPL1'e, özellikle α3
+kompartmanının DAN'ı PPL106'ya ulaşıyor ve bu kompartmanın MBON'unda
+(MBON14 = MBON-α3, acı/ceza belleğinin bilinen kompartmanlarından biri)
+dopamin kapılı bastırma PPL1 kaybıyla kayboluyor, rastgele 16 nöron kaybıyla
+değişmiyor; %50 kayıpta sonuç PPL106'nın kaldırılan yarıda olup olmadığına
+bağlı (tohum 0 korunuyor, tohum 1 kayboluyor). Ancak büyüklük anlamlı
+değil: MBON14'ün koku yanıtı seyrek rejimde 1 Hz'in altında, "indeks 1.0"
+0.8 Hz → 0 Hz demek. Öğrenme okuması niteliksel olarak doğru örüntüyü
+veriyor ama nicel bir öğrenme eğrisi için MBON-α3'ün koku yanıtının
+güçlendirilmesi (KC→MBON ağırlığı veya daha fazla KC girdisi) gerekir; bu
+model-dışı bir ayar olduğu için burada yapılmadı.
