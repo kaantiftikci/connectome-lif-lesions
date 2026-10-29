@@ -45,6 +45,8 @@ if __name__ == "__main__":
     ap.add_argument("--sex", choices=["female", "male"], default="female")
     ap.add_argument("--count-scale", type=float, default=0.581, help="male synapse-count scale to align with FlyWire (MaleCNS release note)")
     ap.add_argument("--odor-rate", type=float, default=None, help="override ORN_DM1 drive rate (Hz) in both sexes")
+    ap.add_argument("--apl-scale", type=float, default=1.0,
+                    help="multiply APL->Kenyon-cell synapses (5.0 gives ~4%% KCs active under odour instead of 75%%)")
     args = ap.parse_args()
 
     if args.sex == "male":
@@ -60,6 +62,11 @@ if __name__ == "__main__":
         for s_ in stim:
             if s_.name == "odor_DM1":
                 s_.rate_hz = args.odor_rate
+    if args.apl_scale != 1.0:
+        from sinek.lesion import scale_edges
+        from sinek.data.flywire import Connectome
+        W_apl = scale_edges(cn, cn.select(cell_type="APL"), cn.select(cell_class="Kenyon_Cell"), args.apl_scale)
+        cn = Connectome(ids=cn.ids, W=W_apl, meta=cn.meta, name=f"{cn.name}_apl{args.apl_scale}")
     groups = group_indices(cn)
     m = cn.meta
     pool_mask = (m["super_class"] == "central") & (m["cell_class"] != "DAN") & (m["cell_class"] != "Kenyon_Cell")

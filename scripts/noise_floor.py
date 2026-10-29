@@ -18,6 +18,7 @@ ap.add_argument("--out", default="results/noise_floor.npz")
 ap.add_argument("--sex", choices=["female", "male"], default="female")
 ap.add_argument("--count-scale", type=float, default=0.581)
 ap.add_argument("--odor-rate", type=float, default=None)
+ap.add_argument("--apl-scale", type=float, default=1.0)
 args = ap.parse_args()
 
 if args.sex == "male":
@@ -29,6 +30,11 @@ if args.odor_rate is not None:
     for s_ in stim:
         if s_.name == "odor_DM1":
             s_.rate_hz = args.odor_rate
+if args.apl_scale != 1.0:
+    from sinek.lesion import scale_edges
+    from sinek.data.flywire import Connectome
+    cn = Connectome(ids=cn.ids, W=scale_edges(cn, cn.select(cell_type="APL"), cn.select(cell_class="Kenyon_Cell"), args.apl_scale),
+                    meta=cn.meta, name=f"{cn.name}_apl{args.apl_scale}")
 readouts = readout_groups(cn)
 names = phenotype_names(stim, readouts)
 X = []

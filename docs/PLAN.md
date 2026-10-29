@@ -502,3 +502,33 @@ Modelle karşılaştırma ve açık uyumsuzluk:
 Not: Greene 2003 (PMC153051) tam metni PMC bot korumasına takıldığı için
 okunamadı; özeti parkin'de lokomotor defekt ve dorsomedial DA nöron
 değişikliği bildiriyor, yukarıdakilerle tutarlı.
+
+## 17. Cinsiyet karşılaştırması: erkek konnektomda ilerleyici lezyonlar (2026-10-29, ön sonuç)
+
+Erkek MaleCNS v1.0, hazır feather dosyalarından (bölüm 15 yükleyici);
+164.606 nöron, 25.6 M kenar. Batarya, dişi hücre tiplerinin erkek
+`flywireType` eşleşmesiyle taşındı (şeker 23, su 17, acı 38, koku 74,
+rüzgar 559, kıl 863 nöron). `artifacts/progressive_v3_male_scale030.csv`,
+`fig5_sex_comparison.png`.
+
+**Çalışma noktası sorunu.** Yayınlanan hizalama ölçeğinde (0.581) erkek model
+her uyaranda çekici duruma giriyor; sağlam tekrarlar arası gürültü tabanı
+L2 20.4 (dişide 1.68), özellikle rüzgar/yerçekimi altında MBON okumalarında.
+Ölçek 0.3'te taban 3.25'e iniyor, ama o zaman PAM nöronları hiç ateşlemiyor.
+Dişiyle aynı mutlak ölçekte karşılaştırma mümkün olmadı; aşağıdaki sayılar
+0.3 ölçeğinde, 3 lezyon sırası × 1 tohum.
+
+| Grup | Dişi (taban 1.68) %100 kayıp | Erkek @0.3 (taban 3.25) %100 kayıp |
+|---|---|---|
+| PPL1 | 6.19 | 2.38 (taban altı) |
+| PAM | 3.00 | 0.00 (PAM sessiz) |
+| RND16 | 0.97 | 0.42 |
+| RND307 | 1.77 | 1.31 |
+
+Dürüst yorum: bu rejimde erkek lezyon etkileri gürültü tabanının altında,
+dolayısıyla "erkekte PPL1 etkisi daha küçük" denemez; "bu çalışma noktasında
+okunamıyor" denir. Erkek modelin asıl bulgusu, aynı per-sinaps ağırlıkta
+dişiden belirgin daha uyarılabilir olması ve kararlı bir çalışma noktasının
+dopamin devrelerini sessizleştirmesi. Temiz karşılaştırma için her iki
+cinsin de seyrek MB rejiminde (bölüm 18, APL kazancı) koşulması gerekiyor;
+bu, dişi için başlatıldı, erkek için sıradaki iş.

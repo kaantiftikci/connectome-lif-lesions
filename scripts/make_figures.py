@@ -20,6 +20,8 @@ ap.add_argument("--noise", default="results/noise_floor.npz")
 ap.add_argument("--report", default="results/surrogate_report.npz")
 ap.add_argument("--out", default="artifacts/figures")
 ap.add_argument("--modulated", default=None, help="progressive csv from the dopamine-modulated model (fig 4)")
+ap.add_argument("--male", default=None, help="progressive csv from the male connectome (fig 5)")
+ap.add_argument("--noise-male", default=None, help="male noise-floor npz for fig 5")
 args = ap.parse_args()
 out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
 
@@ -99,3 +101,33 @@ if args.modulated and Path(args.modulated).exists():
     fig.suptitle("Range over lesion orders shrinks when dopamine modulates instead of drives", y=1.0)
     fig.tight_layout(); fig.savefig(out / "fig4_modulation_curves.png", dpi=160); plt.close(fig)
     print("fig4 written")
+
+# ---- fig 5: female vs male connectome
+if args.male and Path(args.male).exists():
+    def _c(csv):
+        d = pd.read_csv(csv)
+        if "lesion_seed" not in d:
+            d["lesion_seed"] = 0; d["sim_seed"] = 0
+        pv = d.pivot_table(index=["group", "fraction", "lesion_seed", "sim_seed"], columns="feature", values="value")
+        b = pv.xs(0.0, level="fraction").mean()
+        dd = pv.apply(lambda x: np.linalg.norm(x - b), axis=1).rename("L2").reset_index()
+        return dd.groupby(["group", "fraction"])["L2"].mean()
+    fem, mal = _c(args.progressive), _c(args.male)
+    def _floor(npz):
+        X = np.load(npz)["x"]
+        return float(np.mean([np.linalg.norm(X[i] - X[j]) for i in range(len(X)) for j in range(i + 1, len(X))]))
+    ff = _floor(args.noise) if args.noise and Path(args.noise).exists() else None
+    mf = _floor(args.noise_male) if args.noise_male and Path(args.noise_male).exists() else None
+    groups5 = [g for g in ["PPL1", "PAM"] if g in mal.index.get_level_values(0)]
+    fig, axes = plt.subplots(1, len(groups5), figsize=(4.2 * len(groups5), 3.8), squeeze=False)
+    for ax, g in zip(axes[0], groups5):
+        if g in fem.index.get_level_values(0):
+            s = fem.loc[g]; ax.plot(s.index * 100, s.values, "o-", color="tab:purple", label="female (FlyWire)")
+        s = mal.loc[g]; ax.plot(s.index * 100, s.values, "s-", color="tab:green", label="male (MaleCNS)")
+        if ff: ax.axhline(ff, color="tab:purple", ls=":", lw=1)
+        if mf: ax.axhline(mf, color="tab:green", ls=":", lw=1)
+        ax.set_title(g); ax.set_xlabel("neurons lost (%)"); ax.set_ylabel("phenotype distance (L2)")
+    axes[0][0].legend(fontsize=8)
+    fig.suptitle("Female vs male connectome (dotted = each sex's trial-to-trial noise floor)", y=1.0)
+    fig.tight_layout(); fig.savefig(out / "fig5_sex_comparison.png", dpi=160); plt.close(fig)
+    print("fig5 written")
