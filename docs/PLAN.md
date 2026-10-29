@@ -1016,3 +1016,31 @@ burada rezerv pekiştireç yolunda değil DAN→MBON yakınsamasında, çünkü 
 atlanıyor. Jo'nun "DAN'ı kaldırınca öğrenme kaybolur" totolojisinin ötesine
 geçen kısım, eşiğin konumu (%75–100 arası) ve kompartman yapısıyla
 açıklanabilmesi.
+
+## 32. Parkinson kolu I: konnektomdan hassasiyet haritası (2026-10-29)
+
+`scripts/vulnerability_map.py`; `artifacts/vulnerability_map.csv`. Her dopamin
+alt tipi için nöron başına sinaptik yük (giriş + çıkış temas sayısı), çıkış
+temas sayısı ve postsinaptik partner sayısı: akson ağacı büyüklüğünün ve
+enerji talebinin vekili (insan Parkinson'unda seçici hassasiyetin standart
+açıklaması: büyük, miyelinsiz, yüksek yüklü aksonlar).
+
+| Küme | n | yük (medyan/nöron) | çıkış temas | partner |
+|---|---|---|---|---|
+| PPL1 | 16 | 6.012 | 1.770 | 888 |
+| PPL2 | 8 | 4.236 | 1.508 | 916 |
+| PAM | 307 | 481 | 152 | 117 |
+
+Alt tip sıralaması: PPL101 12.967, PPL103 11.916, PPL107 8.448 … en düşük
+PAM03 257. PPL1 nöronları PAM nöronlarından nöron başına **12 kat** yüklü.
+
+**Literatürle karşılaştırma** (`docs/literature_pd_vulnerability.json`,
+doğrulanacak): mitokondriyal modellerde (parkin, PINK1; Whitworth 2005,
+Yang 2006) kaybolan küme PPL1, PAM büyük ölçüde korunuyor; α-sinüklein
+modelinde (Riemensperger 2013) ise PAM. Konnektom yükü ilk gruba tam
+uyuyor: enerji-bağımlı (mitokondriyal) hasar yükü en yüksek kümeyi (PPL1)
+vurmalı, ve vuruyor. α-sinüklein kaybının PAM'da olması ise yükle
+açıklanamıyor; bu, iki hastalık mekanizmasının farklı hassasiyet kuralları
+izlediğine dair modelden gelen bir ayrım. Öngörü: PINK1/parkin sineklerinde
+PPL1 içinde kayıp sırası PPL101 → PPL103 → PPL107 olmalı; hücre tipi özgül
+sayımla test edilebilir.
