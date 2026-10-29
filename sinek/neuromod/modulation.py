@@ -84,12 +84,41 @@ class ModulatedNetwork:
         (Burke et al. 2012), which the synaptic connectome does not carry."""
         self.extra.append((np.asarray(source), np.asarray(target)[self.alive[np.asarray(target)]], float(gain)))
 
+    def add_tonic(self, target: np.ndarray, rate_hz: float):
+        """Constant extrasynaptic dopamine on surviving ``target`` DANs (a
+        dopamine-replacement analogue, e.g. L-DOPA feeding)."""
+        self.extra.append((None, np.asarray(target)[self.alive[np.asarray(target)]], float(rate_hz)))
+
+    def set_compensation(self, target: np.ndarray, factor: float):
+        """Surviving ``target`` DANs fire ``factor`` x more (homeostatic
+        up-regulation of the remaining dopaminergic neurons)."""
+        self.comp_idx = np.asarray(target)[self.alive[np.asarray(target)]]
+        self.comp_factor = float(factor)
+
+    def remove_neurons(self, idx: np.ndarray):
+        """Lesion AFTER training: zero the rows and columns of ``idx`` in the
+        working matrix (pattern kept), drop them from extrasynaptic targets.
+        Stored KC->MBON weights (w0) of surviving synapses are untouched."""
+        idx = np.asarray(idx)
+        dead = np.zeros(self.cn.n, bool); dead[idx] = True
+        row_of = np.repeat(np.arange(self.cn.n), np.diff(self.W.indptr))
+        kill = dead[row_of] | dead[self.W.indices]
+        self.W.data[kill] = 0.0
+        for j in self.mbons:
+            self.w0[j][kill[self.kc_syn[j]]] = 0.0
+        self.alive[idx] = False
+        self.extra = [(src, tgt[self.alive[tgt]], g) for src, tgt, g in self.extra]
+        if getattr(self, "comp_idx", None) is not None:
+            self.comp_idx = self.comp_idx[self.alive[self.comp_idx]]
+
     def effective_rates(self, rates: np.ndarray) -> np.ndarray:
-        if not self.extra:
+        if not self.extra and getattr(self, "comp_idx", None) is None:
             return rates
         r = rates.copy()
         for src, tgt, g in self.extra:
-            r[tgt] += g * rates[src].mean()
+            r[tgt] += g if src is None else g * rates[src].mean()
+        if getattr(self, "comp_idx", None) is not None:
+            r[self.comp_idx] *= self.comp_factor
         return r
 
     def set_baseline(self, rbar: dict[int, float]):
