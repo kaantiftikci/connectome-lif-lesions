@@ -1,0 +1,42 @@
+{
+  "_source": "VERIFIED 2026-10-30 against the full text of Aso et al. 2014 eLife 3:e04577 (Table 1: MBON and DAN numbering with compartment names), Li et al. 2020 eLife 9:e62576 (hemibrain names PAM15, MBON23-35, PPL103/105/106 confirmations) and Aso & Rubin 2016 eLife 5:e16135 (which split-GAL4 DAN drivers write appetitive or aversive memory). 'memory_evidence' = 'direct' where Aso & Rubin 2016 trained flies with that compartment's DAN; 'indirect' where the assignment rests on the DAN cluster (PAM = reward, PPL1 = punishment) and the broader literature cited in the preprint. Greek compartment names are literature labels, not derived from the connectome.",
+  "dan_types": {
+    "PAM01": "PAM-γ5", "PAM02": "PAM-β'2a", "PAM03": "PAM-β2β'2a", "PAM04": "PAM-β2", "PAM05": "PAM-β'2p", "PAM06": "PAM-β'2m",
+    "PAM07": "PAM-γ4<γ1γ2", "PAM08": "PAM-γ4", "PAM09": "PAM-β1ped", "PAM10": "PAM-β1", "PAM11": "PAM-α1", "PAM12": "PAM-γ3",
+    "PAM13": "PAM-β'1ap", "PAM14": "PAM-β'1m", "PAM15": "PAM-γ5β'2a (new type in Li 2020)",
+    "PPL101": "PPL1-γ1pedc", "PPL102": "PPL1-γ1", "PPL103": "PPL1-γ2α'1", "PPL104": "PPL1-α'3", "PPL105": "PPL1-α'2α2", "PPL106": "PPL1-α3",
+    "PPL107": "not in Aso 2014 / Li 2020 (FlyWire-only type)", "PPL108": "not in Aso 2014 / Li 2020 (FlyWire-only type)"
+  },
+  "mbon": {
+    "MBON01": {"compartment": "γ5β'2a", "memory": "appetitive", "memory_evidence": "direct (MB315C+MB109B: PAM-γ5 + PAM-β'2a, Aso & Rubin 2016)"},
+    "MBON02": {"compartment": "β2β'2a", "memory": "appetitive", "memory_evidence": "direct for β'2a (MB109B), indirect for β2"},
+    "MBON03": {"compartment": "β'2mp", "memory": "appetitive", "memory_evidence": "indirect (PAM-β'2m/p)"},
+    "MBON04": {"compartment": "β'2mp_bilateral", "memory": "appetitive", "memory_evidence": "indirect"},
+    "MBON05": {"compartment": "γ4>γ1γ2", "memory": "appetitive", "memory_evidence": "indirect (PAM-γ4; water/sugar reward literature)"},
+    "MBON06": {"compartment": "β1>α", "memory": "appetitive", "memory_evidence": "indirect (PAM-β1)"},
+    "MBON07": {"compartment": "α1", "memory": "appetitive", "memory_evidence": "direct (MB043C: PAM-α1, long-term appetitive memory, Aso & Rubin 2016)"},
+    "MBON08": {"compartment": "γ3", "memory": "appetitive", "memory_evidence": "indirect (PAM-γ3)"},
+    "MBON09": {"compartment": "γ3β'1", "memory": "appetitive", "memory_evidence": "indirect (PAM-γ3, PAM-β'1)"},
+    "MBON10": {"compartment": "β'1", "memory": "appetitive", "memory_evidence": "indirect (PAM-β'1)"},
+    "MBON11": {"compartment": "γ1pedc>α/β", "memory": "aversive", "memory_evidence": "direct (MB320C: PPL1-γ1pedc)"},
+    "MBON12": {"compartment": "γ2α'1", "memory": "aversive", "memory_evidence": "direct (MB099C: PPL1-γ2α'1 + PPL1-α'2α2, spaced-training LTM)"},
+    "MBON13": {"compartment": "α'2", "memory": "aversive", "memory_evidence": "direct (MB099C covers PPL1-α'2α2)"},
+    "MBON14": {"compartment": "α3", "memory": "aversive", "memory_evidence": "direct (MB630B: PPL1-α3)"},
+    "MBON15": {"compartment": "α'1", "memory": "unassigned", "memory_evidence": "none"},
+    "MBON16": {"compartment": "α'3ap", "memory": "aversive", "memory_evidence": "indirect (PPL1-α'3)"},
+    "MBON17": {"compartment": "α'3m", "memory": "aversive", "memory_evidence": "indirect (PPL1-α'3)"},
+    "MBON18": {"compartment": "α2sc", "memory": "aversive", "memory_evidence": "direct (MB099C covers PPL1-α'2α2)"},
+    "MBON19": {"compartment": "α2p3p", "memory": "aversive", "memory_evidence": "indirect (PPL1-α'2α2 / α3)"},
+    "MBON20": {"compartment": "γ1γ2", "memory": "unassigned", "memory_evidence": "none (atypical MBON, Li 2020)"},
+    "MBON21": {"compartment": "γ4γ5", "memory": "appetitive", "memory_evidence": "indirect"},
+    "MBON22": {"compartment": "calyx", "memory": "unassigned", "memory_evidence": "none"},
+    "MBON23": {"compartment": "α2sp", "memory": "aversive", "memory_evidence": "indirect (Li 2020 name)"},
+    "MBON24": {"compartment": "β2γ5", "memory": "appetitive", "memory_evidence": "indirect (Li 2020 name)"},
+    "MBON25": {"compartment": "γ1γ2 (atypical)", "memory": "unassigned", "memory_evidence": "none (Li 2020)"},
+    "MBON26": {"compartment": "β'2d (atypical)", "memory": "unassigned", "memory_evidence": "none (Li 2020)"},
+    "MBON27": {"compartment": "γ5d (atypical)", "memory": "unassigned", "memory_evidence": "none (Li 2020)"},
+    "MBON29": {"compartment": "γ4γ5 (atypical)", "memory": "unassigned", "memory_evidence": "none (Li 2020)"},
+    "MBON33": {"compartment": "γ2γ3 (atypical)", "memory": "unassigned", "memory_evidence": "none (Li 2020)"}
+  },
+  "dan_valence_by_cluster": {"PAM": "appetitive (sugar/water reward)", "PPL1": "aversive (shock/bitter punishment)"}
+}
