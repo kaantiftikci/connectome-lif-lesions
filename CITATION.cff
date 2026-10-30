@@ -8,6 +8,7 @@ authors:
   - family-names: "Tiftikçi"
     given-names: "Kaan"
     email: "kaantiftikci@outlook.com"
+    orcid: "https://orcid.org/0009-0004-6757-6220"
 repository-code: "https://github.com/kaantiftikci/connectome-lif-lesions"
 license: MIT
 doi: 10.5281/zenodo.23817806

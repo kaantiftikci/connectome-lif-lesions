@@ -204,9 +204,10 @@ for typ, txt in blocks:
     elif typ == "figure": parts.append(f'<figure><img src="file://{FIG/figs[txt]}" alt="Figure {txt}"><figcaption>{inline(caps[txt])}</figcaption></figure>')
     else:
         if txt.startswith("**Kaan Tiftikçi**"): parts.append(f'<p class="author">Kaan Tiftikçi</p>')
-        elif txt.startswith("Independent researcher"): parts.append(f'<p class="affil">{inline(txt)}</p>')
+        elif txt.startswith("Independent researcher"): parts.append(f'<p class="affil">{inline(txt)} ORCID: 0009-0004-6757-6220</p>')
         elif txt.startswith("*Preprint draft"): parts.append(f'<p class="meta">{inline(txt.strip("*"))}</p>')
         elif inrefs: parts.append(f'<p class="ref">{inline(txt)}</p>')
+        elif txt.startswith("All code, result tables"): parts.append(f"<p>{inline(txt)}</p>"); parts.append("<p>A large language model-based assistant was used to support software development, analysis scripting and manuscript drafting; the author designed the study, directed and verified all analyses and takes full responsibility for the content.</p>")
         else: parts.append(f"<p>{inline(txt)}</p>")
 css = pathlib.Path("../tr2/build2.py").read_text().split('css = """')[1].split('"""')[0]
 head = '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Preprint</title><style>' + css + "</style></head><body>"

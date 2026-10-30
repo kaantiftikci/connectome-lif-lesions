@@ -306,9 +306,10 @@ for b in blocks:
     elif t == "small":
         cls = "ref" if blocks.index(b) > 0 and any(x["type"] == "h2" and x["text"].startswith("Kaynakça") for x in blocks[:blocks.index(b)]) else "small"
         parts.append(f'<p class="{cls}">{inline(b["text"])}</p>')
+        if b["text"].startswith("Tüm kod, sonuç tabloları"): parts.append("<p>Yazılım geliştirme, analiz betikleri ve el yazması taslağının hazırlanmasında büyük dil modeli tabanlı bir asistandan destek alınmıştır; çalışmayı yazar tasarlamış, tüm analizleri yönetip doğrulamış ve içeriğin tüm sorumluluğunu üstlenmiştir.</p>")
     else:
         txt = b["text"]
-        if txt.startswith("Bağımsız araştırmacı"): parts.append(f'<p class="affil">{inline(txt)}</p>')
+        if txt.startswith("Bağımsız araştırmacı"): parts.append(f'<p class="affil">{inline(txt)} ORCID: 0009-0004-6757-6220</p>')
         else: parts.append(f'<p>{inline(txt)}</p>')
 css = """
 @page { size: A4; margin: 25mm 25mm 25mm 25mm; }
