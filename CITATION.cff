@@ -1,14 +1,14 @@
 cff-version: 1.2.0
 message: "If you use this code or its results, please cite it as below."
 type: software
-title: "sinek: testing connectome-constrained Drosophila brain models with simulation-based inference"
+title: "connectome-lif-lesions: testing connectome-constrained Drosophila brain models with simulation-based inference"
 version: 1.0.0
 date-released: 2026-10-30
 authors:
   - family-names: "Tiftikçi"
     given-names: "Kaan"
     email: "kaantiftikci@outlook.com"
-repository-code: "https://github.com/kaantiftikci/sinek"
+repository-code: "https://github.com/kaantiftikci/connectome-lif-lesions"
 license: MIT
 keywords:
   - connectome

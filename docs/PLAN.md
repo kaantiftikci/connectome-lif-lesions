@@ -1,4 +1,4 @@
-# sinek — Araştırma Planı
+# connectome-lif-lesions (Python paketi: `sinek`) — Araştırma Planı
 
 ## 0. Durum özeti: ne iddia edildi, ne çürüdü, ne kaldı (2026-10-29)
 

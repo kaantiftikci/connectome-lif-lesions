@@ -21,7 +21,7 @@ one-hour job on the M4 and a day on the cloud container.
 ## 1. Apple-silicon Mac (recommended for this project)
 
 ```bash
-git clone https://github.com/kaantiftikci/sinek && cd sinek
+git clone https://github.com/kaantiftikci/connectome-lif-lesions && cd connectome-lif-lesions
 bash scripts/fetch_data.sh                   # ~1.5 GB into data/raw
 python3 -m venv .venv && source .venv/bin/activate
 python -m pip install -e ".[ai,dev]"
@@ -62,7 +62,7 @@ python scripts/run_lesion_sweep.py --group-set subtype --apl-scale 5 --n 1000 \
 Colab (free T4) notebook cell sequence:
 
 ```python
-!git clone https://github.com/kaantiftikci/sinek && cd sinek && bash scripts/fetch_data.sh
+!git clone https://github.com/kaantiftikci/connectome-lif-lesions && cd connectome-lif-lesions && bash scripts/fetch_data.sh
 %cd sinek
 !pip install -q -e ".[ai]"
 !python scripts/run_lesion_sweep.py --group-set subtype --apl-scale 5 --n 300 \
