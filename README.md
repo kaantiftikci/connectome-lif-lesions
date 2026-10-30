@@ -6,7 +6,7 @@ Konnektom kısıtlı sinek beyninde hücre tipi çözünürlüklü lezyon modell
 amortize ters model (lezyon ↔ fenotip). Python paketinin adı `sinek`
 (`import sinek`); depo adı `connectome-lif-lesions`. Araştırma planı: `docs/PLAN.md`.
 
-Önbaskı (İngilizce ve Türkçe PDF): `docs/preprint/`
+Önbaskı (İngilizce ve Türkçe PDF): `docs/preprint/preprint_en.pdf`, `docs/preprint/preprint_tr.pdf`
 — "Testing connectome-constrained Drosophila brain models with simulation-based
 inference: the limits of dopaminergic neuron loss and predictions for
 Parkinson's disease" (Kaan Tiftikçi, 2026). Sürüm v1.0.0 arşivi: https://doi.org/10.5281/zenodo.23808330. Atıf bilgisi: `CITATION.cff`. Lisans: MIT.
