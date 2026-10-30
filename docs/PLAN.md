@@ -1419,3 +1419,14 @@ bağlantısı yok, yazışma kaantiftikci@outlook.com. "Yazar katkıları" böl�
 asistanın hangi aşamalarda kullanıldığını (tasarım, yazılım, simülasyon ve
 analiz, literatür kontrolü, yazım ve çeviri; veri üretilmedi/değiştirilmedi)
 altı maddede açıklayan bir paragraf eklendi. Türkçe sekme tamamlandı.
+
+## 45. Önbaskı PDF'leri ve Şekil 9 (3B görünüm) (30 Ekim 2026)
+
+`docs/preprint/preprint_en.pdf` ve `preprint_tr.pdf` (A4, 21 sayfa) önbaskı
+belgesinin iki dil sürümünden üretildi: markdown dışa aktarımı → pandoc → HTML →
+Chromium (Playwright) PDF; betikler `docs/preprint/build_pdf.py`, `topdf.js`.
+Türkçe PDF şekilleri Türkçe açıklamalarla ve İngilizce kaynakçayı içeriyor.
+Yeni Şekil 9 (`artifacts/figures/fig9_3d_regimes.png`): WebGL izleyiciden
+(`viewer/`) başsız Chromium ile alınan dört panel (çekici/seyrek × sağlam/PPL1
+kaldırılmış, 300 ms); betik `docs/preprint/viewer_shots.js`. Metinde çekici
+bölümünde Şekil 9A ve 9C'ye atıf eklendi.
