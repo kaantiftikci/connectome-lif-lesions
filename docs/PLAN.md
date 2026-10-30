@@ -58,8 +58,8 @@ değilse özgüllüğü bozuyor; kompanzasyon kompartmanda nöron kaldığı sü
 işe yarıyor. Şekil 8. Önbaskıya "Predictions for fly models of Parkinson's
 disease" bölümü eklendi.
 
-**Açık.** Öğrenme fenotipiyle ters model (Mac'te `learning_sweep.py`,
-APL×3, n=300; sırada). Acı→PPL1 yolunun kokuyla sönmesinin mekanizması
+**Açık.** Öğrenme fenotipiyle ters model tamamlandı (bölüm 37: 32-boyutlu
+problem kötü konumlu, yalnızca öğrenen kompartmanın PAM12'si okunuyor). Acı→PPL1 yolunun kokuyla sönmesinin mekanizması
 (MBON→DAN geri besleme ağırlıkları) incelenmedi. w_syn
 duyarlılığı (sırada); erkek için düşük tabanlı çalışma noktası (0.35/0.45
 ölçekleri sırada); GPU ile büyük tarama (M4'te iki n=1000 tarama bitti, bölüm
