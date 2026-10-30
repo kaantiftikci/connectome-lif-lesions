@@ -1,4 +1,4 @@
-import pdfplumber, json, re, statistics, html, pathlib, subprocess
+import pdfplumber, json, re, statistics, html, pathlib, subprocess, unicodedata
 FIG = pathlib.Path("/home/user/sinek/artifacts/figures")
 figs = {1:"fig1_reserve_curves.png",2:"fig2_sensitivity.png",3:"fig3_posterior_recovery.png",4:"fig4_modulation_curves.png",
         5:"fig5_sex_comparison.png",6:"fig6_jo_retest.png",7:"fig7_pathway_boost.png",8:"fig8_parkinson_predictions.png",9:"fig9_3d_regimes.png"}
@@ -24,7 +24,7 @@ def line_markup(chars):
     if cur_i: out.append("\x03")
     if cur_b: out.append("\x02")
     s = re.sub(r" +", " ", "".join(out)).strip()
-    return s
+    return unicodedata.normalize("NFC", s)
 
 def tidy(s):
     """Convert \x02/\x03 toggles into well-formed **/* runs with spaces outside the markers."""
@@ -61,7 +61,7 @@ with pdfplumber.open("in.pdf") as pdf:
                 if top - 2 <= l["top"] <= bottom + 2: intab = ti
             if intab is not None:
                 if not blocks or blocks[-1].get("type") != "table" or blocks[-1].get("tid") != (page, intab):
-                    blocks.append({"type": "table", "tid": (page, intab), "rows": tables[intab], "page": page})
+                    blocks.append({"type": "table", "tid": (page, intab), "rows": [[unicodedata.normalize("NFC", (c or "").replace("\n", " ")) for c in r] for r in tables[intab]], "page": page})
                 prev = l; continue
             gap = l["top"] - prev["bottom"] if prev else None
             m = line_markup(l["chars"])
@@ -165,6 +165,42 @@ for a, c in REPL:
     if a not in full: missing.append(a[:60])
 print("missing replacements:", missing)
 
+
+# ---- Turkish coinages -> English terms (applied to body, tables, captions) ----
+def attractor(m):
+    cap = m.group(1) == "Ç"; suf = m.group(2); rest = m.group(3)
+    word = "Attractor" if cap else "attractor"
+    if re.match(r"\s(rejim|sınır|artefakt|geçiş|\(|ve seyrek)", rest) or rest == "" or suf == "" and rest.startswith(" |"): 
+        return word + rest
+    smap = {"": "u", "a": "una", "un": "unun", "dur": "udur", "u": "unu", "una": "una", "da": "unda", "dan": "undan", "lar": "ları"}
+    return word + " durum" + smap.get(suf, suf) + rest
+def terms_en(t):
+    t = re.sub(r"([çÇ])ekici durum(\w*)((?:\s\S+)?)", lambda m: attractor(m), t)
+    t = re.sub(r"\bdoğal pekiştireçler\b", "doğal reinforcer'lar", t)
+    t = t.replace("her pekiştireçle", "her reinforcer ile").replace("pekiştirmenin değil", "reinforcement'ın değil")
+    t = re.sub(r"([pP])ekiştirme sinyal", lambda m: ("R" if m.group(1) == "P" else "r") + "einforcement sinyal", t)
+    t = re.sub(r"([pP])ekiştireç", lambda m: ("R" if m.group(1) == "P" else "r") + "einforcer", t)
+    t = re.sub(r"\b([bB])edenlenmiş\b", lambda m: ("E" if m.group(1) == "B" else "e") + "mbodied", t)
+    t = re.sub(r"\b([aA])ra aktarım\b", lambda m: ("R" if m.group(1) == "A" else "r") + "elay", t)
+    t = t.replace("nöral sonsal kestirim yöntemi", "neural posterior estimation yöntemi").replace("nöral sonsal kestirici", "neural posterior estimator")
+    t = t.replace("sonsal kestiricinin", "posterior estimator'ın").replace("sonsal kestirici", "posterior estimator")
+    t = re.sub(r"\b([sS])onsal\b", lambda m: ("P" if m.group(1) == "S" else "p") + "osterior", t)
+    t = re.sub(r"\b([öÖ])nsel\b", lambda m: ("P" if m.group(1) == "Ö" else "p") + "rior", t)
+    t = re.sub(r"\b([vV])ekil\b", lambda m: ("S" if m.group(1) == "V" else "s") + "urrogate", t)
+    t = re.sub(r"\b([oO])kuması\b", lambda m: ("R" if m.group(1) == "O" else "r") + "eadout'u", t)
+    t = re.sub(r"\b([oO])kuma\b", lambda m: ("R" if m.group(1) == "O" else "r") + "eadout", t)
+    t = t.replace("sızıntılı bütünleştir-ve-ateşle", "leaky integrate-and-fire").replace("bütünleştir-ve-ateşle", "integrate-and-fire")
+    t = t.replace("ızgara aramasıyla", "grid search ile")
+    t = re.sub(r"\btohumlarıyla\b", "seed'leriyle", t); t = re.sub(r"\btohumları\b", "seed'leri", t); t = re.sub(r"\btohumu\b", "seed'i", t); t = re.sub(r"\btohum\b", "seed", t)
+    smap = {"sürüşünde": "drive'ında", "sürüşüne": "drive'ına", "sürüşte": "drive'da", "sürüşe": "drive'a", "sürüşü": "drive'ı", "sürüş": "drive"}
+    for a, b in smap.items(): t = re.sub(r"\b" + a + r"\b", b, t)
+    t = re.sub(r"\betiketli bağlantı hattı\b", "labelled line'ı", t); t = re.sub(r"\betiketli bağlantı hatları\b", "labelled line'ları", t)
+    return t
+for b in blocks:
+    if "text" in b: b["text"] = terms_en(b["text"])
+    if b["type"] == "table": b["rows"] = [[terms_en(c or "") for c in r] for r in b["rows"]]
+for b in [x for x in blocks if x["type"] == "figcap"]: b["text"] = terms_en(b["text"])
+
 # table cell fixes
 for b in blocks:
     if b["type"] == "table":
@@ -190,7 +226,7 @@ anchors = [
  ("Modelin varsayılan çalışma rejiminde 16 PPL1 nöronunun kaybı", [1]),
  ("Otuz iki dopaminerjik alt tip üzerinde yürütülen 240", [2, 3]),
  ("Denenen tüm koku girdileri modeli aynı kalıcı", [9]),
- ("Gürültü tabanları çekici durum rejiminde 1,68", [4]),
+ ("Gürültü tabanları attractor rejiminde 1,68", [4]),
  ("APL inhibisyonu güçlendirilmişken sinaptik ölçeğin taranması", [5]),
  ("Ceza yolu bağlantı grafında mevcuttur", [7]),
  ("Jo'nun bildirdiği sıralama", [6]),
@@ -206,6 +242,22 @@ for b in blocks:
 blocks = res
 assert placed == set(range(1, 10)), placed
 
+
+HEADS = {
+ "varsayılan rejimde ilerleyici": "Varsayılan Rejimde İlerleyici Dopaminerjik Lezyonlar",
+ "koku yanıtı beyin genelinde": "Koku Yanıtında Attractor Durumu ve Seyrek Rejim",
+ "dopaminin modülatör olarak": "Dopaminin Modülatör Olarak Modellenmesi",
+ "reinforcer sinyalleri dopaminerjik": "Reinforcer Sinyallerinin Dopaminerjik Nöronlara İletimi",
+ "embodied davranışsal readout, ters": "Embodied Readout, Ters Çıkarım ve Erkek Konnektomu",
+ "reinforcer yolundaki iletim": "Reinforcer Yolunda İletim Darboğazı",
+ "yapısal hasarın sıralaması": "Yapısal Hasarın İki Rejimdeki Sıralaması",
+ "öğretici sinyal sağlandığında": "Öğretici Sinyal Altında Kompartman Haritası",
+}
+for b in blocks:
+    if b["type"] == "h3":
+        low = b["text"].lower()
+        for k, v in HEADS.items():
+            if low.startswith(k): b["text"] = v
 # title case (TDK) for title, h2, h3
 LOWER = {"ve", "ile", "ya", "veya", "yahut", "ki", "da", "de", "mi", "mı", "mu", "mü"}
 def tr_upper_first(w):
@@ -223,8 +275,10 @@ def title_case(s):
         if core and not core[0].isalpha(): out.append(w); continue
         out.append(tr_upper_first(w))
     return " ".join(out)
+def tr_upper(s): return s.replace("i", "İ").replace("ı", "I").upper()
 for b in blocks:
-    if b["type"] in ("title", "h2", "h3"): b["text"] = title_case(b["text"])
+    if b["type"] in ("title", "h3"): b["text"] = title_case(b["text"])
+    if b["type"] == "h2": b["text"] = tr_upper(b["text"])
 
 # ---------- 3. HTML ----------
 def inline(s):
@@ -240,7 +294,9 @@ for b in blocks:
     elif t == "meta": parts.append(f'<p class="meta">{inline(b["text"])}</p>')
     elif t == "h2": parts.append(f'<h2>{inline(b["text"])}</h2>')
     elif t == "h3": parts.append(f'<h3>{inline(b["text"])}</h3>')
-    elif t == "tcap": parts.append(f'<p class="tcap">{inline(b["text"])}</p>')
+    elif t == "tcap":
+        tt = b["text"].replace("**", ""); tt = re.sub(r"^(Tablo \d\.)", r"**\1**", tt)
+        parts.append(f'<p class="tcap">{inline(tt)}</p>')
     elif t == "table":
         rows = b["rows"]; h = "<table><thead><tr>" + "".join(f"<th>{inline(c)}</th>" for c in rows[0]) + "</tr></thead><tbody>"
         for r in rows[1:]: h += "<tr>" + "".join(f"<td>{inline(c)}</td>" for c in r) + "</tr>"
@@ -255,24 +311,25 @@ for b in blocks:
         if txt.startswith("Bağımsız araştırmacı"): parts.append(f'<p class="affil">{inline(txt)}</p>')
         else: parts.append(f'<p>{inline(txt)}</p>')
 css = """
-@page { size: A4; margin: 22mm 20mm 22mm 20mm; }
-html { font-size: 10.5pt; }
-body { font-family: "Liberation Serif", "FreeSerif", serif; line-height: 1.42; color: #111; margin: 0; }
-h1 { font-size: 18pt; line-height: 1.25; margin: 0 0 10pt; }
-.author { font-weight: bold; margin: 0 0 2pt; }
-.affil { margin: 0 0 4pt; }
-.meta { font-size: 8.5pt; font-style: italic; margin: 0 0 14pt; }
-h2 { font-size: 13.5pt; margin: 18pt 0 6pt; border-bottom: 1px solid #999; padding-bottom: 2pt; }
-h3 { font-size: 11.5pt; margin: 13pt 0 4pt; }
-p { margin: 0 0 7pt; text-align: justify; }
-p.tcap { margin: 8pt 0 3pt; text-align: left; }
-table { border-collapse: collapse; font-size: 8.5pt; margin: 0 0 10pt; width: 100%; page-break-inside: avoid; }
-th, td { border-top: 1px solid #bbb; border-bottom: 1px solid #bbb; padding: 3pt 5pt; text-align: left; vertical-align: top; }
-th { background: #f0f0f0; }
-figure { margin: 8pt 0 10pt; page-break-inside: avoid; }
-figure img { max-width: 100%; max-height: 150mm; height: auto; display: block; margin: 0 auto 4pt; }
-figcaption { font-size: 9pt; color: #222; text-align: justify; }
-p.ref { font-size: 9pt; padding-left: 14pt; text-indent: -14pt; text-align: left; margin: 0 0 4pt; }
+@page { size: A4; margin: 25mm 25mm 25mm 25mm; }
+html { font-size: 12pt; }
+body { font-family: "Liberation Serif", "Times New Roman", serif; line-height: 1.5; color: #000; margin: 0; }
+h1 { font-size: 14pt; line-height: 1.3; text-align: center; margin: 0 0 12pt; }
+.author { text-align: center; font-weight: bold; margin: 0; }
+.affil { text-align: center; margin: 0; font-size: 11pt; }
+.meta { text-align: center; font-size: 10pt; font-style: italic; margin: 6pt 0 18pt; }
+h2 { font-size: 12pt; margin: 18pt 0 6pt; text-transform: none; }
+h3 { font-size: 12pt; margin: 12pt 0 6pt; }
+p { margin: 0 0 6pt; text-align: justify; text-indent: 0.75cm; }
+p.affil, p.author, p.meta, p.tcap, p.ref, h2 + p, h3 + p { text-indent: 0; }
+p.tcap { margin: 10pt 0 4pt; text-align: left; font-size: 11pt; font-weight: normal; }
+table { border-collapse: collapse; font-size: 10pt; line-height: 1.25; margin: 0 auto 12pt; width: 100%; page-break-inside: avoid; }
+th, td { border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 3pt 5pt; text-align: left; vertical-align: top; }
+th { border-bottom: 1px solid #000; font-weight: bold; }
+figure { margin: 10pt 0 12pt; page-break-inside: avoid; text-align: center; }
+figure img { max-width: 100%; max-height: 135mm; height: auto; display: block; margin: 0 auto 6pt; }
+figcaption { font-size: 10pt; line-height: 1.3; text-align: justify; }
+p.ref { font-size: 11pt; line-height: 1.3; padding-left: 1cm; text-indent: -1cm; text-align: left; margin: 0 0 6pt; }
 p.small { text-align: justify; }
 """
 head = '<!doctype html><html lang="tr"><head><meta charset="utf-8"><title>Önbaskı</title><style>' + css + "</style></head><body>"
