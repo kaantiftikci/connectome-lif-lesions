@@ -1197,3 +1197,31 @@ düzeltilmesi şeker koluna etki etmiyor. Yalnızca büyüklükler
 (öğrenme indeksinin 0.56 mı 1.00 mü olduğu) ödül kazancı ve η ile
 değişiyor. Not: filtresiz listede görünen MBON14/MBON29 "öğrenmeleri" 2 Hz
 altı koku yanıtına dayanıyor (bölüm 33'teki eşik dışı), sayılmadı.
+
+## 37. Öğrenme fenotipiyle ters model: n = 300, APL×3 (Mac, 2026-10-30)
+
+`scripts/learning_sweep.py`; `artifacts/sweep_v5_learning_apl3.npz`,
+`artifacts/surrogate_report_v5_learning.npz`. 32 alt tip üzerinde rastgele
+karışık lezyonlar; fenotip = şeker ve acı eşleşmesi sonrası MBON başına
+öğrenme indeksi + eşleşme öncesi koku yanıtı (105 özellik, 33'ü değişiyor).
+M4'te 104 dakika.
+
+| | çekici pasif (n=1000) | seyrek pasif (n=1000) | öğrenme (n=300) |
+|---|---|---|---|
+| ridge CV R² | 0.52 | −0.02 | −0.06 |
+| NPE \|hata\| (taban 0.26) | 0.41 | 0.46 | 0.38 |
+| tespit / yanlış alarm | 0.20 / 0.08 | 0.02 / 0.03 | 0.33 / 0.31 |
+| r > 0.5 alt tip | 6 | 0 | PPL107 0.79, PAM12 0.56, PPL101 0.53, PPL106 0.51 |
+
+**Yorum.** Öğrenme okumasıyla da 32 boyutlu lezyon vektörü geri
+bulunamıyor; tespit oranı yanlış alarmla aynı. Ama alt tip düzeyinde bir
+işaret var: PAM12 (MBON09 kompartmanının en kalabalık PAM tipi, 23 nöron)
+öğrenme fenotipinden r = 0.56 ile okunuyor; pasif fenotipte 0.13 (çekici)
+ve −0.44 (seyrek) idi. Yani öğrenme testi tam da öğrenen kompartmanın
+DAN'larını okuyor, başkasını değil. Bu, problemin doğasını gösteriyor:
+seyrek rejimde yalnızca 2–3 MBON öğreniyor, dolayısıyla fenotip ~3 bilgi
+taşıyan boyut, parametre 32; 32-boyutlu karışık ters problem yanlış
+tasarım. Doğru tasarım kompartman başına tek alt tip (ör. "PAM12 ne kadar
+kayıp?") olmalı; o zaman rezerv eğrisi (bölüm 33–34) zaten cevabı veriyor.
+Yapay zekâ kısmının dürüst sonucu: dopamin lezyonu için amortize ters model
+ancak öğrenen kompartman sayısı kadar boyutta anlamlı.
