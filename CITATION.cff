@@ -9,6 +9,7 @@ authors:
     given-names: "Kaan"
     email: "kaantiftikci@outlook.com"
 repository-code: "https://github.com/kaantiftikci/sinek"
+license: MIT
 keywords:
   - connectome
   - Drosophila

@@ -7,6 +7,7 @@ name = "sinek"
 version = "1.0.0"
 description = "Connectome-constrained lesion modelling of the fly brain with an amortised inverse model"
 requires-python = ">=3.10"
+license = {text = "MIT"}
 dependencies = ["numpy>=1.26", "scipy>=1.11", "pandas>=2.0", "pyarrow>=14"]
 
 [project.optional-dependencies]
