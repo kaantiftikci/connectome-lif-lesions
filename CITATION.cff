@@ -15,6 +15,9 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.23817806
     description: "Zenodo archive of release v1.0.1"
+  - type: doi
+    value: 10.5281/zenodo.23808329
+    description: "Zenodo concept DOI, resolves to the latest version"
 keywords:
   - connectome
   - Drosophila
