@@ -1,0 +1,129 @@
+"""Named neuron groups: lesion targets, stimuli and readouts.
+
+Dopaminergic clusters follow the standard nomenclature (PAM, PPL1, PPL2ab,
+PPM1/2/3).  In FlyWire v783 these are annotated as cell_type prefixes
+``PAM``, ``PPL1``, ``PPL2``, ``PPM1``.  Counts in the female brain: PAM 307,
+PPL1 16, PPL2 8, PPM1 16 (cell_class == "DAN" totals 331).
+
+Everything here is a *selector* (dict of ``Connectome.select`` kwargs), so the
+same names can be resolved against the male dataset once it is loaded.
+"""
+from __future__ import annotations
+
+import numpy as np
+
+from .flywire import Connectome
+
+
+class _LazySubtypes(dict):
+    """Placeholder resolved by ``group_indices`` when a Connectome is at hand."""
+
+# Lesion targets with a disease rationale.
+DA_GROUPS: dict[str, dict] = {
+    "PAM":  {"cell_type__startswith": "PAM"},    # reward / appetitive memory, vulnerable in PD models
+    "PPL1": {"cell_type__startswith": "PPL1"},   # punishment / aversive memory, classic PD-model cluster
+    "PPL2": {"cell_type__startswith": "PPL2"},
+    "PPM1": {"cell_type__startswith": "PPM1"},
+}
+
+# Dopaminergic neurons of the central complex (fan-shaped body tangential cells,
+# ExR2/ExR3 ring neurons; the PPM3-cluster targets implicated in fly locomotor
+# deficits), ~61 neurons in FlyWire v783.  Not part of DA_GROUPS so earlier
+# sweeps keep their group lists; used by the embodied experiment.
+CX_DA_GROUP: dict[str, dict] = {"CXDAN": {"cell_class": "CX", "top_nt": "dopamine"}}
+
+# Non-dopaminergic controls with comparable size, to test specificity.
+CONTROL_GROUPS: dict[str, dict] = {
+    "KC":     {"cell_class": "Kenyon_Cell"},      # tauopathy-model target (mushroom body)
+    "MBON":   {"cell_type__startswith": "MBON"},
+    "mAL":    {"cell_class": "mAL"},
+    "LHLN":   {"cell_class": "LHLN"},
+}
+
+# Stimulus battery: sensory populations driven with Poisson input.  Each entry
+# is a selector plus an optional "rate_hz" (default 150).  Every member was
+# checked to stay in the stable regime (see docs/PLAN.md, "stable regime"):
+#   * sugar: only the 32 "sugar" GRNs; adding the 25 "sugar/low_salt" GRNs at
+#     150 Hz tips the model into a runaway attractor (~9,000 neurons at the
+#     refractory ceiling)
+#   * odor_DM1 is stable; ORN_DA1 (126) and ORN_VM4 (75) at 150 Hz run away
+#   * wind_gravity (481 JO neurons) and head bristles recruit descending
+#     neurons (68 and 135 active) and stay stable at the listed rates
+STIMULI: dict[str, dict] = {
+    "sugar":        {"cell_sub_class": "sugar"},
+    "water":        {"cell_sub_class": "water"},
+    "bitter":       {"cell_sub_class": "bitter"},
+    "odor_DM1":     {"cell_type": "ORN_DM1"},
+    "wind_gravity": {"cell_sub_class": "wind_gravity", "rate_hz": 150.0},
+    "head_bristle": {"cell_sub_class": "head bristle", "rate_hz": 100.0},
+}
+
+
+def group_indices(cn: Connectome, groups: dict[str, dict] | None = None) -> dict[str, np.ndarray]:
+    if groups is None:
+        groups = {**DA_GROUPS, **CONTROL_GROUPS}
+    elif isinstance(groups, _LazySubtypes):
+        groups = subtype_groups(cn)
+    return {name: cn.select(**sel) for name, sel in groups.items()}
+
+
+def _split(sel: dict) -> tuple[dict, float]:
+    sel = dict(sel)
+    return sel, float(sel.pop("rate_hz", 150.0))
+
+
+def stimulus_indices(cn: Connectome, stimuli: dict[str, dict] | None = None) -> dict[str, np.ndarray]:
+    return {name: cn.select(**_split(sel)[0]) for name, sel in (stimuli or STIMULI).items()}
+
+
+def build_stimuli(cn: Connectome, stimuli: dict[str, dict] | None = None) -> list:
+    """The battery as ``Stimulus`` objects (name, target indices, rate)."""
+    from ..readout.phenotype import Stimulus
+    out = []
+    for name, sel in (stimuli or STIMULI).items():
+        kw, rate = _split(sel)
+        out.append(Stimulus(name, cn.select(**kw), rate))
+    return out
+
+
+def readout_groups(cn: Connectome, min_size: int = 4, extra: dict[str, np.ndarray] | None = None) -> dict[str, np.ndarray]:
+    """Readout populations whose firing rates form the phenotype vector.
+
+    Descending neurons (the brain's motor output) grouped by cell_type, plus
+    MBON types.  Types with fewer than ``min_size`` neurons are pooled into
+    ``DN_other`` so the vector stays stable across datasets.
+    """
+    out: dict[str, np.ndarray] = {}
+    dn = cn.meta[cn.meta["super_class"] == "descending"]
+    small = []
+    for ct, sub in dn.groupby(dn["cell_type"].astype(str)):
+        if len(sub) >= min_size:
+            out[f"DN:{ct}"] = sub["idx"].to_numpy()
+        else:
+            small.append(sub["idx"].to_numpy())
+    if small:
+        out["DN:other"] = np.concatenate(small)
+    mbon = cn.meta[cn.meta["cell_type"].astype(str).str.startswith("MBON")]
+    for ct, sub in mbon.groupby(mbon["cell_type"].astype(str)):
+        out[f"MBON:{ct}"] = sub["idx"].to_numpy()
+    if extra:
+        out.update(extra)
+    return out
+
+
+# Subtype-resolved dopaminergic groups (one group per annotated cell type).
+# Built lazily from the annotation table so the list matches the dataset.
+_PREFIXES = ("PAM", "PPL1", "PPL2", "PPM1")
+
+
+def subtype_groups(cn: Connectome, min_size: int = 2) -> dict[str, dict]:
+    ct = cn.meta["cell_type"].astype(str)
+    out: dict[str, dict] = {}
+    for pre in _PREFIXES:
+        for name, cnt in ct[ct.str.startswith(pre)].value_counts().items():
+            if cnt >= min_size:
+                out[name] = {"cell_type": name}
+    return out
+
+
+SUBTYPE_GROUPS = _LazySubtypes()
