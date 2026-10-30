@@ -1,0 +1,1401 @@
+pset,what,pre_MBON09,mbon,li
+base,intact,13.333333333333334,MBON01,0.0
+base,intact,13.333333333333334,MBON02,0.0
+base,intact,13.333333333333334,MBON03,0.0
+base,intact,13.333333333333334,MBON04,0.0
+base,intact,13.333333333333334,MBON05,0.0
+base,intact,13.333333333333334,MBON06,0.0
+base,intact,13.333333333333334,MBON07,0.0
+base,intact,13.333333333333334,MBON09,1.0
+base,intact,13.333333333333334,MBON10,-0.005494505494505228
+base,intact,13.333333333333334,MBON11,0.0
+base,intact,13.333333333333334,MBON12,0.0
+base,intact,13.333333333333334,MBON13,0.0
+base,intact,13.333333333333334,MBON14,1.0
+base,intact,13.333333333333334,MBON15,0.0
+base,intact,13.333333333333334,MBON15-like,0.0
+base,intact,13.333333333333334,MBON16,0.0
+base,intact,13.333333333333334,MBON17,0.0
+base,intact,13.333333333333334,MBON17-like,0.0
+base,intact,13.333333333333334,MBON18,0.0
+base,intact,13.333333333333334,MBON19,0.0
+base,intact,13.333333333333334,MBON20,-0.08510638297872328
+base,intact,13.333333333333334,MBON21,-0.6666666666666669
+base,intact,13.333333333333334,MBON22,0.0
+base,intact,13.333333333333334,MBON23,0.0
+base,intact,13.333333333333334,MBON24,0.0
+base,intact,13.333333333333334,"MBON25,MBON34",0.0
+base,intact,13.333333333333334,MBON26,-1.125
+base,intact,13.333333333333334,MBON27,0.0
+base,intact,13.333333333333334,MBON28,0.0
+base,intact,13.333333333333334,MBON29,1.0
+base,intact,13.333333333333334,MBON30,0.0
+base,intact,13.333333333333334,MBON31,0.0
+base,intact,13.333333333333334,MBON32,0.0
+base,intact,13.333333333333334,MBON33,0.4117647058823529
+base,intact,13.333333333333334,MBON35,0.0
+base,pam75,,MBON01,0.0
+base,pam75,,MBON02,0.0
+base,pam75,,MBON03,0.0
+base,pam75,,MBON04,0.0
+base,pam75,,MBON05,0.0
+base,pam75,,MBON06,0.0
+base,pam75,,MBON07,0.0
+base,pam75,,MBON09,1.0
+base,pam75,,MBON10,0.037837837837838076
+base,pam75,,MBON11,0.0
+base,pam75,,MBON12,0.0
+base,pam75,,MBON13,0.0
+base,pam75,,MBON14,0.0
+base,pam75,,MBON15,0.0
+base,pam75,,MBON15-like,0.0
+base,pam75,,MBON16,0.0
+base,pam75,,MBON17,0.0
+base,pam75,,MBON17-like,0.0
+base,pam75,,MBON18,0.0
+base,pam75,,MBON19,0.0
+base,pam75,,MBON20,-0.10869565217391297
+base,pam75,,MBON21,-0.6470588235294118
+base,pam75,,MBON22,0.0
+base,pam75,,MBON23,0.0
+base,pam75,,MBON24,0.0
+base,pam75,,"MBON25,MBON34",0.0
+base,pam75,,MBON26,0.2499999999999999
+base,pam75,,MBON27,0.0
+base,pam75,,MBON28,0.0
+base,pam75,,MBON29,1.0
+base,pam75,,MBON30,0.0
+base,pam75,,MBON31,0.0
+base,pam75,,MBON32,0.0
+base,pam75,,MBON33,0.5714285714285715
+base,pam75,,MBON35,0.0
+base,pam90,,MBON01,0.0
+base,pam90,,MBON02,0.0
+base,pam90,,MBON03,0.0
+base,pam90,,MBON04,0.0
+base,pam90,,MBON05,0.0
+base,pam90,,MBON06,0.0
+base,pam90,,MBON07,0.0
+base,pam90,,MBON09,-0.06666666666666671
+base,pam90,,MBON10,0.0
+base,pam90,,MBON11,0.0
+base,pam90,,MBON12,0.0
+base,pam90,,MBON13,0.0
+base,pam90,,MBON14,0.0
+base,pam90,,MBON15,0.0
+base,pam90,,MBON15-like,0.0
+base,pam90,,MBON16,0.0
+base,pam90,,MBON17,0.0
+base,pam90,,MBON17-like,0.0
+base,pam90,,MBON18,0.0
+base,pam90,,MBON19,0.0
+base,pam90,,MBON20,0.0625
+base,pam90,,MBON21,-0.06666666666666671
+base,pam90,,MBON22,0.0
+base,pam90,,MBON23,0.0
+base,pam90,,MBON24,0.0
+base,pam90,,"MBON25,MBON34",0.0
+base,pam90,,MBON26,0.0
+base,pam90,,MBON27,0.0
+base,pam90,,MBON28,0.0
+base,pam90,,MBON29,0.0
+base,pam90,,MBON30,0.0
+base,pam90,,MBON31,0.0
+base,pam90,,MBON32,0.0
+base,pam90,,MBON33,-0.21428571428571427
+base,pam90,,MBON35,0.0
+g_reward x0.5,intact,13.333333333333334,MBON01,0.0
+g_reward x0.5,intact,13.333333333333334,MBON02,0.0
+g_reward x0.5,intact,13.333333333333334,MBON03,0.0
+g_reward x0.5,intact,13.333333333333334,MBON04,0.0
+g_reward x0.5,intact,13.333333333333334,MBON05,0.0
+g_reward x0.5,intact,13.333333333333334,MBON06,0.0
+g_reward x0.5,intact,13.333333333333334,MBON07,0.0
+g_reward x0.5,intact,13.333333333333334,MBON09,0.5625
+g_reward x0.5,intact,13.333333333333334,MBON10,-0.005494505494505228
+g_reward x0.5,intact,13.333333333333334,MBON11,0.0
+g_reward x0.5,intact,13.333333333333334,MBON12,0.0
+g_reward x0.5,intact,13.333333333333334,MBON13,0.0
+g_reward x0.5,intact,13.333333333333334,MBON14,1.0
+g_reward x0.5,intact,13.333333333333334,MBON15,0.0
+g_reward x0.5,intact,13.333333333333334,MBON15-like,0.0
+g_reward x0.5,intact,13.333333333333334,MBON16,0.0
+g_reward x0.5,intact,13.333333333333334,MBON17,0.0
+g_reward x0.5,intact,13.333333333333334,MBON17-like,0.0
+g_reward x0.5,intact,13.333333333333334,MBON18,0.0
+g_reward x0.5,intact,13.333333333333334,MBON19,0.0
+g_reward x0.5,intact,13.333333333333334,MBON20,-0.08510638297872328
+g_reward x0.5,intact,13.333333333333334,MBON21,-0.3333333333333334
+g_reward x0.5,intact,13.333333333333334,MBON22,0.0
+g_reward x0.5,intact,13.333333333333334,MBON23,0.0
+g_reward x0.5,intact,13.333333333333334,MBON24,0.0
+g_reward x0.5,intact,13.333333333333334,"MBON25,MBON34",0.0
+g_reward x0.5,intact,13.333333333333334,MBON26,-0.7500000000000001
+g_reward x0.5,intact,13.333333333333334,MBON27,0.0
+g_reward x0.5,intact,13.333333333333334,MBON28,0.0
+g_reward x0.5,intact,13.333333333333334,MBON29,1.0
+g_reward x0.5,intact,13.333333333333334,MBON30,0.0
+g_reward x0.5,intact,13.333333333333334,MBON31,0.0
+g_reward x0.5,intact,13.333333333333334,MBON32,0.0
+g_reward x0.5,intact,13.333333333333334,MBON33,0.2941176470588236
+g_reward x0.5,intact,13.333333333333334,MBON35,0.0
+base,retention75,,MBON01,0.0
+base,retention75,,MBON02,0.0
+base,retention75,,MBON03,0.0
+base,retention75,,MBON04,0.0
+base,retention75,,MBON05,0.0
+base,retention75,,MBON06,0.0
+base,retention75,,MBON07,0.0
+base,retention75,,MBON09,0.875
+base,retention75,,MBON10,-0.010989010989010877
+base,retention75,,MBON11,0.0
+base,retention75,,MBON12,0.0
+base,retention75,,MBON13,0.0
+base,retention75,,MBON14,1.0
+base,retention75,,MBON15,0.0
+base,retention75,,MBON15-like,0.0
+base,retention75,,MBON16,0.0
+base,retention75,,MBON17,0.0
+base,retention75,,MBON17-like,0.0
+base,retention75,,MBON18,0.0
+base,retention75,,MBON19,0.0
+base,retention75,,MBON20,-0.06382978723404255
+base,retention75,,MBON21,-0.6
+base,retention75,,MBON22,0.0
+base,retention75,,MBON23,0.0
+base,retention75,,MBON24,0.0
+base,retention75,,"MBON25,MBON34",0.0
+base,retention75,,MBON26,-0.7500000000000001
+base,retention75,,MBON27,0.0
+base,retention75,,MBON28,0.0
+base,retention75,,MBON29,1.0
+base,retention75,,MBON30,0.0
+base,retention75,,MBON31,0.0
+base,retention75,,MBON32,0.0
+base,retention75,,MBON33,0.3529411764705882
+base,retention75,,MBON35,0.0
+g_reward x0.5,pam75,,MBON01,0.0
+g_reward x0.5,pam75,,MBON02,0.0
+g_reward x0.5,pam75,,MBON03,0.0
+g_reward x0.5,pam75,,MBON04,0.0
+g_reward x0.5,pam75,,MBON05,0.0
+g_reward x0.5,pam75,,MBON06,0.0
+g_reward x0.5,pam75,,MBON07,0.0
+g_reward x0.5,pam75,,MBON09,0.5333333333333333
+g_reward x0.5,pam75,,MBON10,0.021621621621621817
+g_reward x0.5,pam75,,MBON11,0.0
+g_reward x0.5,pam75,,MBON12,0.0
+g_reward x0.5,pam75,,MBON13,0.0
+g_reward x0.5,pam75,,MBON14,0.0
+g_reward x0.5,pam75,,MBON15,0.0
+g_reward x0.5,pam75,,MBON15-like,0.0
+g_reward x0.5,pam75,,MBON16,0.0
+g_reward x0.5,pam75,,MBON17,0.0
+g_reward x0.5,pam75,,MBON17-like,0.0
+g_reward x0.5,pam75,,MBON18,0.0
+g_reward x0.5,pam75,,MBON19,0.0
+g_reward x0.5,pam75,,MBON20,-0.08695652173913049
+g_reward x0.5,pam75,,MBON21,-0.2352941176470587
+g_reward x0.5,pam75,,MBON22,0.0
+g_reward x0.5,pam75,,MBON23,0.0
+g_reward x0.5,pam75,,MBON24,0.0
+g_reward x0.5,pam75,,"MBON25,MBON34",0.0
+g_reward x0.5,pam75,,MBON26,-0.06250000000000004
+g_reward x0.5,pam75,,MBON27,0.0
+g_reward x0.5,pam75,,MBON28,0.0
+g_reward x0.5,pam75,,MBON29,1.0
+g_reward x0.5,pam75,,MBON30,0.0
+g_reward x0.5,pam75,,MBON31,0.0
+g_reward x0.5,pam75,,MBON32,0.0
+g_reward x0.5,pam75,,MBON33,0.14285714285714293
+g_reward x0.5,pam75,,MBON35,0.0
+g_reward x0.5,pam90,,MBON01,0.0
+g_reward x0.5,pam90,,MBON02,0.0
+g_reward x0.5,pam90,,MBON03,0.0
+g_reward x0.5,pam90,,MBON04,0.0
+g_reward x0.5,pam90,,MBON05,0.0
+g_reward x0.5,pam90,,MBON06,0.0
+g_reward x0.5,pam90,,MBON07,0.0
+g_reward x0.5,pam90,,MBON09,-0.06666666666666671
+g_reward x0.5,pam90,,MBON10,0.010928961748633772
+g_reward x0.5,pam90,,MBON11,0.0
+g_reward x0.5,pam90,,MBON12,0.0
+g_reward x0.5,pam90,,MBON13,0.0
+g_reward x0.5,pam90,,MBON14,0.0
+g_reward x0.5,pam90,,MBON15,0.0
+g_reward x0.5,pam90,,MBON15-like,0.0
+g_reward x0.5,pam90,,MBON16,0.0
+g_reward x0.5,pam90,,MBON17,0.0
+g_reward x0.5,pam90,,MBON17-like,0.0
+g_reward x0.5,pam90,,MBON18,0.0
+g_reward x0.5,pam90,,MBON19,0.0
+g_reward x0.5,pam90,,MBON20,0.020833333333333214
+g_reward x0.5,pam90,,MBON21,0.06666666666666657
+g_reward x0.5,pam90,,MBON22,0.0
+g_reward x0.5,pam90,,MBON23,0.0
+g_reward x0.5,pam90,,MBON24,0.0
+g_reward x0.5,pam90,,"MBON25,MBON34",0.0
+g_reward x0.5,pam90,,MBON26,0.375
+g_reward x0.5,pam90,,MBON27,0.0
+g_reward x0.5,pam90,,MBON28,0.0
+g_reward x0.5,pam90,,MBON29,0.5
+g_reward x0.5,pam90,,MBON30,0.0
+g_reward x0.5,pam90,,MBON31,0.0
+g_reward x0.5,pam90,,MBON32,0.0
+g_reward x0.5,pam90,,MBON33,-0.07142857142857131
+g_reward x0.5,pam90,,MBON35,0.0
+g_reward x0.5,retention75,,MBON01,0.0
+g_reward x0.5,retention75,,MBON02,0.0
+g_reward x0.5,retention75,,MBON03,0.0
+g_reward x0.5,retention75,,MBON04,0.0
+g_reward x0.5,retention75,,MBON05,0.0
+g_reward x0.5,retention75,,MBON06,0.0
+g_reward x0.5,retention75,,MBON07,0.0
+g_reward x0.5,retention75,,MBON09,0.5
+g_reward x0.5,retention75,,MBON10,0.005494505494505649
+g_reward x0.5,retention75,,MBON11,0.0
+g_reward x0.5,retention75,,MBON12,0.0
+g_reward x0.5,retention75,,MBON13,0.0
+g_reward x0.5,retention75,,MBON14,1.0
+g_reward x0.5,retention75,,MBON15,0.0
+g_reward x0.5,retention75,,MBON15-like,0.0
+g_reward x0.5,retention75,,MBON16,0.0
+g_reward x0.5,retention75,,MBON17,0.0
+g_reward x0.5,retention75,,MBON17-like,0.0
+g_reward x0.5,retention75,,MBON18,0.0
+g_reward x0.5,retention75,,MBON19,0.0
+g_reward x0.5,retention75,,MBON20,0.0
+g_reward x0.5,retention75,,MBON21,-0.3333333333333334
+g_reward x0.5,retention75,,MBON22,0.0
+g_reward x0.5,retention75,,MBON23,0.0
+g_reward x0.5,retention75,,MBON24,0.0
+g_reward x0.5,retention75,,"MBON25,MBON34",0.0
+g_reward x0.5,retention75,,MBON26,-0.5000000000000002
+g_reward x0.5,retention75,,MBON27,0.0
+g_reward x0.5,retention75,,MBON28,0.0
+g_reward x0.5,retention75,,MBON29,1.0
+g_reward x0.5,retention75,,MBON30,0.0
+g_reward x0.5,retention75,,MBON31,0.0
+g_reward x0.5,retention75,,MBON32,0.0
+g_reward x0.5,retention75,,MBON33,0.2941176470588236
+g_reward x0.5,retention75,,MBON35,0.0
+base,ldopa30,,MBON01,0.0
+base,ldopa30,,MBON02,0.0
+base,ldopa30,,MBON03,0.0
+base,ldopa30,,MBON04,0.0
+base,ldopa30,,MBON05,0.0
+base,ldopa30,,MBON06,0.0
+base,ldopa30,,MBON07,0.0
+base,ldopa30,,MBON09,0.75
+base,ldopa30,,MBON10,0.03296703296703306
+base,ldopa30,,MBON11,0.0
+base,ldopa30,,MBON12,0.0
+base,ldopa30,,MBON13,0.0
+base,ldopa30,,MBON14,0.0
+base,ldopa30,,MBON15,0.0
+base,ldopa30,,MBON15-like,0.0
+base,ldopa30,,MBON16,0.0
+base,ldopa30,,MBON17,0.0
+base,ldopa30,,MBON17-like,0.0
+base,ldopa30,,MBON18,0.0
+base,ldopa30,,MBON19,0.0
+base,ldopa30,,MBON20,-0.13636363636363635
+base,ldopa30,,MBON21,-0.3529411764705882
+base,ldopa30,,MBON22,0.0
+base,ldopa30,,MBON23,0.0
+base,ldopa30,,MBON24,0.0
+base,ldopa30,,"MBON25,MBON34",0.0
+base,ldopa30,,MBON26,-0.15384615384615394
+base,ldopa30,,MBON27,0.0
+base,ldopa30,,MBON28,0.0
+base,ldopa30,,MBON29,0.0
+base,ldopa30,,MBON30,0.0
+base,ldopa30,,MBON31,0.0
+base,ldopa30,,MBON32,0.0
+base,ldopa30,,MBON33,0.33333333333333326
+base,ldopa30,,MBON35,0.0
+g_reward x2,intact,13.333333333333334,MBON01,0.0
+g_reward x2,intact,13.333333333333334,MBON02,0.0
+g_reward x2,intact,13.333333333333334,MBON03,0.0
+g_reward x2,intact,13.333333333333334,MBON04,0.0
+g_reward x2,intact,13.333333333333334,MBON05,0.0
+g_reward x2,intact,13.333333333333334,MBON06,0.0
+g_reward x2,intact,13.333333333333334,MBON07,0.0
+g_reward x2,intact,13.333333333333334,MBON09,1.0
+g_reward x2,intact,13.333333333333334,MBON10,0.005494505494505649
+g_reward x2,intact,13.333333333333334,MBON11,0.0
+g_reward x2,intact,13.333333333333334,MBON12,0.0
+g_reward x2,intact,13.333333333333334,MBON13,0.0
+g_reward x2,intact,13.333333333333334,MBON14,1.0
+g_reward x2,intact,13.333333333333334,MBON15,0.0
+g_reward x2,intact,13.333333333333334,MBON15-like,0.0
+g_reward x2,intact,13.333333333333334,MBON16,0.0
+g_reward x2,intact,13.333333333333334,MBON17,0.0
+g_reward x2,intact,13.333333333333334,MBON17-like,0.0
+g_reward x2,intact,13.333333333333334,MBON18,0.0
+g_reward x2,intact,13.333333333333334,MBON19,0.0
+g_reward x2,intact,13.333333333333334,MBON20,-0.08510638297872328
+g_reward x2,intact,13.333333333333334,MBON21,-0.4
+g_reward x2,intact,13.333333333333334,MBON22,0.0
+g_reward x2,intact,13.333333333333334,MBON23,0.0
+g_reward x2,intact,13.333333333333334,MBON24,0.0
+g_reward x2,intact,13.333333333333334,"MBON25,MBON34",0.0
+g_reward x2,intact,13.333333333333334,MBON26,-0.625
+g_reward x2,intact,13.333333333333334,MBON27,0.0
+g_reward x2,intact,13.333333333333334,MBON28,0.0
+g_reward x2,intact,13.333333333333334,MBON29,1.0
+g_reward x2,intact,13.333333333333334,MBON30,0.0
+g_reward x2,intact,13.333333333333334,MBON31,0.0
+g_reward x2,intact,13.333333333333334,MBON32,0.0
+g_reward x2,intact,13.333333333333334,MBON33,0.3529411764705882
+g_reward x2,intact,13.333333333333334,MBON35,0.0
+g_reward x2,pam75,,MBON01,0.0
+g_reward x2,pam75,,MBON02,0.0
+g_reward x2,pam75,,MBON03,0.0
+g_reward x2,pam75,,MBON04,0.0
+g_reward x2,pam75,,MBON05,0.0
+g_reward x2,pam75,,MBON06,0.0
+g_reward x2,pam75,,MBON07,0.0
+g_reward x2,pam75,,MBON09,1.0
+g_reward x2,pam75,,MBON10,0.037837837837838076
+g_reward x2,pam75,,MBON11,0.0
+g_reward x2,pam75,,MBON12,0.0
+g_reward x2,pam75,,MBON13,0.0
+g_reward x2,pam75,,MBON14,0.0
+g_reward x2,pam75,,MBON15,0.0
+g_reward x2,pam75,,MBON15-like,0.0
+g_reward x2,pam75,,MBON16,0.0
+g_reward x2,pam75,,MBON17,0.0
+g_reward x2,pam75,,MBON17-like,0.0
+g_reward x2,pam75,,MBON18,0.0
+g_reward x2,pam75,,MBON19,0.0
+g_reward x2,pam75,,MBON20,-0.10869565217391297
+g_reward x2,pam75,,MBON21,-0.6470588235294118
+g_reward x2,pam75,,MBON22,0.0
+g_reward x2,pam75,,MBON23,0.0
+g_reward x2,pam75,,MBON24,0.0
+g_reward x2,pam75,,"MBON25,MBON34",0.0
+g_reward x2,pam75,,MBON26,0.2499999999999999
+g_reward x2,pam75,,MBON27,0.0
+g_reward x2,pam75,,MBON28,0.0
+g_reward x2,pam75,,MBON29,1.0
+g_reward x2,pam75,,MBON30,0.0
+g_reward x2,pam75,,MBON31,0.0
+g_reward x2,pam75,,MBON32,0.0
+g_reward x2,pam75,,MBON33,0.5714285714285715
+g_reward x2,pam75,,MBON35,0.0
+g_reward x2,pam90,,MBON01,0.0
+g_reward x2,pam90,,MBON02,0.0
+g_reward x2,pam90,,MBON03,0.0
+g_reward x2,pam90,,MBON04,0.0
+g_reward x2,pam90,,MBON05,0.0
+g_reward x2,pam90,,MBON06,0.0
+g_reward x2,pam90,,MBON07,0.0
+g_reward x2,pam90,,MBON09,0.0
+g_reward x2,pam90,,MBON10,0.0
+g_reward x2,pam90,,MBON11,0.0
+g_reward x2,pam90,,MBON12,0.0
+g_reward x2,pam90,,MBON13,0.0
+g_reward x2,pam90,,MBON14,0.0
+g_reward x2,pam90,,MBON15,0.0
+g_reward x2,pam90,,MBON15-like,0.0
+g_reward x2,pam90,,MBON16,0.0
+g_reward x2,pam90,,MBON17,0.0
+g_reward x2,pam90,,MBON17-like,0.0
+g_reward x2,pam90,,MBON18,0.0
+g_reward x2,pam90,,MBON19,0.0
+g_reward x2,pam90,,MBON20,0.04166666666666661
+g_reward x2,pam90,,MBON21,-0.13333333333333341
+g_reward x2,pam90,,MBON22,0.0
+g_reward x2,pam90,,MBON23,0.0
+g_reward x2,pam90,,MBON24,0.0
+g_reward x2,pam90,,"MBON25,MBON34",0.0
+g_reward x2,pam90,,MBON26,0.06249999999999991
+g_reward x2,pam90,,MBON27,0.0
+g_reward x2,pam90,,MBON28,0.0
+g_reward x2,pam90,,MBON29,0.0
+g_reward x2,pam90,,MBON30,0.0
+g_reward x2,pam90,,MBON31,0.0
+g_reward x2,pam90,,MBON32,0.0
+g_reward x2,pam90,,MBON33,-0.1428571428571428
+g_reward x2,pam90,,MBON35,0.0
+g_reward x0.5,ldopa30,,MBON01,0.0
+g_reward x0.5,ldopa30,,MBON02,0.0
+g_reward x0.5,ldopa30,,MBON03,0.0
+g_reward x0.5,ldopa30,,MBON04,0.0
+g_reward x0.5,ldopa30,,MBON05,0.0
+g_reward x0.5,ldopa30,,MBON06,0.0
+g_reward x0.5,ldopa30,,MBON07,0.0
+g_reward x0.5,ldopa30,,MBON09,0.75
+g_reward x0.5,ldopa30,,MBON10,0.03296703296703306
+g_reward x0.5,ldopa30,,MBON11,0.0
+g_reward x0.5,ldopa30,,MBON12,0.0
+g_reward x0.5,ldopa30,,MBON13,0.0
+g_reward x0.5,ldopa30,,MBON14,0.0
+g_reward x0.5,ldopa30,,MBON15,0.0
+g_reward x0.5,ldopa30,,MBON15-like,0.0
+g_reward x0.5,ldopa30,,MBON16,0.0
+g_reward x0.5,ldopa30,,MBON17,0.0
+g_reward x0.5,ldopa30,,MBON17-like,0.0
+g_reward x0.5,ldopa30,,MBON18,0.0
+g_reward x0.5,ldopa30,,MBON19,0.0
+g_reward x0.5,ldopa30,,MBON20,-0.13636363636363635
+g_reward x0.5,ldopa30,,MBON21,-0.3529411764705882
+g_reward x0.5,ldopa30,,MBON22,0.0
+g_reward x0.5,ldopa30,,MBON23,0.0
+g_reward x0.5,ldopa30,,MBON24,0.0
+g_reward x0.5,ldopa30,,"MBON25,MBON34",0.0
+g_reward x0.5,ldopa30,,MBON26,-0.15384615384615394
+g_reward x0.5,ldopa30,,MBON27,0.0
+g_reward x0.5,ldopa30,,MBON28,0.0
+g_reward x0.5,ldopa30,,MBON29,0.0
+g_reward x0.5,ldopa30,,MBON30,0.0
+g_reward x0.5,ldopa30,,MBON31,0.0
+g_reward x0.5,ldopa30,,MBON32,0.0
+g_reward x0.5,ldopa30,,MBON33,0.33333333333333326
+g_reward x0.5,ldopa30,,MBON35,0.0
+g_reward x2,retention75,,MBON01,0.0
+g_reward x2,retention75,,MBON02,0.0
+g_reward x2,retention75,,MBON03,0.0
+g_reward x2,retention75,,MBON04,0.0
+g_reward x2,retention75,,MBON05,0.0
+g_reward x2,retention75,,MBON06,0.0
+g_reward x2,retention75,,MBON07,0.0
+g_reward x2,retention75,,MBON09,1.0
+g_reward x2,retention75,,MBON10,0.0
+g_reward x2,retention75,,MBON11,0.0
+g_reward x2,retention75,,MBON12,0.0
+g_reward x2,retention75,,MBON13,0.0
+g_reward x2,retention75,,MBON14,1.0
+g_reward x2,retention75,,MBON15,0.0
+g_reward x2,retention75,,MBON15-like,0.0
+g_reward x2,retention75,,MBON16,0.0
+g_reward x2,retention75,,MBON17,0.0
+g_reward x2,retention75,,MBON17-like,0.0
+g_reward x2,retention75,,MBON18,0.0
+g_reward x2,retention75,,MBON19,0.0
+g_reward x2,retention75,,MBON20,-0.08510638297872328
+g_reward x2,retention75,,MBON21,-0.4
+g_reward x2,retention75,,MBON22,0.0
+g_reward x2,retention75,,MBON23,0.0
+g_reward x2,retention75,,MBON24,0.0
+g_reward x2,retention75,,"MBON25,MBON34",0.0
+g_reward x2,retention75,,MBON26,-0.12499999999999994
+g_reward x2,retention75,,MBON27,0.0
+g_reward x2,retention75,,MBON28,0.0
+g_reward x2,retention75,,MBON29,1.0
+g_reward x2,retention75,,MBON30,0.0
+g_reward x2,retention75,,MBON31,0.0
+g_reward x2,retention75,,MBON32,0.0
+g_reward x2,retention75,,MBON33,0.5294117647058824
+g_reward x2,retention75,,MBON35,0.0
+kappa x0.5,pam75,,MBON01,0.0
+kappa x0.5,pam75,,MBON02,0.0
+kappa x0.5,pam75,,MBON03,0.0
+kappa x0.5,pam75,,MBON04,0.0
+kappa x0.5,pam75,,MBON05,0.0
+kappa x0.5,pam75,,MBON06,0.0
+kappa x0.5,pam75,,MBON07,0.0
+kappa x0.5,pam75,,MBON09,1.0
+kappa x0.5,pam75,,MBON10,0.037837837837838076
+kappa x0.5,pam75,,MBON11,0.0
+kappa x0.5,pam75,,MBON12,0.0
+kappa x0.5,pam75,,MBON13,0.0
+kappa x0.5,pam75,,MBON14,0.0
+kappa x0.5,pam75,,MBON15,0.0
+kappa x0.5,pam75,,MBON15-like,0.0
+kappa x0.5,pam75,,MBON16,0.0
+kappa x0.5,pam75,,MBON17,0.0
+kappa x0.5,pam75,,MBON17-like,0.0
+kappa x0.5,pam75,,MBON18,0.0
+kappa x0.5,pam75,,MBON19,0.0
+kappa x0.5,pam75,,MBON20,-0.10869565217391297
+kappa x0.5,pam75,,MBON21,-0.6470588235294118
+kappa x0.5,pam75,,MBON22,0.0
+kappa x0.5,pam75,,MBON23,0.0
+kappa x0.5,pam75,,MBON24,0.0
+kappa x0.5,pam75,,"MBON25,MBON34",0.0
+kappa x0.5,pam75,,MBON26,0.2499999999999999
+kappa x0.5,pam75,,MBON27,0.0
+kappa x0.5,pam75,,MBON28,0.0
+kappa x0.5,pam75,,MBON29,1.0
+kappa x0.5,pam75,,MBON30,0.0
+kappa x0.5,pam75,,MBON31,0.0
+kappa x0.5,pam75,,MBON32,0.0
+kappa x0.5,pam75,,MBON33,0.5714285714285715
+kappa x0.5,pam75,,MBON35,0.0
+kappa x0.5,intact,13.333333333333334,MBON01,0.0
+kappa x0.5,intact,13.333333333333334,MBON02,0.0
+kappa x0.5,intact,13.333333333333334,MBON03,0.0
+kappa x0.5,intact,13.333333333333334,MBON04,0.0
+kappa x0.5,intact,13.333333333333334,MBON05,0.0
+kappa x0.5,intact,13.333333333333334,MBON06,0.0
+kappa x0.5,intact,13.333333333333334,MBON07,0.0
+kappa x0.5,intact,13.333333333333334,MBON09,1.0
+kappa x0.5,intact,13.333333333333334,MBON10,0.01648351648351653
+kappa x0.5,intact,13.333333333333334,MBON11,0.0
+kappa x0.5,intact,13.333333333333334,MBON12,0.0
+kappa x0.5,intact,13.333333333333334,MBON13,0.0
+kappa x0.5,intact,13.333333333333334,MBON14,0.0
+kappa x0.5,intact,13.333333333333334,MBON15,0.0
+kappa x0.5,intact,13.333333333333334,MBON15-like,0.0
+kappa x0.5,intact,13.333333333333334,MBON16,0.0
+kappa x0.5,intact,13.333333333333334,MBON17,0.0
+kappa x0.5,intact,13.333333333333334,MBON17-like,0.0
+kappa x0.5,intact,13.333333333333334,MBON18,0.0
+kappa x0.5,intact,13.333333333333334,MBON19,0.0
+kappa x0.5,intact,13.333333333333334,MBON20,-0.13043478260869565
+kappa x0.5,intact,13.333333333333334,MBON21,-0.5625000000000001
+kappa x0.5,intact,13.333333333333334,MBON22,0.0
+kappa x0.5,intact,13.333333333333334,MBON23,0.0
+kappa x0.5,intact,13.333333333333334,MBON24,0.0
+kappa x0.5,intact,13.333333333333334,"MBON25,MBON34",0.0
+kappa x0.5,intact,13.333333333333334,MBON26,-0.33333333333333337
+kappa x0.5,intact,13.333333333333334,MBON27,0.0
+kappa x0.5,intact,13.333333333333334,MBON28,0.0
+kappa x0.5,intact,13.333333333333334,MBON29,1.0
+kappa x0.5,intact,13.333333333333334,MBON30,0.0
+kappa x0.5,intact,13.333333333333334,MBON31,0.0
+kappa x0.5,intact,13.333333333333334,MBON32,0.0
+kappa x0.5,intact,13.333333333333334,MBON33,0.375
+kappa x0.5,intact,13.333333333333334,MBON35,0.0
+kappa x0.5,pam90,,MBON01,0.0
+kappa x0.5,pam90,,MBON02,0.0
+kappa x0.5,pam90,,MBON03,0.0
+kappa x0.5,pam90,,MBON04,0.0
+kappa x0.5,pam90,,MBON05,0.0
+kappa x0.5,pam90,,MBON06,0.0
+kappa x0.5,pam90,,MBON07,0.0
+kappa x0.5,pam90,,MBON09,-0.06666666666666671
+kappa x0.5,pam90,,MBON10,0.0
+kappa x0.5,pam90,,MBON11,0.0
+kappa x0.5,pam90,,MBON12,0.0
+kappa x0.5,pam90,,MBON13,0.0
+kappa x0.5,pam90,,MBON14,0.0
+kappa x0.5,pam90,,MBON15,0.0
+kappa x0.5,pam90,,MBON15-like,0.0
+kappa x0.5,pam90,,MBON16,0.0
+kappa x0.5,pam90,,MBON17,0.0
+kappa x0.5,pam90,,MBON17-like,0.0
+kappa x0.5,pam90,,MBON18,0.0
+kappa x0.5,pam90,,MBON19,0.0
+kappa x0.5,pam90,,MBON20,0.043478260869565154
+kappa x0.5,pam90,,MBON21,0.11764705882352948
+kappa x0.5,pam90,,MBON22,0.0
+kappa x0.5,pam90,,MBON23,0.0
+kappa x0.5,pam90,,MBON24,0.0
+kappa x0.5,pam90,,"MBON25,MBON34",0.0
+kappa x0.5,pam90,,MBON26,0.12499999999999994
+kappa x0.5,pam90,,MBON27,0.0
+kappa x0.5,pam90,,MBON28,0.0
+kappa x0.5,pam90,,MBON29,0.5
+kappa x0.5,pam90,,MBON30,0.0
+kappa x0.5,pam90,,MBON31,0.0
+kappa x0.5,pam90,,MBON32,0.0
+kappa x0.5,pam90,,MBON33,-0.3571428571428572
+kappa x0.5,pam90,,MBON35,0.0
+kappa x0.5,retention75,,MBON01,0.0
+kappa x0.5,retention75,,MBON02,0.0
+kappa x0.5,retention75,,MBON03,0.0
+kappa x0.5,retention75,,MBON04,0.0
+kappa x0.5,retention75,,MBON05,0.0
+kappa x0.5,retention75,,MBON06,0.0
+kappa x0.5,retention75,,MBON07,0.0
+kappa x0.5,retention75,,MBON09,0.9375
+kappa x0.5,retention75,,MBON10,0.01648351648351653
+kappa x0.5,retention75,,MBON11,0.0
+kappa x0.5,retention75,,MBON12,0.0
+kappa x0.5,retention75,,MBON13,0.0
+kappa x0.5,retention75,,MBON14,0.0
+kappa x0.5,retention75,,MBON15,0.0
+kappa x0.5,retention75,,MBON15-like,0.0
+kappa x0.5,retention75,,MBON16,0.0
+kappa x0.5,retention75,,MBON17,0.0
+kappa x0.5,retention75,,MBON17-like,0.0
+kappa x0.5,retention75,,MBON18,0.0
+kappa x0.5,retention75,,MBON19,0.0
+kappa x0.5,retention75,,MBON20,-0.08695652173913049
+kappa x0.5,retention75,,MBON21,-0.5625000000000001
+kappa x0.5,retention75,,MBON22,0.0
+kappa x0.5,retention75,,MBON23,0.0
+kappa x0.5,retention75,,MBON24,0.0
+kappa x0.5,retention75,,"MBON25,MBON34",0.0
+kappa x0.5,retention75,,MBON26,-0.0833333333333334
+kappa x0.5,retention75,,MBON27,0.0
+kappa x0.5,retention75,,MBON28,0.0
+kappa x0.5,retention75,,MBON29,1.0
+kappa x0.5,retention75,,MBON30,0.0
+kappa x0.5,retention75,,MBON31,0.0
+kappa x0.5,retention75,,MBON32,0.0
+kappa x0.5,retention75,,MBON33,0.375
+kappa x0.5,retention75,,MBON35,0.0
+g_reward x2,ldopa30,,MBON01,0.0
+g_reward x2,ldopa30,,MBON02,0.0
+g_reward x2,ldopa30,,MBON03,0.0
+g_reward x2,ldopa30,,MBON04,0.0
+g_reward x2,ldopa30,,MBON05,0.0
+g_reward x2,ldopa30,,MBON06,0.0
+g_reward x2,ldopa30,,MBON07,0.0
+g_reward x2,ldopa30,,MBON09,0.75
+g_reward x2,ldopa30,,MBON10,0.03296703296703306
+g_reward x2,ldopa30,,MBON11,0.0
+g_reward x2,ldopa30,,MBON12,0.0
+g_reward x2,ldopa30,,MBON13,0.0
+g_reward x2,ldopa30,,MBON14,0.0
+g_reward x2,ldopa30,,MBON15,0.0
+g_reward x2,ldopa30,,MBON15-like,0.0
+g_reward x2,ldopa30,,MBON16,0.0
+g_reward x2,ldopa30,,MBON17,0.0
+g_reward x2,ldopa30,,MBON17-like,0.0
+g_reward x2,ldopa30,,MBON18,0.0
+g_reward x2,ldopa30,,MBON19,0.0
+g_reward x2,ldopa30,,MBON20,-0.13636363636363635
+g_reward x2,ldopa30,,MBON21,-0.3529411764705882
+g_reward x2,ldopa30,,MBON22,0.0
+g_reward x2,ldopa30,,MBON23,0.0
+g_reward x2,ldopa30,,MBON24,0.0
+g_reward x2,ldopa30,,"MBON25,MBON34",0.0
+g_reward x2,ldopa30,,MBON26,-0.15384615384615394
+g_reward x2,ldopa30,,MBON27,0.0
+g_reward x2,ldopa30,,MBON28,0.0
+g_reward x2,ldopa30,,MBON29,0.0
+g_reward x2,ldopa30,,MBON30,0.0
+g_reward x2,ldopa30,,MBON31,0.0
+g_reward x2,ldopa30,,MBON32,0.0
+g_reward x2,ldopa30,,MBON33,0.33333333333333326
+g_reward x2,ldopa30,,MBON35,0.0
+kappa x2,intact,12.5,MBON01,0.0
+kappa x2,intact,12.5,MBON02,0.0
+kappa x2,intact,12.5,MBON03,0.0
+kappa x2,intact,12.5,MBON04,0.0
+kappa x2,intact,12.5,MBON05,0.0
+kappa x2,intact,12.5,MBON06,0.0
+kappa x2,intact,12.5,MBON07,0.0
+kappa x2,intact,12.5,MBON09,1.0
+kappa x2,intact,12.5,MBON10,0.005464480874316676
+kappa x2,intact,12.5,MBON11,0.0
+kappa x2,intact,12.5,MBON12,0.0
+kappa x2,intact,12.5,MBON13,0.0
+kappa x2,intact,12.5,MBON14,1.0
+kappa x2,intact,12.5,MBON15,0.0
+kappa x2,intact,12.5,MBON15-like,0.0
+kappa x2,intact,12.5,MBON16,0.0
+kappa x2,intact,12.5,MBON17,0.0
+kappa x2,intact,12.5,MBON17-like,0.0
+kappa x2,intact,12.5,MBON18,0.0
+kappa x2,intact,12.5,MBON19,0.0
+kappa x2,intact,12.5,MBON20,-0.20454545454545453
+kappa x2,intact,12.5,MBON21,-0.49999999999999994
+kappa x2,intact,12.5,MBON22,0.0
+kappa x2,intact,12.5,MBON23,0.0
+kappa x2,intact,12.5,MBON24,0.0
+kappa x2,intact,12.5,"MBON25,MBON34",0.0
+kappa x2,intact,12.5,MBON26,-0.3636363636363635
+kappa x2,intact,12.5,MBON27,0.0
+kappa x2,intact,12.5,MBON28,0.0
+kappa x2,intact,12.5,MBON29,0.0
+kappa x2,intact,12.5,MBON30,0.0
+kappa x2,intact,12.5,MBON31,0.0
+kappa x2,intact,12.5,MBON32,0.0
+kappa x2,intact,12.5,MBON33,0.26666666666666655
+kappa x2,intact,12.5,MBON35,0.0
+kappa x2,pam75,,MBON01,0.0
+kappa x2,pam75,,MBON02,0.0
+kappa x2,pam75,,MBON03,0.0
+kappa x2,pam75,,MBON04,0.0
+kappa x2,pam75,,MBON05,0.0
+kappa x2,pam75,,MBON06,0.0
+kappa x2,pam75,,MBON07,0.0
+kappa x2,pam75,,MBON09,0.9333333333333332
+kappa x2,pam75,,MBON10,0.010928961748633772
+kappa x2,pam75,,MBON11,0.0
+kappa x2,pam75,,MBON12,0.0
+kappa x2,pam75,,MBON13,0.0
+kappa x2,pam75,,MBON14,0.0
+kappa x2,pam75,,MBON15,0.0
+kappa x2,pam75,,MBON15-like,0.0
+kappa x2,pam75,,MBON16,0.0
+kappa x2,pam75,,MBON17,0.0
+kappa x2,pam75,,MBON17-like,0.0
+kappa x2,pam75,,MBON18,0.0
+kappa x2,pam75,,MBON19,0.0
+kappa x2,pam75,,MBON20,-0.0833333333333334
+kappa x2,pam75,,MBON21,-0.8
+kappa x2,pam75,,MBON22,0.0
+kappa x2,pam75,,MBON23,0.0
+kappa x2,pam75,,MBON24,0.0
+kappa x2,pam75,,"MBON25,MBON34",0.0
+kappa x2,pam75,,MBON26,0.2499999999999999
+kappa x2,pam75,,MBON27,0.0
+kappa x2,pam75,,MBON28,0.0
+kappa x2,pam75,,MBON29,1.0
+kappa x2,pam75,,MBON30,0.0
+kappa x2,pam75,,MBON31,0.0
+kappa x2,pam75,,MBON32,0.0
+kappa x2,pam75,,MBON33,0.4285714285714286
+kappa x2,pam75,,MBON35,0.0
+kappa x2,pam90,,MBON01,0.0
+kappa x2,pam90,,MBON02,0.0
+kappa x2,pam90,,MBON03,0.0
+kappa x2,pam90,,MBON04,0.0
+kappa x2,pam90,,MBON05,0.0
+kappa x2,pam90,,MBON06,0.0
+kappa x2,pam90,,MBON07,0.0
+kappa x2,pam90,,MBON09,-0.06666666666666671
+kappa x2,pam90,,MBON10,0.016393442622950657
+kappa x2,pam90,,MBON11,0.0
+kappa x2,pam90,,MBON12,0.0
+kappa x2,pam90,,MBON13,0.0
+kappa x2,pam90,,MBON14,0.0
+kappa x2,pam90,,MBON15,0.0
+kappa x2,pam90,,MBON15-like,0.0
+kappa x2,pam90,,MBON16,0.0
+kappa x2,pam90,,MBON17,0.0
+kappa x2,pam90,,MBON17-like,0.0
+kappa x2,pam90,,MBON18,0.0
+kappa x2,pam90,,MBON19,0.0
+kappa x2,pam90,,MBON20,0.04166666666666661
+kappa x2,pam90,,MBON21,0.0
+kappa x2,pam90,,MBON22,0.0
+kappa x2,pam90,,MBON23,0.0
+kappa x2,pam90,,MBON24,0.0
+kappa x2,pam90,,"MBON25,MBON34",0.0
+kappa x2,pam90,,MBON26,0.12500000000000008
+kappa x2,pam90,,MBON27,0.0
+kappa x2,pam90,,MBON28,0.0
+kappa x2,pam90,,MBON29,0.5
+kappa x2,pam90,,MBON30,0.0
+kappa x2,pam90,,MBON31,0.0
+kappa x2,pam90,,MBON32,0.0
+kappa x2,pam90,,MBON33,0.0
+kappa x2,pam90,,MBON35,0.0
+kappa x2,retention75,,MBON01,0.0
+kappa x2,retention75,,MBON02,0.0
+kappa x2,retention75,,MBON03,0.0
+kappa x2,retention75,,MBON04,0.0
+kappa x2,retention75,,MBON05,0.0
+kappa x2,retention75,,MBON06,0.0
+kappa x2,retention75,,MBON07,0.0
+kappa x2,retention75,,MBON09,0.9333333333333332
+kappa x2,retention75,,MBON10,0.005464480874316676
+kappa x2,retention75,,MBON11,0.0
+kappa x2,retention75,,MBON12,0.0
+kappa x2,retention75,,MBON13,0.0
+kappa x2,retention75,,MBON14,1.0
+kappa x2,retention75,,MBON15,0.0
+kappa x2,retention75,,MBON15-like,0.0
+kappa x2,retention75,,MBON16,0.0
+kappa x2,retention75,,MBON17,0.0
+kappa x2,retention75,,MBON17-like,0.0
+kappa x2,retention75,,MBON18,0.0
+kappa x2,retention75,,MBON19,0.0
+kappa x2,retention75,,MBON20,-0.11363636363636356
+kappa x2,retention75,,MBON21,-0.4375
+kappa x2,retention75,,MBON22,0.0
+kappa x2,retention75,,MBON23,0.0
+kappa x2,retention75,,MBON24,0.0
+kappa x2,retention75,,"MBON25,MBON34",0.0
+kappa x2,retention75,,MBON26,-0.36363636363636365
+kappa x2,retention75,,MBON27,0.0
+kappa x2,retention75,,MBON28,0.0
+kappa x2,retention75,,MBON29,0.0
+kappa x2,retention75,,MBON30,0.0
+kappa x2,retention75,,MBON31,0.0
+kappa x2,retention75,,MBON32,0.0
+kappa x2,retention75,,MBON33,0.2
+kappa x2,retention75,,MBON35,0.0
+kappa x0.5,ldopa30,,MBON01,0.0
+kappa x0.5,ldopa30,,MBON02,0.0
+kappa x0.5,ldopa30,,MBON03,0.0
+kappa x0.5,ldopa30,,MBON04,0.0
+kappa x0.5,ldopa30,,MBON05,0.0
+kappa x0.5,ldopa30,,MBON06,0.0
+kappa x0.5,ldopa30,,MBON07,0.0
+kappa x0.5,ldopa30,,MBON09,0.5384615384615384
+kappa x0.5,ldopa30,,MBON10,0.0
+kappa x0.5,ldopa30,,MBON11,0.0
+kappa x0.5,ldopa30,,MBON12,0.0
+kappa x0.5,ldopa30,,MBON13,0.0
+kappa x0.5,ldopa30,,MBON14,0.0
+kappa x0.5,ldopa30,,MBON15,0.0
+kappa x0.5,ldopa30,,MBON15-like,0.0
+kappa x0.5,ldopa30,,MBON16,0.0
+kappa x0.5,ldopa30,,MBON17,0.0
+kappa x0.5,ldopa30,,MBON17-like,0.0
+kappa x0.5,ldopa30,,MBON18,0.0
+kappa x0.5,ldopa30,,MBON19,0.0
+kappa x0.5,ldopa30,,MBON20,-0.08695652173913049
+kappa x0.5,ldopa30,,MBON21,-0.3333333333333334
+kappa x0.5,ldopa30,,MBON22,0.0
+kappa x0.5,ldopa30,,MBON23,0.0
+kappa x0.5,ldopa30,,MBON24,0.0
+kappa x0.5,ldopa30,,"MBON25,MBON34",0.0
+kappa x0.5,ldopa30,,MBON26,0.0
+kappa x0.5,ldopa30,,MBON27,0.0
+kappa x0.5,ldopa30,,MBON28,0.0
+kappa x0.5,ldopa30,,MBON29,1.0
+kappa x0.5,ldopa30,,MBON30,0.0
+kappa x0.5,ldopa30,,MBON31,0.0
+kappa x0.5,ldopa30,,MBON32,0.0
+kappa x0.5,ldopa30,,MBON33,0.07692307692307697
+kappa x0.5,ldopa30,,MBON35,0.0
+eta x0.5,intact,13.333333333333334,MBON01,0.0
+eta x0.5,intact,13.333333333333334,MBON02,0.0
+eta x0.5,intact,13.333333333333334,MBON03,0.0
+eta x0.5,intact,13.333333333333334,MBON04,0.0
+eta x0.5,intact,13.333333333333334,MBON05,0.0
+eta x0.5,intact,13.333333333333334,MBON06,0.0
+eta x0.5,intact,13.333333333333334,MBON07,0.0
+eta x0.5,intact,13.333333333333334,MBON09,0.5625
+eta x0.5,intact,13.333333333333334,MBON10,0.005494505494505649
+eta x0.5,intact,13.333333333333334,MBON11,0.0
+eta x0.5,intact,13.333333333333334,MBON12,0.0
+eta x0.5,intact,13.333333333333334,MBON13,0.0
+eta x0.5,intact,13.333333333333334,MBON14,1.0
+eta x0.5,intact,13.333333333333334,MBON15,0.0
+eta x0.5,intact,13.333333333333334,MBON15-like,0.0
+eta x0.5,intact,13.333333333333334,MBON16,0.0
+eta x0.5,intact,13.333333333333334,MBON17,0.0
+eta x0.5,intact,13.333333333333334,MBON17-like,0.0
+eta x0.5,intact,13.333333333333334,MBON18,0.0
+eta x0.5,intact,13.333333333333334,MBON19,0.0
+eta x0.5,intact,13.333333333333334,MBON20,-0.04255319148936164
+eta x0.5,intact,13.333333333333334,MBON21,-0.3333333333333334
+eta x0.5,intact,13.333333333333334,MBON22,0.0
+eta x0.5,intact,13.333333333333334,MBON23,0.0
+eta x0.5,intact,13.333333333333334,MBON24,0.0
+eta x0.5,intact,13.333333333333334,"MBON25,MBON34",0.0
+eta x0.5,intact,13.333333333333334,MBON26,-0.8750000000000002
+eta x0.5,intact,13.333333333333334,MBON27,0.0
+eta x0.5,intact,13.333333333333334,MBON28,0.0
+eta x0.5,intact,13.333333333333334,MBON29,1.0
+eta x0.5,intact,13.333333333333334,MBON30,0.0
+eta x0.5,intact,13.333333333333334,MBON31,0.0
+eta x0.5,intact,13.333333333333334,MBON32,0.0
+eta x0.5,intact,13.333333333333334,MBON33,0.4117647058823529
+eta x0.5,intact,13.333333333333334,MBON35,0.0
+eta x0.5,pam75,,MBON01,0.0
+eta x0.5,pam75,,MBON02,0.0
+eta x0.5,pam75,,MBON03,0.0
+eta x0.5,pam75,,MBON04,0.0
+eta x0.5,pam75,,MBON05,0.0
+eta x0.5,pam75,,MBON06,0.0
+eta x0.5,pam75,,MBON07,0.0
+eta x0.5,pam75,,MBON09,0.5333333333333333
+eta x0.5,pam75,,MBON10,0.021621621621621817
+eta x0.5,pam75,,MBON11,0.0
+eta x0.5,pam75,,MBON12,0.0
+eta x0.5,pam75,,MBON13,0.0
+eta x0.5,pam75,,MBON14,0.0
+eta x0.5,pam75,,MBON15,0.0
+eta x0.5,pam75,,MBON15-like,0.0
+eta x0.5,pam75,,MBON16,0.0
+eta x0.5,pam75,,MBON17,0.0
+eta x0.5,pam75,,MBON17-like,0.0
+eta x0.5,pam75,,MBON18,0.0
+eta x0.5,pam75,,MBON19,0.0
+eta x0.5,pam75,,MBON20,-0.043478260869565154
+eta x0.5,pam75,,MBON21,-0.2941176470588236
+eta x0.5,pam75,,MBON22,0.0
+eta x0.5,pam75,,MBON23,0.0
+eta x0.5,pam75,,MBON24,0.0
+eta x0.5,pam75,,"MBON25,MBON34",0.0
+eta x0.5,pam75,,MBON26,0.1875
+eta x0.5,pam75,,MBON27,0.0
+eta x0.5,pam75,,MBON28,0.0
+eta x0.5,pam75,,MBON29,1.0
+eta x0.5,pam75,,MBON30,0.0
+eta x0.5,pam75,,MBON31,0.0
+eta x0.5,pam75,,MBON32,0.0
+eta x0.5,pam75,,MBON33,0.21428571428571427
+eta x0.5,pam75,,MBON35,0.0
+eta x0.5,pam90,,MBON01,0.0
+eta x0.5,pam90,,MBON02,0.0
+eta x0.5,pam90,,MBON03,0.0
+eta x0.5,pam90,,MBON04,0.0
+eta x0.5,pam90,,MBON05,0.0
+eta x0.5,pam90,,MBON06,0.0
+eta x0.5,pam90,,MBON07,0.0
+eta x0.5,pam90,,MBON09,-0.06666666666666671
+eta x0.5,pam90,,MBON10,0.0
+eta x0.5,pam90,,MBON11,0.0
+eta x0.5,pam90,,MBON12,0.0
+eta x0.5,pam90,,MBON13,0.0
+eta x0.5,pam90,,MBON14,0.0
+eta x0.5,pam90,,MBON15,0.0
+eta x0.5,pam90,,MBON15-like,0.0
+eta x0.5,pam90,,MBON16,0.0
+eta x0.5,pam90,,MBON17,0.0
+eta x0.5,pam90,,MBON17-like,0.0
+eta x0.5,pam90,,MBON18,0.0
+eta x0.5,pam90,,MBON19,0.0
+eta x0.5,pam90,,MBON20,0.0625
+eta x0.5,pam90,,MBON21,-0.06666666666666671
+eta x0.5,pam90,,MBON22,0.0
+eta x0.5,pam90,,MBON23,0.0
+eta x0.5,pam90,,MBON24,0.0
+eta x0.5,pam90,,"MBON25,MBON34",0.0
+eta x0.5,pam90,,MBON26,0.0
+eta x0.5,pam90,,MBON27,0.0
+eta x0.5,pam90,,MBON28,0.0
+eta x0.5,pam90,,MBON29,0.0
+eta x0.5,pam90,,MBON30,0.0
+eta x0.5,pam90,,MBON31,0.0
+eta x0.5,pam90,,MBON32,0.0
+eta x0.5,pam90,,MBON33,-0.21428571428571427
+eta x0.5,pam90,,MBON35,0.0
+kappa x2,ldopa30,,MBON01,0.0
+kappa x2,ldopa30,,MBON02,0.0
+kappa x2,ldopa30,,MBON03,0.0
+kappa x2,ldopa30,,MBON04,0.0
+kappa x2,ldopa30,,MBON05,0.0
+kappa x2,ldopa30,,MBON06,0.0
+kappa x2,ldopa30,,MBON07,0.0
+kappa x2,ldopa30,,MBON09,1.0
+kappa x2,ldopa30,,MBON10,-0.0055555555555555
+kappa x2,ldopa30,,MBON11,0.0
+kappa x2,ldopa30,,MBON12,0.0
+kappa x2,ldopa30,,MBON13,0.0
+kappa x2,ldopa30,,MBON14,0.0
+kappa x2,ldopa30,,MBON15,0.0
+kappa x2,ldopa30,,MBON15-like,0.0
+kappa x2,ldopa30,,MBON16,0.0
+kappa x2,ldopa30,,MBON17,0.0
+kappa x2,ldopa30,,MBON17-like,0.0
+kappa x2,ldopa30,,MBON18,0.0
+kappa x2,ldopa30,,MBON19,0.0
+kappa x2,ldopa30,,MBON20,-0.1555555555555556
+kappa x2,ldopa30,,MBON21,-0.3
+kappa x2,ldopa30,,MBON22,0.0
+kappa x2,ldopa30,,MBON23,0.0
+kappa x2,ldopa30,,MBON24,0.0
+kappa x2,ldopa30,,"MBON25,MBON34",0.0
+kappa x2,ldopa30,,MBON26,-0.23076923076923075
+kappa x2,ldopa30,,MBON27,0.0
+kappa x2,ldopa30,,MBON28,0.0
+kappa x2,ldopa30,,MBON29,0.0
+kappa x2,ldopa30,,MBON30,0.0
+kappa x2,ldopa30,,MBON31,0.0
+kappa x2,ldopa30,,MBON32,0.0
+kappa x2,ldopa30,,MBON33,0.10000000000000006
+kappa x2,ldopa30,,MBON35,0.0
+eta x0.5,retention75,,MBON01,0.0
+eta x0.5,retention75,,MBON02,0.0
+eta x0.5,retention75,,MBON03,0.0
+eta x0.5,retention75,,MBON04,0.0
+eta x0.5,retention75,,MBON05,0.0
+eta x0.5,retention75,,MBON06,0.0
+eta x0.5,retention75,,MBON07,0.0
+eta x0.5,retention75,,MBON09,0.625
+eta x0.5,retention75,,MBON10,-0.005494505494505228
+eta x0.5,retention75,,MBON11,0.0
+eta x0.5,retention75,,MBON12,0.0
+eta x0.5,retention75,,MBON13,0.0
+eta x0.5,retention75,,MBON14,1.0
+eta x0.5,retention75,,MBON15,0.0
+eta x0.5,retention75,,MBON15-like,0.0
+eta x0.5,retention75,,MBON16,0.0
+eta x0.5,retention75,,MBON17,0.0
+eta x0.5,retention75,,MBON17-like,0.0
+eta x0.5,retention75,,MBON18,0.0
+eta x0.5,retention75,,MBON19,0.0
+eta x0.5,retention75,,MBON20,-0.08510638297872328
+eta x0.5,retention75,,MBON21,-0.46666666666666684
+eta x0.5,retention75,,MBON22,0.0
+eta x0.5,retention75,,MBON23,0.0
+eta x0.5,retention75,,MBON24,0.0
+eta x0.5,retention75,,"MBON25,MBON34",0.0
+eta x0.5,retention75,,MBON26,-0.7500000000000001
+eta x0.5,retention75,,MBON27,0.0
+eta x0.5,retention75,,MBON28,0.0
+eta x0.5,retention75,,MBON29,1.0
+eta x0.5,retention75,,MBON30,0.0
+eta x0.5,retention75,,MBON31,0.0
+eta x0.5,retention75,,MBON32,0.0
+eta x0.5,retention75,,MBON33,0.3529411764705882
+eta x0.5,retention75,,MBON35,0.0
+eta x2,intact,13.333333333333334,MBON01,0.0
+eta x2,intact,13.333333333333334,MBON02,0.0
+eta x2,intact,13.333333333333334,MBON03,0.0
+eta x2,intact,13.333333333333334,MBON04,0.0
+eta x2,intact,13.333333333333334,MBON05,0.0
+eta x2,intact,13.333333333333334,MBON06,0.0
+eta x2,intact,13.333333333333334,MBON07,0.0
+eta x2,intact,13.333333333333334,MBON09,1.0
+eta x2,intact,13.333333333333334,MBON10,0.005494505494505649
+eta x2,intact,13.333333333333334,MBON11,0.0
+eta x2,intact,13.333333333333334,MBON12,0.0
+eta x2,intact,13.333333333333334,MBON13,0.0
+eta x2,intact,13.333333333333334,MBON14,1.0
+eta x2,intact,13.333333333333334,MBON15,0.0
+eta x2,intact,13.333333333333334,MBON15-like,0.0
+eta x2,intact,13.333333333333334,MBON16,0.0
+eta x2,intact,13.333333333333334,MBON17,0.0
+eta x2,intact,13.333333333333334,MBON17-like,0.0
+eta x2,intact,13.333333333333334,MBON18,0.0
+eta x2,intact,13.333333333333334,MBON19,0.0
+eta x2,intact,13.333333333333334,MBON20,-0.08510638297872328
+eta x2,intact,13.333333333333334,MBON21,-0.5333333333333334
+eta x2,intact,13.333333333333334,MBON22,0.0
+eta x2,intact,13.333333333333334,MBON23,0.0
+eta x2,intact,13.333333333333334,MBON24,0.0
+eta x2,intact,13.333333333333334,"MBON25,MBON34",0.0
+eta x2,intact,13.333333333333334,MBON26,-0.625
+eta x2,intact,13.333333333333334,MBON27,0.0
+eta x2,intact,13.333333333333334,MBON28,0.0
+eta x2,intact,13.333333333333334,MBON29,1.0
+eta x2,intact,13.333333333333334,MBON30,0.0
+eta x2,intact,13.333333333333334,MBON31,0.0
+eta x2,intact,13.333333333333334,MBON32,0.0
+eta x2,intact,13.333333333333334,MBON33,0.23529411764705885
+eta x2,intact,13.333333333333334,MBON35,0.0
+eta x2,pam75,,MBON01,0.0
+eta x2,pam75,,MBON02,0.0
+eta x2,pam75,,MBON03,0.0
+eta x2,pam75,,MBON04,0.0
+eta x2,pam75,,MBON05,0.0
+eta x2,pam75,,MBON06,0.0
+eta x2,pam75,,MBON07,0.0
+eta x2,pam75,,MBON09,1.0
+eta x2,pam75,,MBON10,0.037837837837838076
+eta x2,pam75,,MBON11,0.0
+eta x2,pam75,,MBON12,0.0
+eta x2,pam75,,MBON13,0.0
+eta x2,pam75,,MBON14,0.0
+eta x2,pam75,,MBON15,0.0
+eta x2,pam75,,MBON15-like,0.0
+eta x2,pam75,,MBON16,0.0
+eta x2,pam75,,MBON17,0.0
+eta x2,pam75,,MBON17-like,0.0
+eta x2,pam75,,MBON18,0.0
+eta x2,pam75,,MBON19,0.0
+eta x2,pam75,,MBON20,-0.10869565217391297
+eta x2,pam75,,MBON21,-0.6470588235294118
+eta x2,pam75,,MBON22,0.0
+eta x2,pam75,,MBON23,0.0
+eta x2,pam75,,MBON24,0.0
+eta x2,pam75,,"MBON25,MBON34",0.0
+eta x2,pam75,,MBON26,0.2499999999999999
+eta x2,pam75,,MBON27,0.0
+eta x2,pam75,,MBON28,0.0
+eta x2,pam75,,MBON29,1.0
+eta x2,pam75,,MBON30,0.0
+eta x2,pam75,,MBON31,0.0
+eta x2,pam75,,MBON32,0.0
+eta x2,pam75,,MBON33,0.5714285714285715
+eta x2,pam75,,MBON35,0.0
+eta x2,pam90,,MBON01,0.0
+eta x2,pam90,,MBON02,0.0
+eta x2,pam90,,MBON03,0.0
+eta x2,pam90,,MBON04,0.0
+eta x2,pam90,,MBON05,0.0
+eta x2,pam90,,MBON06,0.0
+eta x2,pam90,,MBON07,0.0
+eta x2,pam90,,MBON09,0.06666666666666657
+eta x2,pam90,,MBON10,0.021857923497267544
+eta x2,pam90,,MBON11,0.0
+eta x2,pam90,,MBON12,0.0
+eta x2,pam90,,MBON13,0.0
+eta x2,pam90,,MBON14,0.0
+eta x2,pam90,,MBON15,0.0
+eta x2,pam90,,MBON15-like,0.0
+eta x2,pam90,,MBON16,0.0
+eta x2,pam90,,MBON17,0.0
+eta x2,pam90,,MBON17-like,0.0
+eta x2,pam90,,MBON18,0.0
+eta x2,pam90,,MBON19,0.0
+eta x2,pam90,,MBON20,0.0
+eta x2,pam90,,MBON21,-0.06666666666666671
+eta x2,pam90,,MBON22,0.0
+eta x2,pam90,,MBON23,0.0
+eta x2,pam90,,MBON24,0.0
+eta x2,pam90,,"MBON25,MBON34",0.0
+eta x2,pam90,,MBON26,0.12499999999999994
+eta x2,pam90,,MBON27,0.0
+eta x2,pam90,,MBON28,0.0
+eta x2,pam90,,MBON29,0.0
+eta x2,pam90,,MBON30,0.0
+eta x2,pam90,,MBON31,0.0
+eta x2,pam90,,MBON32,0.0
+eta x2,pam90,,MBON33,-0.1428571428571428
+eta x2,pam90,,MBON35,0.0
+eta x2,retention75,,MBON01,0.0
+eta x2,retention75,,MBON02,0.0
+eta x2,retention75,,MBON03,0.0
+eta x2,retention75,,MBON04,0.0
+eta x2,retention75,,MBON05,0.0
+eta x2,retention75,,MBON06,0.0
+eta x2,retention75,,MBON07,0.0
+eta x2,retention75,,MBON09,1.0
+eta x2,retention75,,MBON10,-0.01648351648351653
+eta x2,retention75,,MBON11,0.0
+eta x2,retention75,,MBON12,0.0
+eta x2,retention75,,MBON13,0.0
+eta x2,retention75,,MBON14,1.0
+eta x2,retention75,,MBON15,0.0
+eta x2,retention75,,MBON15-like,0.0
+eta x2,retention75,,MBON16,0.0
+eta x2,retention75,,MBON17,0.0
+eta x2,retention75,,MBON17-like,0.0
+eta x2,retention75,,MBON18,0.0
+eta x2,retention75,,MBON19,0.0
+eta x2,retention75,,MBON20,-0.04255319148936164
+eta x2,retention75,,MBON21,-0.4
+eta x2,retention75,,MBON22,0.0
+eta x2,retention75,,MBON23,0.0
+eta x2,retention75,,MBON24,0.0
+eta x2,retention75,,"MBON25,MBON34",0.0
+eta x2,retention75,,MBON26,-0.5000000000000002
+eta x2,retention75,,MBON27,0.0
+eta x2,retention75,,MBON28,0.0
+eta x2,retention75,,MBON29,1.0
+eta x2,retention75,,MBON30,0.0
+eta x2,retention75,,MBON31,0.0
+eta x2,retention75,,MBON32,0.0
+eta x2,retention75,,MBON33,0.3529411764705882
+eta x2,retention75,,MBON35,0.0
+eta x0.5,ldopa30,,MBON01,0.0
+eta x0.5,ldopa30,,MBON02,0.0
+eta x0.5,ldopa30,,MBON03,0.0
+eta x0.5,ldopa30,,MBON04,0.0
+eta x0.5,ldopa30,,MBON05,0.0
+eta x0.5,ldopa30,,MBON06,0.0
+eta x0.5,ldopa30,,MBON07,0.0
+eta x0.5,ldopa30,,MBON09,0.41666666666666663
+eta x0.5,ldopa30,,MBON10,-0.010989010989010877
+eta x0.5,ldopa30,,MBON11,0.0
+eta x0.5,ldopa30,,MBON12,0.0
+eta x0.5,ldopa30,,MBON13,0.0
+eta x0.5,ldopa30,,MBON14,0.0
+eta x0.5,ldopa30,,MBON15,0.0
+eta x0.5,ldopa30,,MBON15-like,0.0
+eta x0.5,ldopa30,,MBON16,0.0
+eta x0.5,ldopa30,,MBON17,0.0
+eta x0.5,ldopa30,,MBON17-like,0.0
+eta x0.5,ldopa30,,MBON18,0.0
+eta x0.5,ldopa30,,MBON19,0.0
+eta x0.5,ldopa30,,MBON20,-0.15909090909090895
+eta x0.5,ldopa30,,MBON21,-0.11764705882352935
+eta x0.5,ldopa30,,MBON22,0.0
+eta x0.5,ldopa30,,MBON23,0.0
+eta x0.5,ldopa30,,MBON24,0.0
+eta x0.5,ldopa30,,"MBON25,MBON34",0.0
+eta x0.5,ldopa30,,MBON26,-0.23076923076923075
+eta x0.5,ldopa30,,MBON27,0.0
+eta x0.5,ldopa30,,MBON28,0.0
+eta x0.5,ldopa30,,MBON29,0.0
+eta x0.5,ldopa30,,MBON30,0.0
+eta x0.5,ldopa30,,MBON31,0.0
+eta x0.5,ldopa30,,MBON32,0.0
+eta x0.5,ldopa30,,MBON33,0.2
+eta x0.5,ldopa30,,MBON35,0.0
+eta x2,ldopa30,,MBON01,0.0
+eta x2,ldopa30,,MBON02,0.0
+eta x2,ldopa30,,MBON03,0.0
+eta x2,ldopa30,,MBON04,0.0
+eta x2,ldopa30,,MBON05,0.0
+eta x2,ldopa30,,MBON06,0.0
+eta x2,ldopa30,,MBON07,0.0
+eta x2,ldopa30,,MBON09,1.0
+eta x2,ldopa30,,MBON10,-0.005494505494505228
+eta x2,ldopa30,,MBON11,0.0
+eta x2,ldopa30,,MBON12,0.0
+eta x2,ldopa30,,MBON13,0.0
+eta x2,ldopa30,,MBON14,0.0
+eta x2,ldopa30,,MBON15,0.0
+eta x2,ldopa30,,MBON15-like,0.0
+eta x2,ldopa30,,MBON16,0.0
+eta x2,ldopa30,,MBON17,0.0
+eta x2,ldopa30,,MBON17-like,0.0
+eta x2,ldopa30,,MBON18,0.0
+eta x2,ldopa30,,MBON19,0.0
+eta x2,ldopa30,,MBON20,-0.18181818181818174
+eta x2,ldopa30,,MBON21,-0.5294117647058824
+eta x2,ldopa30,,MBON22,0.0
+eta x2,ldopa30,,MBON23,0.0
+eta x2,ldopa30,,MBON24,0.0
+eta x2,ldopa30,,"MBON25,MBON34",0.0
+eta x2,ldopa30,,MBON26,-0.4615384615384615
+eta x2,ldopa30,,MBON27,0.0
+eta x2,ldopa30,,MBON28,0.0
+eta x2,ldopa30,,MBON29,0.0
+eta x2,ldopa30,,MBON30,0.0
+eta x2,ldopa30,,MBON31,0.0
+eta x2,ldopa30,,MBON32,0.0
+eta x2,ldopa30,,MBON33,0.4666666666666666
+eta x2,ldopa30,,MBON35,0.0
+no bitter boost,intact,12.5,MBON01,0.0
+no bitter boost,intact,12.5,MBON02,0.0
+no bitter boost,intact,12.5,MBON03,0.0
+no bitter boost,intact,12.5,MBON04,0.0
+no bitter boost,intact,12.5,MBON05,0.0
+no bitter boost,intact,12.5,MBON06,0.0
+no bitter boost,intact,12.5,MBON07,0.0
+no bitter boost,intact,12.5,MBON09,0.9333333333333332
+no bitter boost,intact,12.5,MBON10,-0.011111111111111212
+no bitter boost,intact,12.5,MBON11,0.0
+no bitter boost,intact,12.5,MBON12,0.0
+no bitter boost,intact,12.5,MBON13,0.0
+no bitter boost,intact,12.5,MBON14,0.0
+no bitter boost,intact,12.5,MBON15,0.0
+no bitter boost,intact,12.5,MBON15-like,0.0
+no bitter boost,intact,12.5,MBON16,0.0
+no bitter boost,intact,12.5,MBON17,0.0
+no bitter boost,intact,12.5,MBON17-like,0.0
+no bitter boost,intact,12.5,MBON18,0.0
+no bitter boost,intact,12.5,MBON19,0.0
+no bitter boost,intact,12.5,MBON20,-0.06382978723404255
+no bitter boost,intact,12.5,MBON21,-0.5625000000000001
+no bitter boost,intact,12.5,MBON22,0.0
+no bitter boost,intact,12.5,MBON23,0.0
+no bitter boost,intact,12.5,MBON24,0.0
+no bitter boost,intact,12.5,"MBON25,MBON34",0.0
+no bitter boost,intact,12.5,MBON26,-0.25000000000000006
+no bitter boost,intact,12.5,MBON27,0.0
+no bitter boost,intact,12.5,MBON28,0.0
+no bitter boost,intact,12.5,MBON29,1.0
+no bitter boost,intact,12.5,MBON30,0.0
+no bitter boost,intact,12.5,MBON31,0.0
+no bitter boost,intact,12.5,MBON32,0.0
+no bitter boost,intact,12.5,MBON33,0.45454545454545464
+no bitter boost,intact,12.5,MBON35,0.0
+no bitter boost,pam90,,MBON01,0.0
+no bitter boost,pam90,,MBON02,0.0
+no bitter boost,pam90,,MBON03,0.0
+no bitter boost,pam90,,MBON04,0.0
+no bitter boost,pam90,,MBON05,0.0
+no bitter boost,pam90,,MBON06,0.0
+no bitter boost,pam90,,MBON07,0.0
+no bitter boost,pam90,,MBON09,0.11764705882352948
+no bitter boost,pam90,,MBON10,-0.011235955056179879
+no bitter boost,pam90,,MBON11,0.0
+no bitter boost,pam90,,MBON12,0.0
+no bitter boost,pam90,,MBON13,0.0
+no bitter boost,pam90,,MBON14,1.0
+no bitter boost,pam90,,MBON15,0.0
+no bitter boost,pam90,,MBON15-like,0.0
+no bitter boost,pam90,,MBON16,0.0
+no bitter boost,pam90,,MBON17,0.0
+no bitter boost,pam90,,MBON17-like,0.0
+no bitter boost,pam90,,MBON18,0.0
+no bitter boost,pam90,,MBON19,0.0
+no bitter boost,pam90,,MBON20,0.0625
+no bitter boost,pam90,,MBON21,-0.15384615384615377
+no bitter boost,pam90,,MBON22,0.0
+no bitter boost,pam90,,MBON23,0.0
+no bitter boost,pam90,,MBON24,0.0
+no bitter boost,pam90,,"MBON25,MBON34",0.0
+no bitter boost,pam90,,MBON26,-0.26666666666666683
+no bitter boost,pam90,,MBON27,0.0
+no bitter boost,pam90,,MBON28,0.0
+no bitter boost,pam90,,MBON29,-1.9999999999999998
+no bitter boost,pam90,,MBON30,0.0
+no bitter boost,pam90,,MBON31,0.0
+no bitter boost,pam90,,MBON32,0.0
+no bitter boost,pam90,,MBON33,0.15384615384615377
+no bitter boost,pam90,,MBON35,0.0
+no bitter boost,pam75,,MBON01,0.0
+no bitter boost,pam75,,MBON02,0.0
+no bitter boost,pam75,,MBON03,0.0
+no bitter boost,pam75,,MBON04,0.0
+no bitter boost,pam75,,MBON05,0.0
+no bitter boost,pam75,,MBON06,0.0
+no bitter boost,pam75,,MBON07,0.0
+no bitter boost,pam75,,MBON09,1.0
+no bitter boost,pam75,,MBON10,0.0
+no bitter boost,pam75,,MBON11,0.0
+no bitter boost,pam75,,MBON12,0.0
+no bitter boost,pam75,,MBON13,0.0
+no bitter boost,pam75,,MBON14,1.0
+no bitter boost,pam75,,MBON15,0.0
+no bitter boost,pam75,,MBON15-like,0.0
+no bitter boost,pam75,,MBON16,0.0
+no bitter boost,pam75,,MBON17,0.0
+no bitter boost,pam75,,MBON17-like,0.0
+no bitter boost,pam75,,MBON18,0.0
+no bitter boost,pam75,,MBON19,0.0
+no bitter boost,pam75,,MBON20,-0.125
+no bitter boost,pam75,,MBON21,-1.153846153846154
+no bitter boost,pam75,,MBON22,0.0
+no bitter boost,pam75,,MBON23,0.0
+no bitter boost,pam75,,MBON24,0.0
+no bitter boost,pam75,,"MBON25,MBON34",0.0
+no bitter boost,pam75,,MBON26,-0.13333333333333341
+no bitter boost,pam75,,MBON27,0.0
+no bitter boost,pam75,,MBON28,0.0
+no bitter boost,pam75,,MBON29,1.0
+no bitter boost,pam75,,MBON30,0.0
+no bitter boost,pam75,,MBON31,0.0
+no bitter boost,pam75,,MBON32,0.0
+no bitter boost,pam75,,MBON33,0.4615384615384615
+no bitter boost,pam75,,MBON35,0.0
+no bitter boost,retention75,,MBON01,0.0
+no bitter boost,retention75,,MBON02,0.0
+no bitter boost,retention75,,MBON03,0.0
+no bitter boost,retention75,,MBON04,0.0
+no bitter boost,retention75,,MBON05,0.0
+no bitter boost,retention75,,MBON06,0.0
+no bitter boost,retention75,,MBON07,0.0
+no bitter boost,retention75,,MBON09,0.9333333333333332
+no bitter boost,retention75,,MBON10,-0.0055555555555555
+no bitter boost,retention75,,MBON11,0.0
+no bitter boost,retention75,,MBON12,0.0
+no bitter boost,retention75,,MBON13,0.0
+no bitter boost,retention75,,MBON14,0.0
+no bitter boost,retention75,,MBON15,0.0
+no bitter boost,retention75,,MBON15-like,0.0
+no bitter boost,retention75,,MBON16,0.0
+no bitter boost,retention75,,MBON17,0.0
+no bitter boost,retention75,,MBON17-like,0.0
+no bitter boost,retention75,,MBON18,0.0
+no bitter boost,retention75,,MBON19,0.0
+no bitter boost,retention75,,MBON20,-0.10638297872340419
+no bitter boost,retention75,,MBON21,-0.4375
+no bitter boost,retention75,,MBON22,0.0
+no bitter boost,retention75,,MBON23,0.0
+no bitter boost,retention75,,MBON24,0.0
+no bitter boost,retention75,,"MBON25,MBON34",0.0
+no bitter boost,retention75,,MBON26,-0.06250000000000004
+no bitter boost,retention75,,MBON27,0.0
+no bitter boost,retention75,,MBON28,0.0
+no bitter boost,retention75,,MBON29,1.0
+no bitter boost,retention75,,MBON30,0.0
+no bitter boost,retention75,,MBON31,0.0
+no bitter boost,retention75,,MBON32,0.0
+no bitter boost,retention75,,MBON33,0.6363636363636364
+no bitter boost,retention75,,MBON35,0.0
+no bitter boost,ldopa30,,MBON01,0.0
+no bitter boost,ldopa30,,MBON02,0.0
+no bitter boost,ldopa30,,MBON03,0.0
+no bitter boost,ldopa30,,MBON04,0.0
+no bitter boost,ldopa30,,MBON05,0.0
+no bitter boost,ldopa30,,MBON06,0.0
+no bitter boost,ldopa30,,MBON07,0.0
+no bitter boost,ldopa30,,MBON09,0.7857142857142857
+no bitter boost,ldopa30,,MBON10,-0.02824858757062162
+no bitter boost,ldopa30,,MBON11,0.0
+no bitter boost,ldopa30,,MBON12,0.0
+no bitter boost,ldopa30,,MBON13,0.0
+no bitter boost,ldopa30,,MBON14,0.0
+no bitter boost,ldopa30,,MBON15,0.0
+no bitter boost,ldopa30,,MBON15-like,0.0
+no bitter boost,ldopa30,,MBON16,0.0
+no bitter boost,ldopa30,,MBON17,0.0
+no bitter boost,ldopa30,,MBON17-like,0.0
+no bitter boost,ldopa30,,MBON18,0.0
+no bitter boost,ldopa30,,MBON19,0.0
+no bitter boost,ldopa30,,MBON20,-0.06382978723404255
+no bitter boost,ldopa30,,MBON21,-0.3529411764705882
+no bitter boost,ldopa30,,MBON22,0.0
+no bitter boost,ldopa30,,MBON23,0.0
+no bitter boost,ldopa30,,MBON24,0.0
+no bitter boost,ldopa30,,"MBON25,MBON34",0.0
+no bitter boost,ldopa30,,MBON26,-0.15384615384615377
+no bitter boost,ldopa30,,MBON27,0.0
+no bitter boost,ldopa30,,MBON28,0.0
+no bitter boost,ldopa30,,MBON29,0.0
+no bitter boost,ldopa30,,MBON30,0.0
+no bitter boost,ldopa30,,MBON31,0.0
+no bitter boost,ldopa30,,MBON32,0.0
+no bitter boost,ldopa30,,MBON33,0.45454545454545464
+no bitter boost,ldopa30,,MBON35,0.0

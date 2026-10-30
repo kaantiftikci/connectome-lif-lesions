@@ -1168,3 +1168,32 @@ PAM'ından 4'ü kalıyor ve kapı kompartman ortalamasına bağlı (4 nöron ×1
 = 40 nöron-eşdeğeri, 52'nin altında). Sonuç: hayatta kalanların
 hiperaktivitesi rezervi ancak kompartmanda yeterli nöron kaldığı sürece
 uzatabilir; eşik kompartman başına kalan hücre sayısıyla sınırlı.
+
+## 36. Pozitif/Parkinson kolunun parametre duyarlılığı (2026-10-30)
+
+`scripts/pd_sensitivity.py`; `artifacts/pd_sensitivity.csv`. Sekiz takım:
+temel (g_reward 0.5, κ 0.003, η 1e-4, acı ×4), g_reward ×0.5/×2, κ ×0.5/×2,
+η ×0.5/×2, acı düzeltmesiz. Beş ölçüm, MBON09 için:
+
+| takım | sağlam | %75 PAM | %90 PAM | korunum (%75) | L-DOPA 30 Hz eşleşmesiz |
+|---|---|---|---|---|---|
+| temel | 1.00 | 1.00 | −0.07 | 0.88 | 0.75 |
+| g_reward ×0.5 | 0.56 | 0.53 | −0.07 | 0.50 | 0.75 |
+| g_reward ×2 | 1.00 | 1.00 | 0.00 | 1.00 | 0.75 |
+| κ ×0.5 | 1.00 | 1.00 | −0.07 | 0.94 | 0.54 |
+| κ ×2 | 1.00 | 0.93 | −0.07 | 0.93 | 1.00 |
+| η ×0.5 | 0.56 | 0.53 | −0.07 | 0.62 | 0.42 |
+| η ×2 | 1.00 | 1.00 | 0.07 | 1.00 | 1.00 |
+| acı düzeltmesiz | 0.93 | 1.00 | 0.12 | 0.93 | 0.79 |
+
+**Yorum.** Dört nitel sonuç sekiz takımın hepsinde aynı: (1) iştah
+belleği MBON09'da oluşuyor (0.56–1.00; MBON33 daha zayıf, 0.24–0.45); (2)
+%75 PAM kaybında öğrenme korunuyor, %90'da kayboluyor (rezerv eşiği
+parametreden bağımsız, çünkü eşik kompartmanda kalan hücre sayısıyla
+belirleniyor); (3) kayıptan önce yazılan bellek korunuyor (korunum ≈
+sağlam değer); (4) adapte olmamış kapıda tonik dopamin eşleşmesiz
+bastırma üretiyor (0.42–1.00; κ ve η ile ölçeklenir). Acı yolunun
+düzeltilmesi şeker koluna etki etmiyor. Yalnızca büyüklükler
+(öğrenme indeksinin 0.56 mı 1.00 mü olduğu) ödül kazancı ve η ile
+değişiyor. Not: filtresiz listede görünen MBON14/MBON29 "öğrenmeleri" 2 Hz
+altı koku yanıtına dayanıyor (bölüm 33'teki eşik dışı), sayılmadı.
