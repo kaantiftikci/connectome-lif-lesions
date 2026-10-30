@@ -23,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sinek.data import load_flywire, group_indices, build_stimuli      # noqa: E402
 from sinek.data.flywire import Connectome                              # noqa: E402
 from sinek.lesion import LesionSpec, apply_lesion, apl_scaled, scale_edges   # noqa: E402
-from sinek.sim import firing_rates                                     # noqa: E402
+from sinek.sim import firing_rates, LIFParams                          # noqa: E402
 from sinek.neuromod import ModulationParams, ModulatedNetwork, simulate_modulated  # noqa: E402
 
 _G = {}
@@ -44,17 +44,18 @@ def build(cn, boost, procs_note=True):
     return Connectome(ids=cn.ids, W=W, meta=cn.meta, name=f"{cn.name}_bitterboost{boost:g}")
 
 
-def run_protocol(lcn, mpar, cs, us_idx, us_rate, extra):
+def run_protocol(lcn, mpar, cs, us_idx, us_rate, extra, lif=None):
+    lif = lif or _G.get("lif") or LIFParams()
     net0 = ModulatedNetwork(lcn, ModulationParams(kappa=0.0, eta=0.0, alpha_fast=0.0))
-    _, rb = simulate_modulated(net0, 400.0, poisson=cs, poisson_rate=150.0, seed=0)
+    _, rb = simulate_modulated(net0, 400.0, poisson=cs, poisson_rate=150.0, seed=0, params=lif)
     net = ModulatedNetwork(lcn, mpar); net.set_baseline(rb)
     if extra is not None:
         net.add_extrasynaptic(*extra)
-    pre_rec, _ = simulate_modulated(net, 500.0, poisson=cs, poisson_rate=150.0, seed=1, rbar=rb)
+    pre_rec, _ = simulate_modulated(net, 500.0, poisson=cs, poisson_rate=150.0, seed=1, rbar=rb, params=lif)
     pair = {int(i): 150.0 for i in cs}; pair.update({int(i): us_rate for i in us_idx})
-    pair_rec, rb = simulate_modulated(net, 1000.0, poisson=pair, seed=2, plastic=True, rbar=rb)
-    _, rb = simulate_modulated(net, 400.0, poisson=None, seed=3, rbar=rb)
-    post_rec, _ = simulate_modulated(net, 500.0, poisson=cs, poisson_rate=150.0, seed=4, rbar=rb)
+    pair_rec, rb = simulate_modulated(net, 1000.0, poisson=pair, seed=2, plastic=True, rbar=rb, params=lif)
+    _, rb = simulate_modulated(net, 400.0, poisson=None, seed=3, rbar=rb, params=lif)
+    post_rec, _ = simulate_modulated(net, 500.0, poisson=cs, poisson_rate=150.0, seed=4, rbar=rb, params=lif)
     rp = firing_rates(pair_rec, 100.0)
     return mbon_rates(pre_rec, lcn), mbon_rates(post_rec, lcn), rp
 
@@ -86,9 +87,21 @@ if __name__ == "__main__":
     ap.add_argument("--kc-scale", type=float, default=1.0, help="scale KC->MBON synapses of --kc-target by this factor")
     ap.add_argument("--kc-target", default="MBON09")
     ap.add_argument("--controls", nargs="*", type=int, default=[307])
+    ap.add_argument("--sex", choices=["female", "male"], default="female"); ap.add_argument("--count-scale", type=float, default=0.35)
+    ap.add_argument("--apl-ppl1-scale", type=float, default=1.0, help="scale APL->PPL1 synapses (item 1 fix)")
+    ap.add_argument("--tau-adapt", type=float, default=0.0); ap.add_argument("--delta-adapt", type=float, default=0.0)
     ap.add_argument("--out", default="results/compartment_map.csv")
     args = ap.parse_args()
-    cn = build(apl_scaled(load_flywire(), args.apl_scale), args.boost)
+    if args.sex == "male":
+        from sinek.data.malecns import load_malecns_flat, map_stimuli_from_female
+        female = load_flywire(); cn = apl_scaled(load_malecns_flat(count_scale=args.count_scale), args.apl_scale)
+        male_stim = {s_.name: s_ for s_ in map_stimuli_from_female(cn, female)}; del female
+    else:
+        cn = build(apl_scaled(load_flywire(), args.apl_scale), args.boost) if args.boost != 1.0 else apl_scaled(load_flywire(), args.apl_scale)
+    if args.apl_ppl1_scale != 1.0:
+        W = scale_edges(cn, cn.select(cell_type="APL"), cn.select(cell_type__startswith="PPL1"), args.apl_ppl1_scale)
+        cn = Connectome(ids=cn.ids, W=W, meta=cn.meta, name=f"{cn.name}_aplppl1x{args.apl_ppl1_scale:g}")
+    _G["lif"] = LIFParams(tau_adapt=args.tau_adapt, delta_adapt=args.delta_adapt)
     if args.kc_scale != 1.0:
         W = scale_edges(cn, cn.select(cell_class="Kenyon_Cell"), cn.select(cell_type=args.kc_target), args.kc_scale)
         cn = Connectome(ids=cn.ids, W=W, meta=cn.meta, name=f"{cn.name}_kc{args.kc_scale:g}")
@@ -98,7 +111,7 @@ if __name__ == "__main__":
     pool = m.loc[(m["super_class"] == "central") & (~m["cell_class"].isin(["DAN", "Kenyon_Cell"])), "idx"].to_numpy()
     for size in args.controls:
         groups[f"RND{size}"] = np.sort(np.random.default_rng(12345).choice(pool, size=size, replace=False))
-    stim = {s.name: s for s in build_stimuli(cn)}
+    stim = male_stim if args.sex == "male" else {s.name: s for s in build_stimuli(cn)}
     odor_types = [t.strip() for t in args.odor.split(",")]
     cs = m.loc[m["cell_type"].astype(str).isin(odor_types), "idx"].to_numpy() if odor_types != ["ORN_DM1"] else stim["odor_DM1"].targets
     print(f"odour: {odor_types}, {cs.size} ORNs", flush=True)
