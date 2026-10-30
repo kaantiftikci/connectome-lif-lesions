@@ -35,6 +35,8 @@ class LIFParams:
     r_poi: float = 150.0     # Hz, default Poisson drive
     f_poi: float = 250.0     # Poisson weight = w_syn * f_poi
     dt: float = 0.1          # ms
+    tau_adapt: float = 0.0   # ms; spike-frequency adaptation time constant (0 = off)
+    delta_adapt: float = 0.0 # mV added to the threshold per spike (decays with tau_adapt)
 
 
 @dataclass
@@ -161,6 +163,7 @@ class LIFState:
     buf: list
     k: int                      # steps simulated so far
     rng: np.random.Generator
+    adapt: np.ndarray | None = None   # per-neuron threshold increment (adaptation)
 
 
 def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
@@ -199,8 +202,12 @@ def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
         ref_until = np.full(n, -np.inf)
         awake = np.zeros(n, dtype=bool)
         k0 = 0
+        adapt = np.zeros(n, dtype=np.float64)
     else:
         rng, v, g, ref_until, awake, k0 = state.rng, state.v, state.g, state.ref_until, state.awake, state.k
+        adapt = state.adapt if state.adapt is not None else np.zeros(n, dtype=np.float64)
+    use_adapt = p.tau_adapt > 0 and p.delta_adapt != 0
+    e_ad = np.exp(-dt / p.tau_adapt) if use_adapt else 1.0
     rfc = np.full(n, p.t_rfc, dtype=np.float64)
 
     poi_idx = np.empty(0, dtype=np.int64)
@@ -241,17 +248,23 @@ def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
         va, ga = v[act], g[act]
         v[act] = p.v_0 + (va - p.v_0 - a * ga) * e_m + a * ga * e_s
         g[act] = ga * e_s
-        spk = act[v[act] > vth[act]]
+        if use_adapt:
+            adapt[idx] *= e_ad
+            spk = act[v[act] > vth[act] + adapt[act]]
+        else:
+            spk = act[v[act] > vth[act]]
         if spk.size:
             v[spk] = p.v_rst
             g[spk] = 0.0
             ref_until[spk] = t + rfc[spk]
+            if use_adapt:
+                adapt[spk] += p.delta_adapt
             buf[(k + D) % (D + 1)] = _gather_rows(W, spk)
             if record:
                 t_list.append(np.full(spk.size, t))
                 i_list.append(spk)
         # put settled, non-refractory neurons to sleep
-        quiet = act[(np.abs(v[act] - p.v_0) < eps) & (np.abs(g[act]) < eps) & (t >= ref_until[act])]
+        quiet = act[(np.abs(v[act] - p.v_0) < eps) & (np.abs(g[act]) < eps) & (t >= ref_until[act]) & (adapt[act] < eps)]
         if quiet.size:
             v[quiet] = p.v_0
             g[quiet] = 0.0
@@ -265,5 +278,5 @@ def simulate(W: sp.csr_matrix, duration: float, params: LIFParams = LIFParams(),
         ids = np.empty(0, dtype=np.int64)
     rec = SpikeRecord(times=times, ids=ids, n=n, duration=(k0 + n_steps) * dt)
     if return_state:
-        return rec, LIFState(v=v, g=g, ref_until=ref_until, awake=awake, buf=buf, k=k0 + n_steps, rng=rng)
+        return rec, LIFState(v=v, g=g, ref_until=ref_until, awake=awake, buf=buf, k=k0 + n_steps, rng=rng, adapt=adapt)
     return rec

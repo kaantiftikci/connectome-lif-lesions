@@ -51,14 +51,23 @@ def _job(a):
     rng = np.random.default_rng(1000 * rep + 7)
     exempt = (cn.meta["super_class"].astype(str) == "sensory").to_numpy()
     remove = (rng.random(cn.n) < 0.5 * s * v) & ~exempt
-    keep = np.where(~remove)[0]
-    W = cn.W.copy().tolil() if False else cn.W.copy()
-    # zero rows and columns of removed neurons (keeps indexing)
+    W = cn.W.copy()
+    vth_off = None
+    if _G.get("full"):
+        # synapse loss: each outgoing contact of neuron i lost with probability 0.6*s*v_i
+        row_of = np.repeat(np.arange(cn.n), np.diff(W.indptr))
+        p_loss = np.where(exempt, 0.0, 0.6 * s * v)[row_of]
+        contacts = np.rint(np.abs(W.data) / 0.275).astype(np.int64)
+        surv = rng.binomial(contacts, 1.0 - p_loss)
+        W.data = np.sign(W.data) * surv * 0.275
+        # threshold shift: lowered by up to 2 mV
+        vth_off = np.where(exempt, 0.0, -2.0 * s * v)
+    nnz_before = int((W.data != 0).sum())
     d = sp.diags((~remove).astype(np.float32))
     W = (d @ W @ d).tocsr(); W.eliminate_zeros()
-    lost = 1.0 - W.nnz / cn.W.nnz
+    lost = 1.0 - (np.abs(W.data) / 0.275).sum() / (np.abs(cn.W.data) / 0.275).sum()
     stim = _G["stim"]; odor = stim["odor_DM1"]
-    rec = simulate(W, 500.0, poisson=odor.targets, poisson_rate=odor.rate_hz, seed=rep)
+    rec = simulate(W, 500.0, poisson=odor.targets, poisson_rate=odor.rate_hz, seed=rep, v_th_offset=vth_off)
     r = firing_rates(rec, 100.0)
     kc = _G["kc"]
     feats = np.log1p(np.array([r[idx].mean() if idx.size else 0.0 for idx in _G["readouts"].values()]))
@@ -75,7 +84,9 @@ if __name__ == "__main__":
     ap.add_argument("--reps", type=int, default=8)
     ap.add_argument("--procs", type=int, default=3)
     ap.add_argument("--out", default="results/jo_retest.csv")
+    ap.add_argument("--full", action="store_true", help="also apply synapse loss (p=0.6 s v per contact) and threshold shift (-2 s v mV)")
     args = ap.parse_args()
+    _G["full"] = args.full
     base = load_flywire()
     _G["cn"] = {"attractor": base, "sparse": apl_scaled(base, 5.0)}
     _G["maps"] = vulnerability_maps(base)
