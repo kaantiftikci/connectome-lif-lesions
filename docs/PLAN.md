@@ -1087,3 +1087,68 @@ beslemesiyle, PPL1'i bastırıyor); eşleşme sırasında PPL1 hızı koku-tek
 başına ile aynı (33 vs 36 Hz), dolayısıyla fazlalık yok. Modelde koku ve
 ceza birbirini söndürüyor; biyolojide söndürmediği için bu, modelin MBON→DAN
 geri besleme ağırlıklarına dair test edilebilir bir sorun işareti.
+
+## 34. Parkinson kolu II: kayıp örüntüsü ve okuma değeri duyarlılığı (2026-10-30)
+
+`scripts/pd_patterns.py`; `artifacts/pd_patterns.csv`; şekil 8A. PAM kaybı
+rastgele (2 sıra), hassasiyet-sıralı (sinaptik yükü en yüksek nöronlar
+önce; α-sinüklein benzeri seçici hassasiyet) ve dirençli-önce (tersi);
+okumalar: iştah öğrenme indeksi (şeker protokolü, ödül terimiyle), pasif
+koku yanıtı (MBON ortalaması) ve hareket DN'leri (DNp09, DNa01-03, DNb01-02,
+DNg13; sol/sağ ortalama).
+
+| MBON09 indeksi | %25 | %50 | %75 | %90 | %100 |
+|---|---|---|---|---|---|
+| rastgele | 0.88 | 0.97 | 0.90 | 0.07 | 0.07 |
+| hassas-önce (yüksek yük önce) | 0.94 | 1.00 | 0.87 | 0.20 | 0.07 |
+| dirençli-önce (düşük yük önce) | 0.88 | 1.00 | **0.00** | 0.07 | 0.07 |
+
+Pasif okumalar hiçbir örüntüde, %100 kayıpta bile değişmiyor: MBON koku
+ortalaması 6.3–6.8 Hz, hareket DN'leri sol 17.5–21.7 / sağ 8.3–11.7 Hz
+(sağlam 20.0 / 8.8); PPL1 kaybında da aynı.
+
+**Yorum.** (1) Kaybın sırası belirtinin zamanını belirliyor: MBON09'un
+kompartmanındaki PAM'lar (PAM12/13/14) düşük yüklü olduğu için
+"dirençli-önce" sırası bu belleği %75'te, "hassas-önce" sırası ancak %90'ın
+üstünde siliyor. Öngörü: PINK1/parkin (yüksek yük önce) ve α-sinüklein
+(farklı sıra) sineklerinde iştah belleği kusurunun aynı toplam kayıpta
+farklı zamanda ortaya çıkması gerekir; hangi kompartmanın önce bozulduğu
+kayıp örüntüsünün parmak izi. (2) Pasif ve hareket okumaları bu modelde
+dopamin kaybını hiç göstermiyor; öğrenme testi %75–90'da gösteriyor.
+İlaç taramalarında tırmanma yerine (ya da yanında) koşullanma testi
+kullanılması modelin somut önerisi.
+
+## 35. Parkinson kolu III: bellek korunumu, L-DOPA karşılığı, kompanzasyon (2026-10-30)
+
+`scripts/pd_experiments.py retention|ldopa|compensation`; `artifacts/pd_*.csv`;
+şekil 8B–C. Modülasyon katmanına `remove_neurons` (eğitimden sonra lezyon),
+`add_tonic` (sinaps dışı sabit dopamin) ve `set_compensation` eklendi.
+
+**Korunum.** Kayıptan önce öğretilen bellek, PAM'ın %50/75/100'ü
+silindikten sonra tamamen korunuyor (MBON09 indeks 0.94–1.00; MBON33
+0.41–0.53); aynı kayıptan sonra yeni edinim %90+'da yok (bölüm 34).
+Öngörü: sinek Parkinson modellerinde edinim bozulurken hatırlama korunmalı;
+insanda "eski alışkanlıklar korunur, yeni öğrenme bozulur" gözleminin devre
+karşılığı. Mekanizma: bellek KC→MBON sinapsında, dopamin yalnızca yazma
+kapısı.
+
+**L-DOPA karşılığı.** Hayatta kalan tüm DAN'lara 10/30/60 Hz-eşdeğeri sabit
+dopamin. Kapı tonik düzeye adapte olmuşsa (taban onunla ölçülmüşse) hiçbir
+etki yok (eşleşmeli indeks 1.0, eşleşmesiz ≤ 0.21). Adapte olmamışsa
+eşleşme olmadan da bastırma: MBON09 eşleşmesiz indeksi 30 Hz'de 0.75, 60
+Hz'de 1.00, sağlam ve %75 kayıplı beyinde aynı; MBON33'te de 0.33'e çıkıyor,
+diğer MBON'larda yok. Yani dopamin yerine koyma bu modelde öğrenmeyi
+kurtarmıyor (rezerv zaten %75'i karşılıyor) ve kapı adapte değilse tam da
+öğrenen kompartmanlarda eşleşmeden bağımsız, özgüllüğünü yitirmiş plastisite
+üretiyor: "aşırı doz" / sapkın plastisite imzasının devre karşılığı.
+Öngörü: L-DOPA beslenen sineklerde ödül kompartmanlarının MBON'larında
+eşleşmesiz koku yanıtı düşmeli; adaptasyon varsa düşmemeli (ikisi ayırt
+edilebilir).
+
+**Kompanzasyon.** Kalan PAM'lar (1−f)^−α kat daha güçlü (α = 0, 0.5, 1;
+%90 kayıpta 10 kata kadar). %50 ve %75'te zaten tam öğrenme (rezerv);
+%90'da hiçbir kompanzasyon kurtarmıyor, çünkü MBON09 kompartmanının 52
+PAM'ından 4'ü kalıyor ve kapı kompartman ortalamasına bağlı (4 nöron ×10
+= 40 nöron-eşdeğeri, 52'nin altında). Sonuç: hayatta kalanların
+hiperaktivitesi rezervi ancak kompartmanda yeterli nöron kaldığı sürece
+uzatabilir; eşik kompartman başına kalan hücre sayısıyla sınırlı.
