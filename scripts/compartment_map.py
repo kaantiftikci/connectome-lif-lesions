@@ -82,22 +82,33 @@ if __name__ == "__main__":
     ap.add_argument("--seeds", type=int, default=2)
     ap.add_argument("--procs", type=int, default=3)
     ap.add_argument("--only", nargs="*", default=None, help="restrict US, e.g. sugar")
+    ap.add_argument("--odor", default="ORN_DM1", help="comma-separated ORN types for the odour, e.g. ORN_DL5,ORN_DM2,ORN_VM2")
+    ap.add_argument("--kc-scale", type=float, default=1.0, help="scale KC->MBON synapses of --kc-target by this factor")
+    ap.add_argument("--kc-target", default="MBON09")
+    ap.add_argument("--controls", nargs="*", type=int, default=[307])
     ap.add_argument("--out", default="results/compartment_map.csv")
     args = ap.parse_args()
     cn = build(apl_scaled(load_flywire(), args.apl_scale), args.boost)
+    if args.kc_scale != 1.0:
+        W = scale_edges(cn, cn.select(cell_class="Kenyon_Cell"), cn.select(cell_type=args.kc_target), args.kc_scale)
+        cn = Connectome(ids=cn.ids, W=W, meta=cn.meta, name=f"{cn.name}_kc{args.kc_scale:g}")
     fit = json.load(open("results/modulation_fit.json")) if Path("results/modulation_fit.json").exists() else {"kappa": 0.003, "eta": 1e-4}
     mpar = ModulationParams(kappa=fit["kappa"], eta=max(fit["eta"], 1e-4), alpha_fast=0.0)
     groups = group_indices(cn); m = cn.meta
     pool = m.loc[(m["super_class"] == "central") & (~m["cell_class"].isin(["DAN", "Kenyon_Cell"])), "idx"].to_numpy()
-    groups["RND307"] = np.sort(np.random.default_rng(12345).choice(pool, size=307, replace=False))
+    for size in args.controls:
+        groups[f"RND{size}"] = np.sort(np.random.default_rng(12345).choice(pool, size=size, replace=False))
     stim = {s.name: s for s in build_stimuli(cn)}
-    _G.update(cn=cn, mpar=mpar, groups=groups, cs=stim["odor_DM1"].targets, g_reward=args.g_reward,
+    odor_types = [t.strip() for t in args.odor.split(",")]
+    cs = m.loc[m["cell_type"].astype(str).isin(odor_types), "idx"].to_numpy() if odor_types != ["ORN_DM1"] else stim["odor_DM1"].targets
+    print(f"odour: {odor_types}, {cs.size} ORNs", flush=True)
+    _G.update(cn=cn, mpar=mpar, groups=groups, cs=cs, g_reward=args.g_reward,
               us={"sugar": stim["sugar"].targets, "bitter": stim["bitter"].targets},
               pam=cn.select(cell_type__startswith="PAM"), ppl1=cn.select(cell_type__startswith="PPL1"))
     uses = args.only or ["sugar", "bitter"]
     jobs = [(u, "PAM", 0.0, 0) for u in uses]
     jobs += [(u, g, f, s) for u in uses for g in ("PAM", "PPL1") for f in args.fractions if f > 0 for s in range(args.seeds)]
-    jobs += [(u, "RND307", 1.0, 0) for u in uses]
+    jobs += [(u, f"RND{size}", 1.0, 0) for u in uses for size in args.controls]
     rows, t0 = [], time.time()
     with mp.get_context("fork").Pool(args.procs) as pool_:
         for i, (u, g, f, s, n_hit, dan, out) in enumerate(pool_.imap_unordered(_job, jobs)):

@@ -80,6 +80,7 @@ if __name__ == "__main__":
     ap.add_argument("--g-reward", type=float, default=0.5)
     ap.add_argument("--fractions", nargs="*", type=float, default=[0.25, 0.5, 0.75, 0.9, 1.0])
     ap.add_argument("--procs", type=int, default=3)
+    ap.add_argument("--seeds", type=int, default=2, help="random orders per fraction")
     ap.add_argument("--out", default="results/pd_patterns.csv")
     args = ap.parse_args()
     cn = build(apl_scaled(load_flywire(), args.apl_scale), args.boost)
@@ -95,7 +96,7 @@ if __name__ == "__main__":
     jobs = [("sugar", "PAM", "random", 0, 0.0), ("bitter", "PPL1", "random", 0, 0.0)]
     for us, g in (("sugar", "PAM"), ("bitter", "PPL1")):
         for f in args.fractions:
-            jobs += [(us, g, "random", 0, f), (us, g, "random", 1, f), (us, g, "vulnerable_first", 0, f), (us, g, "resistant_first", 0, f)]
+            jobs += [(us, g, "random", sd, f) for sd in range(args.seeds)] + [(us, g, "vulnerable_first", 0, f), (us, g, "resistant_first", 0, f)]
     rows, t0 = [], time.time()
     with mp.get_context("fork").Pool(args.procs) as pool:
         for i, (us, g, order, seed, f, extra, out) in enumerate(pool.imap_unordered(_job, jobs)):
