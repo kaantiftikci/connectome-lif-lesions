@@ -322,7 +322,8 @@ h2 { font-size: 12pt; margin: 18pt 0 6pt; text-transform: none; }
 h3 { font-size: 12pt; margin: 12pt 0 6pt; }
 p { margin: 0 0 6pt; text-align: justify; text-indent: 0.75cm; }
 p.affil, p.author, p.meta, p.tcap, p.ref, h2 + p, h3 + p { text-indent: 0; }
-p.tcap { margin: 10pt 0 4pt; text-align: left; font-size: 11pt; font-weight: normal; }
+p.tcap { margin: 10pt 0 4pt; text-align: left; font-size: 11pt; font-weight: normal; page-break-after: avoid; break-after: avoid; }
+h2, h3 { page-break-after: avoid; break-after: avoid; }
 table { border-collapse: collapse; font-size: 10pt; line-height: 1.25; margin: 0 auto 12pt; width: 100%; page-break-inside: avoid; }
 th, td { border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 3pt 5pt; text-align: left; vertical-align: top; }
 th { border-bottom: 1px solid #000; font-weight: bold; }
