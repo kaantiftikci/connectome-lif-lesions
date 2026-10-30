@@ -44,7 +44,23 @@ rejimde de sıralamasını koruyor (hub > shuffled > antihub), ama tüm-beyin
 aktivite okuması APL kaybında işaret değiştiriyor. Önbaskı buna göre
 "model ne söyleyebilir, ne söyleyemez" çerçevesine alındı.
 
-**Açık.** Acı→PPL1 düzeltmesiyle öğrenme indeksi (koşuluyor); w_syn
+**Pozitif kol ve Parkinson kolu (bölüm 32–35, 2026-10-29/30).** Eksik ödül
+yolu tek bir sinaps dışı terimle verilince konnektom, literatürün iştah
+belleğine atadığı ve kokuya yanıt veren her MBON'un (07/α1, 02/β2β'2a,
+09/γ3β'1) öğreneceğini kendiliğinden buluyor; rezerv kompartmana göre
+%75–90. Acı kolu modelde koku ağının PPL1'i susturması yüzünden çalışmıyor
+(MBON→DAN geri beslemesine dair test edilebilir iddia). Parkinson: konnektom
+yükü PPL1'i PAM'ın 12 katı sıralıyor (parkin/PINK1 kaybıyla uyumlu); kayıp
+sırası belirtinin zamanını belirliyor; pasif ve hareket okumaları %100
+kayıpta bile kör, koşullanma %75–90'da duyarlı; eski bellek korunuyor, yeni
+edinim kayboluyor; L-DOPA karşılığı öğrenmeyi kurtarmıyor, kapı adapte
+değilse özgüllüğü bozuyor; kompanzasyon kompartmanda nöron kaldığı sürece
+işe yarıyor. Şekil 8. Önbaskıya "Predictions for fly models of Parkinson's
+disease" bölümü eklendi.
+
+**Açık.** Öğrenme fenotipiyle ters model (Mac'te `learning_sweep.py`,
+APL×3, n=300; sırada). Acı→PPL1 yolunun kokuyla sönmesinin mekanizması
+(MBON→DAN geri besleme ağırlıkları) incelenmedi. w_syn
 duyarlılığı (sırada); erkek için düşük tabanlı çalışma noktası (0.35/0.45
 ölçekleri sırada); GPU ile büyük tarama (M4'te iki n=1000 tarama bitti, bölüm
 26–27; `docs/gpu_runbook.md`); 3B görselleştirme (`viewer/`, çekici ve seyrek
