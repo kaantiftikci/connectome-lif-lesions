@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this code or its results, please cite it as below."
+type: software
+title: "sinek: testing connectome-constrained Drosophila brain models with simulation-based inference"
+version: 1.0.0
+date-released: 2026-10-30
+authors:
+  - family-names: "Tiftikçi"
+    given-names: "Kaan"
+    email: "kaantiftikci@outlook.com"
+repository-code: "https://github.com/kaantiftikci/sinek"
+keywords:
+  - connectome
+  - Drosophila
+  - leaky integrate-and-fire
+  - dopaminergic neurons
+  - simulation-based inference
+  - Parkinson's disease
+abstract: >-
+  Cell-type-resolved progressive dopaminergic lesions in the FlyWire (female)
+  and MaleCNS (male) connectome-constrained leaky integrate-and-fire models,
+  a surrogate-and-NPE inverse model from phenotype to lesion, a dopamine-gated
+  modulation layer, reinforcer-pathway analysis and predictions for fly
+  Parkinson's disease models. Companion code for the preprint "Testing
+  connectome-constrained Drosophila brain models with simulation-based
+  inference: the limits of dopaminergic neuron loss and predictions for
+  Parkinson's disease".
