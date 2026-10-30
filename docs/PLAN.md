@@ -1225,3 +1225,39 @@ tasarım. Doğru tasarım kompartman başına tek alt tip (ör. "PAM12 ne kadar
 kayıp?") olmalı; o zaman rezerv eğrisi (bölüm 33–34) zaten cevabı veriyor.
 Yapay zekâ kısmının dürüst sonucu: dopamin lezyonu için amortize ters model
 ancak öğrenen kompartman sayısı kadar boyutta anlamlı.
+
+## 38. Kapanış maddeleri I: PPL101'i susturan APL; ikinci koku (2026-10-30)
+
+**Madde 1 — ceza kolunun çökme mekanizması.** `scripts/ppl1_silencing.py`,
+`artifacts/ppl1_silencing.json`. PPL101'e gelen hız-ağırlıklı sinaptik
+girdi (mV/10 ms), giriş-sıçraması ×8 ağında:
+
+| koşul | PPL101 Hz | uyarım | inhibisyon | en güçlü inhibitör kaynak |
+|---|---|---|---|---|
+| koku | 0.0 | +133 | −241 | **APL −166**, CRE102 −26, SMP115 −17, MBON20 −9 |
+| acı | 46.2 | +136 | −78 | MBON11 −55, CRE102 −12 |
+| koku + acı | 0.0 | +173 | −242 | APL −166, CRE102 −26, SMP115 −17 |
+
+Koku altında PPL101'i susturan MBON→DAN geri beslemesi değil, **APL**:
+seyrek rejimi yaratmak için KC'lere inhibisyonunu 5 kat artırdığımız
+GABAerjik APL, koku altında güçlü ateşliyor ve PPL101'e doğal ağırlığıyla
+(ölçeklenmemiş) 166 mV/10 ms inhibisyon gönderiyor; uyarımın (KC'lerden
+81) iki katı. Acı tek başına verilince APL sessiz, inhibisyon MBON11'den
+(−55) geliyor ve PPL101 46 Hz ateşliyor. Düzeltme testi: APL→PPL1
+sinapsları sıfırlanınca koku+acı altında PPL101 66 Hz, koku tek başına 45
+Hz (fazlalık +21 Hz); CRE102 veya SMP115 çıkarmak hiçbir şey değiştirmiyor.
+Yani acı öğrenmesini engelleyen tek bağlantı APL→PPL1. Acı koşullanması bu
+düzeltmeyle koşuluyor (sırada). Biyolojik yorum: konnektomda APL→PPL1
+sinapsları var; modelde APL'nin koku altındaki aşırı aktivitesi (seyreklik
+için gereken ×5 kazancın yan etkisi) ceza kapısını kapatıyor. Öngörü:
+koku+şok eşleşmesi sırasında PPL1-γ1pedc'nin ateşlemesi APL susturulunca
+artmalı.
+
+**Madde 2 — ikinci koku.** `compartment_map.py --apl-scale 3 --odor
+ORN_DL5,ORN_DM2,ORN_VM2` (Jo'nun "koku B"si; 11 MBON tipi yanıt veriyor);
+`artifacts/compartment_map_apl3_odorB.csv`. Öğrenenler koku A ile aynı:
+MBON07 1.00, MBON02 0.78, MBON12 0.44 (artefakt, yine dopaminden
+bağımsız); rezerv aynı (MBON07 ve MBON02 %90'da tam, %100'de sıfır; PPL1
+ve RND307 etkisiz). Kompartman haritası ve rezerv eşiği kokudan bağımsız.
+MBON01/03 bu kokuya da yanıt vermiyor; bu iki kompartman modelde hiçbir
+kokuyla test edilemiyor.
