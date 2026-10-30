@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this code or its results, please cite it as below."
 type: software
 title: "connectome-lif-lesions: testing connectome-constrained Drosophila brain models with simulation-based inference"
-version: 1.0.0
+version: 1.0.1
 date-released: 2026-10-30
 authors:
   - family-names: "Tiftikçi"
@@ -10,11 +10,11 @@ authors:
     email: "kaantiftikci@outlook.com"
 repository-code: "https://github.com/kaantiftikci/connectome-lif-lesions"
 license: MIT
-doi: 10.5281/zenodo.23808330
+doi: 10.5281/zenodo.23817806
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.23808330
-    description: "Zenodo archive of release v1.0.0"
+    value: 10.5281/zenodo.23817806
+    description: "Zenodo archive of release v1.0.1"
 keywords:
   - connectome
   - Drosophila

@@ -86,7 +86,7 @@ with pdfplumber.open("in.pdf") as pdf:
             else: blocks.append({"type": typ, "text": m, "short": short, "page": page})
             prev = l
 for b in blocks:
-    if "text" in b: b["text"] = tidy(b["text"])
+    if "text" in b: b["text"] = tidy(b["text"]).replace("Sürüm: v1.0.0", "Sürüm: v1.0.1").replace("v1.0.0 sürümü", "v1.0.1 sürümü").replace("zenodo.23808330", "zenodo.23817806")
 
 # split merged figure captions, merge tables with captions
 out = []

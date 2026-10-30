@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sinek"
-version = "1.0.0"
+version = "1.0.1"
 description = "connectome-lif-lesions: cell-type-resolved lesions in connectome-constrained LIF models of the fly brain, with an amortised inverse model"
 requires-python = ">=3.10"
 license = {text = "MIT"}

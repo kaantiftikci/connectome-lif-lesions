@@ -2,7 +2,7 @@ import re, html, pathlib
 FIG = pathlib.Path("/home/user/sinek/artifacts/figures")
 figs = {1:"fig1_reserve_curves.png",2:"fig2_sensitivity.png",3:"fig3_posterior_recovery.png",4:"fig4_modulation_curves.png",
         5:"fig5_sex_comparison.png",6:"fig6_jo_retest.png",7:"fig7_pathway_boost.png",8:"fig8_parkinson_predictions.png",9:"fig9_3d_regimes.png"}
-t = pathlib.Path("en.md").read_text().replace("\\_", "_")
+t = pathlib.Path("en.md").read_text().replace("\\_", "_").replace("release v1.0.0", "release v1.0.1").replace("zenodo.23808330", "zenodo.23817806").replace("The version used for this manuscript is release v1.0.1", "The version used for this manuscript is release v1.0.1")
 paras = [p.strip() for p in t.split("\n\n") if p.strip()]
 
 # ---- first person -> passive ----

@@ -1,6 +1,6 @@
 # connectome-lif-lesions
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23808330.svg)](https://doi.org/10.5281/zenodo.23808330)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23817806.svg)](https://doi.org/10.5281/zenodo.23817806)
 
 Konnektom kısıtlı sinek beyninde hücre tipi çözünürlüklü lezyon modellemesi ve
 amortize ters model (lezyon ↔ fenotip). Python paketinin adı `sinek`
@@ -9,7 +9,7 @@ amortize ters model (lezyon ↔ fenotip). Python paketinin adı `sinek`
 Önbaskı (İngilizce ve Türkçe PDF): `docs/preprint/preprint_en.pdf`, `docs/preprint/preprint_tr.pdf`
 — "Testing connectome-constrained Drosophila brain models with simulation-based
 inference: the limits of dopaminergic neuron loss and predictions for
-Parkinson's disease" (Kaan Tiftikçi, 2026). Sürüm v1.0.0 arşivi: https://doi.org/10.5281/zenodo.23808330. Atıf bilgisi: `CITATION.cff`. Lisans: MIT.
+Parkinson's disease" (Kaan Tiftikçi, 2026). Sürüm v1.0.1 arşivi: https://doi.org/10.5281/zenodo.23817806. Atıf bilgisi: `CITATION.cff`. Lisans: MIT.
 
 ```
 pip install -e ".[dev]"          # simülatör + testler (NumPy/SciPy yeterli)
