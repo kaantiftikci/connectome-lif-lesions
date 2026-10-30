@@ -10,6 +10,11 @@ authors:
     email: "kaantiftikci@outlook.com"
 repository-code: "https://github.com/kaantiftikci/connectome-lif-lesions"
 license: MIT
+doi: 10.5281/zenodo.23808330
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23808330
+    description: "Zenodo archive of release v1.0.0"
 keywords:
   - connectome
   - Drosophila
