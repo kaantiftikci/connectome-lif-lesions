@@ -1353,3 +1353,29 @@ modelin ilk PPL1'e bağımlı ceza öğrenmesi, doğru kompartmanda, ama zayıf
 gerekli ama yeterli değil; MBON11/14'teki eksiklik bu kompartmanların
 KC girdisinin doymuş olmasına (125 ve 61 Hz) bağlı olabilir (bölüm 39'daki
 KC girdisi–rezerv ilişkisiyle tutarlı). Bu noktada bırakıldı.
+
+## 42. Kapanış maddesi 3: Parkinson deneyleri 5 tohumla (Mac, 2026-10-30)
+
+`artifacts/pd_patterns_s5.csv`, `pd_retention_s5.csv`, `pd_compensation_s5.csv`,
+`pd_ldopa_s2.csv` (M4'te toplam ~50 dk). Ortalama ± SD, MBON09:
+
+| PAM kaybı | %25 | %50 | %75 | %90 | %100 |
+|---|---|---|---|---|---|
+| öğrenme, rastgele sıra (5 tohum) | 0.91 ± 0.06 | 0.86 ± 0.28 | **0.67 ± 0.39** | 0.11 ± 0.19 | 0.07 ± 0.00 |
+| korunum (5 tohum) | — | 0.96 ± 0.06 | 0.95 ± 0.07 | — | 1.00 ± 0.00 |
+| kompanzasyon α=1 (5 tohum) | — | 0.86 ± 0.32 | 0.66 ± 0.49 | 0.12 ± 0.18 | — |
+
+Hassas-önce: %75 0.87, %90 0.20; dirençli-önce: %75 0.00. Pasif okumalar
+(70 lezyonlu iş): hareket DN sol 20.6 ± 1.3 Hz (sağlam 20.0; en büyük
+sapma 3.8), sağ 9.8 ± 1.0 (8.8; 3.3), MBON koku ortalaması 6.5 ± 0.2
+(6.5; 0.4). L-DOPA (2 tohum): adapte olmamış kapıda eşleşmesiz bastırma
+0.15 / 0.75 / 1.00 (10/30/60 Hz), SD ≤ 0.01; adapte kapıda ≤ 0.21.
+
+**Düzeltilen ifade.** İki tohumla "%75'e kadar tam" görünen rezerv, beş
+tohumla iki-modlu çıktı: %75 kayıpta tohumların bir kısmı tam öğreniyor,
+bir kısmı hiç (0.67 ± 0.39), çünkü sonuç MBON09'un kendi kompartmanındaki
+52 PAM'dan kaçının rastgele kaldığına bağlı. Doğru ifade: rezerv %50'ye
+kadar güvenilir (0.86), %75'te kaybın hangi hücrelere düştüğüne bağlı,
+%90'da bitmiş. Bu, kayıp sırası bulgusuyla (bölüm 34) aynı mekanizma ve
+onu güçlendiriyor. Korunum, kompanzasyonun etkisizliği ve L-DOPA imzası
+tohumlar arasında kararlı. Önbaskı ve şekil 8 buna göre güncellendi.
