@@ -1379,3 +1379,28 @@ kadar güvenilir (0.86), %75'te kaybın hangi hücrelere düştüğüne bağlı,
 %90'da bitmiş. Bu, kayıp sırası bulgusuyla (bölüm 34) aynı mekanizma ve
 onu güçlendiriyor. Korunum, kompanzasyonun etkisizliği ve L-DOPA imzası
 tohumlar arasında kararlı. Önbaskı ve şekil 8 buna göre güncellendi.
+
+## 43. Literatür eşlemelerinin doğrulanması (2026-10-30)
+
+Ağ izni açılınca eLife tam metinleri okundu. `docs/literature_compartments.json`
+yeniden yazıldı: MBON01–22 adları Aso 2014 Tablo 1'den birebir teyit edildi
+(önceki dosyadaki hepsi doğruydu); DAN tip tablosu eklendi (PAM01 γ5, PAM02
+β'2a, PAM03 β2β'2a, PAM04 β2, PAM05 β'2p, PAM06 β'2m, PAM07 γ4<γ1γ2, PAM08 γ4,
+PAM09 β1ped, PAM10 β1, PAM11 α1, PAM12 γ3, PAM13 β'1ap, PAM14 β'1m, PAM15
+γ5β'2a [Li 2020]; PPL101 γ1pedc, PPL102 γ1, PPL103 γ2α'1, PPL104 α'3, PPL105
+α'2α2, PPL106 α3; PPL107/108 yalnızca FlyWire'da). Bellek atamaları Aso &
+Rubin 2016'ya göre "doğrudan" (o kompartmanın DAN'ıyla eğitim yapılmış:
+γ1pedc, γ2α'1+α'2α2, α3 → ceza; α1, γ5+β'2a → ödül) ve "dolaylı" (küme
+bazlı) olarak işaretlendi. Bulgularımızın dayandığı üç atama — MBON07 (α1),
+MBON02 (β'2a kısmı), MBON12 (γ2α'1) — doğrudan kanıtlı; MBON09 (γ3β'1) dolaylı.
+MBON23+ hemibrain'in atipik tipleri; MBON33 (γ2γ3) ve MBON26/29 atanmamış.
+
+`docs/literature_pd_vulnerability.json` düzeltildi: Whitworth 2005 ve Yang
+2006 PPL1 kaybı (teyit); **Wang 2006 ise PAL, PPM1/2, PPM3, PPL2'de belirgin,
+PPL1'de daha az kayıp bildiriyor** (önceki dosyada yanlış özetlenmişti);
+Riemensperger 2013 ön-medyal ~15 DA nöronu (PAM alt kümesi, β/β' lobu);
+ayrıca Navarro 2014 (J Neurochem 131:369-382) uyarısı eklendi: nükleer
+muhabirle sayıldığında bu modellerin hiçbirinde DA nöron kaybı yok, yalnızca
+muhabir sinyali düşüyor. Önbaskıdaki hassasiyet paragrafı buna göre
+yumuşatıldı: "parkin ve PINK1'de PPL1 kaybı bildiren çalışmalarla uyumlu;
+PINK1'de daha geniş kayıp bildiren ve hiç kayıp bulmayan çalışmalar da var".
