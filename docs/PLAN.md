@@ -58,8 +58,14 @@ değilse özgüllüğü bozuyor; kompanzasyon kompartmanda nöron kaldığı sü
 işe yarıyor. Şekil 8. Önbaskıya "Predictions for fly models of Parkinson's
 disease" bölümü eklendi.
 
-**Açık.** Öğrenme fenotipiyle ters model tamamlandı (bölüm 37: 32-boyutlu
-problem kötü konumlu, yalnızca öğrenen kompartmanın PAM12'si okunuyor). Acı→PPL1 yolunun kokuyla sönmesinin mekanizması
+**Kapanış (bölüm 38–41).** Ceza kolunu çökerten bağlantı APL→PPL1 (MBON geri
+beslemesi değil); kaldırılınca ara rejimde MBON12'de zayıf ama PPL1'e
+bağımlı ceza öğrenmesi. İkinci koku aynı haritayı veriyor. Rezerv eşiği KC
+girdisiyle küçülüyor. Jo'nun tam kuralı sıralamayı koruyor. Adaptasyonlu
+nöron çekiciyi kaldırıyor ama kararlı seyrek kod vermiyor; negatif sonuç
+aynen. Erkek pozitif kol bu çalışma noktasında ölçülemiyor.
+
+**Açık.** Mac'te 5-tohumlu Parkinson koşuları (kullanıcı). Acı→PPL1 yolunun kokuyla sönmesinin mekanizması
 (MBON→DAN geri besleme ağırlıkları) incelenmedi. w_syn
 duyarlılığı (sırada); erkek için düşük tabanlı çalışma noktası (0.35/0.45
 ölçekleri sırada); GPU ile büyük tarama (M4'te iki n=1000 tarama bitti, bölüm
@@ -1283,3 +1289,67 @@ ama bu rejimde ceza kompartmanlarının MBON'ları (11, 12, 14) kokuya yanıt
 vermediği için öğrenme görünmüyor (yanıt veren 6 MBON'da indeks ≤ 0.14,
 gürültü düzeyi). Aynı düzeltme ara rejimde (APL×3; MBON11/12/14 yanıt
 veriyor) sırada.
+
+## 40. Kapanış maddeleri III: Jo'nun tam kuralı; adaptasyonlu nöron (2026-10-30)
+
+**Madde 7 — Jo'nun üç kuralı birlikte** (nöron kaybı + sinaps kaybı
+[temas başına p = 0.6·s·v] + eşik kayması [−2·s·v mV]; s = 0.5, 4 tekrar;
+`jo_retest.py --full`, `artifacts/jo_retest_full.csv`):
+
+| rejim | hub | shuffled | antihub | antihub/hub |
+|---|---|---|---|---|
+| çekici | %44 (temas kaybı %50) | %67 (%34) | %92 (%15) | 2.09 |
+| seyrek | %71 (%50) | %76 (%34) | %100 (%15) | 1.41 |
+| Jo (MaleCNS, PN sürülmüş) | %31 | %47 | %93 | 3.04 |
+
+Sinaps kaybı ve eşik kayması eklenince çekici rejimdeki oran Jo'nunkine
+yaklaşıyor (1.7 → 2.1); seyrek rejimde hub haritası yine iki-modlu (KC
+ortalaması 0.28: APL kaybı olan tekrarlar çekiciye düşüyor). Bölüm 23 ile
+aynı sonuç: sıralama korunuyor, büyüklük ve tüm-beyin okumasının işareti
+çalışma noktasına bağlı.
+
+**Madde 4 — farklı nöron modeli: spike-frekans adaptasyonu** (eşik her
+spike'ta Δ mV yükselir, τ ile söner; `LIFParams(tau_adapt, delta_adapt)`;
+`artifacts/adaptation_check.csv`, `compartment_map_adapt.csv`). APL×1,
+koku, 1 s:
+
+| τ, Δ | KC %5 Hz üstü (erken / geç pencere) | etkin | MBON Hz |
+|---|---|---|---|
+| yok | 75 / 75 | 9.943 | 161 |
+| 1 s, 0.1 mV | 65 / 52 | 8.231 | 69 |
+| 1 s, 0.25 mV | 47 / 22 | 6.347 | 21 |
+| 1 s, 0.5 mV | 22 / 3 | 3.775 | 5 |
+| 1 s, 1 mV (Jo) | 1 / 0 | 1.428 | 0.6 |
+| 1 s, 2–4 mV | 0 / 0 | 462 / 73 | 0 |
+
+Adaptasyon çekiciyi kaldırıyor ama yerine kararlı bir seyrek koku kodu
+koymuyor: her Δ'da yanıt zamanla sönüyor, Jo'nun değerinde (1 mV) koku
+yanıtı tamamen kayboluyor. Jo'nun PN'leri doğrudan sürmesi bunu
+gizliyor; ORN'den sürülen modelde adaptasyon seyreklik için uygun bir
+mekanizma değil. APL×5 + adaptasyon (Δ 1 mV): taban 1.93, PPL1 %100 0.97,
+PAM 1.57, RND16 1.01 (negatif iddia aynen); MBON09 koku yanıtı 0 Hz
+olduğundan pozitif kol bu varyantta ölçülemiyor. Sonuç: nöron modelini
+değiştirmek negatif sonucu değiştirmiyor, pozitif kolun sınanması için
+kararlı seyrek koda sahip bir varyant gerekir (bu, bir sonraki çalışmanın
+konusu).
+
+## 41. Kapanış maddeleri IV: erkek pozitif kol; ara rejimde acı düzeltmesi (2026-10-30)
+
+**Madde 5 — erkek konnektomda pozitif kol** (ölçek 0.35, APL×5, ödül
+terimiyle; `artifacts/compartment_map_male.csv`): koku altında yalnızca 3
+MBON tipi (MBON31, 28, 26) 2 Hz üstünde, hiçbiri öğrenmiyor (en yüksek
+0.22); PAM 0 Hz, PPL1 3 Hz. Bu çalışma noktası erkek mantar gövdesi için
+fazla sessiz; erkekte pozitif kol ancak erkeğe özgü bir MB çalışma noktası
+aranarak test edilebilir, burada yapılmadı.
+
+**Madde 1 sonucu — APL→PPL1 kaldırılmış ağda acı koşullanması, ara rejim
+(APL×3)** (`artifacts/compartment_map_bitter_apl3_aplppl1x0.csv`): eşleşme
+sırasında PPL1 106 Hz; 10 MBON tipi kokuya yanıt veriyor. Öğrenen: MBON12
+(literatürde γ2α'1, ceza kompartmanı) indeks 0.33 (10 → 6.7 Hz), PPL1 %100
+kaybıyla −0.07, RND307 ile 0.13; eşleşmesiz gürültü bu MBON'da 0.19. Yani
+modelin ilk PPL1'e bağımlı ceza öğrenmesi, doğru kompartmanda, ama zayıf
+(gürültünün ~1.7 katı). MBON11 (γ1pedc; 125 Hz) ve MBON14 (α3; 61 Hz)
+öğrenmiyor. Ceza kolunun tam çalışması için APL→PPL1'in kaldırılması
+gerekli ama yeterli değil; MBON11/14'teki eksiklik bu kompartmanların
+KC girdisinin doymuş olmasına (125 ve 61 Hz) bağlı olabilir (bölüm 39'daki
+KC girdisi–rezerv ilişkisiyle tutarlı). Bu noktada bırakıldı.
