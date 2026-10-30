@@ -123,7 +123,7 @@ if __name__ == "__main__":
     ap.add_argument("cmd", choices=["retention", "ldopa", "compensation"])
     ap.add_argument("--apl-scale", type=float, default=5.0); ap.add_argument("--boost", type=float, default=4.0)
     ap.add_argument("--g-reward", type=float, default=0.5); ap.add_argument("--procs", type=int, default=3)
-    ap.add_argument("--out", default=None)
+    ap.add_argument("--out", default=None); ap.add_argument("--seeds", type=int, default=2)
     args = ap.parse_args()
     cn = build(apl_scaled(load_flywire(), args.apl_scale), args.boost)
     fit = json.load(open("results/modulation_fit.json")) if Path("results/modulation_fit.json").exists() else {"kappa": 0.003, "eta": 1e-4}
@@ -133,11 +133,11 @@ if __name__ == "__main__":
               pam=cn.select(cell_type__startswith="PAM"), ppl1=cn.select(cell_type__startswith="PPL1"))
     _G["dans"] = np.concatenate([_G["pam"], _G["ppl1"]])
     if args.cmd == "retention":
-        jobs = [(u, g, f, s) for u, g in (("sugar", "pam"), ("bitter", "ppl1")) for f in (0.5, 0.75, 1.0) for s in (0, 1)]; fn = job_retention
+        jobs = [(u, g, f, s) for u, g in (("sugar", "pam"), ("bitter", "ppl1")) for f in (0.5, 0.75, 1.0) for s in range(args.seeds)]; fn = job_retention
     elif args.cmd == "ldopa":
-        jobs = [(t, ad, f, 0) for t in (0.0, 10.0, 30.0, 60.0) for ad in (True, False) for f in (0.0, 0.75)]; fn = job_ldopa
+        jobs = [(t, ad, f, sd) for t in (0.0, 10.0, 30.0, 60.0) for ad in (True, False) for f in (0.0, 0.75) for sd in range(min(args.seeds, 2) if args.seeds > 1 else 1)]; fn = job_ldopa
     else:
-        jobs = [(al, f, 0) for al in (0.0, 0.5, 1.0) for f in (0.5, 0.75, 0.9)]; fn = job_comp
+        jobs = [(al, f, sd) for al in (0.0, 0.5, 1.0) for f in (0.5, 0.75, 0.9) for sd in range(args.seeds)]; fn = job_comp
     out = args.out or f"results/pd_{args.cmd}.csv"
     rows, t0 = [], time.time()
     with mp.get_context("fork").Pool(args.procs) as pool:
