@@ -1404,3 +1404,18 @@ muhabirle sayıldığında bu modellerin hiçbirinde DA nöron kaybı yok, yaln�
 muhabir sinyali düşüyor. Önbaskıdaki hassasiyet paragrafı buna göre
 yumuşatıldı: "parkin ve PINK1'de PPL1 kaybı bildiren çalışmalarla uyumlu;
 PINK1'de daha geniş kayıp bildiren ve hiç kayıp bulmayan çalışmalar da var".
+
+## 44. Önbaskı: başlık, yazar bilgisi, yapay zekâ beyanı (30 Ekim 2026)
+
+Son başlık (İngilizce ve Türkçe sekme): "Testing connectome-constrained
+Drosophila brain models with simulation-based inference: the limits of
+dopaminergic neuron loss and predictions for Parkinson's disease" /
+"Simülasyon tabanlı çıkarımla konnektom kısıtlı Drosophila beyni modellerini
+sınamak: dopaminerjik nöron kaybının sınırları ve Parkinson'a ilişkin
+öngörüler". Başlık çalışmanın kendi makine öğrenmesi yöntemini (vekil
+topluluğu + nöral posterior tahmini) adlandırıyor; "yapay zekâ destekli"
+ifadesi başlığa alınmadı. Yazar: Kaan Tiftikçi, bağımsız araştırmacı, kurum
+bağlantısı yok, yazışma kaantiftikci@outlook.com. "Yazar katkıları" bölümüne
+asistanın hangi aşamalarda kullanıldığını (tasarım, yazılım, simülasyon ve
+analiz, literatür kontrolü, yazım ve çeviri; veri üretilmedi/değiştirilmedi)
+altı maddede açıklayan bir paragraf eklendi. Türkçe sekme tamamlandı.
