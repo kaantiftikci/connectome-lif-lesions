@@ -5,7 +5,7 @@
 Bu belge iki günlük bir çalışmanın günlüğüdür; bölümler yazıldıkları
 sırayla durur ve 8-15 arası bölümler sonradan çürüyen bir çerçeve içinde
 yazılmıştır. Yayına esas okuma bu özet ve bölüm 18-21'dir; önbaskı taslağı
-ayrıca Claude Docs'ta.
+ayrıca `docs/preprint/` altındaki PDF'lerde.
 
 **İddia edilen (faz 1-2, bölüm 8-14).** Konnektom + LIF modelinde dopamin
 kümelerinin kaybı hücre tipi çözünürlüğünde okunur: PPL1 kaybı aynı
@@ -439,7 +439,7 @@ modülatör etkisi modele girmeli.
 
 ## 14. Faz 1 ve 2 kapanış özeti
 
-Yapılanlar (hepsi `claude/lesion-inverse-model` dalında, testler geçiyor):
+Yapılanlar (hepsi `main` dalında, testler geçiyor):
 1. Doğrulanmış simülatör (Shiu referansıyla r = 0.963), 2.2× hızlı,
    bellek paylaşımlı paralel koşu, kontrol noktalı deneyler.
 2. 6 uyaranlık kararlı batarya; kaçak rejim haritası.
@@ -1422,8 +1422,8 @@ altı maddede açıklayan bir paragraf eklendi. Türkçe sekme tamamlandı.
 
 ## 45. Önbaskı PDF'leri ve Şekil 9 (3B görünüm) (30 Ekim 2026)
 
-`docs/preprint/preprint_en.pdf` ve `preprint_tr.pdf` (A4, 21 sayfa) Claude
-Doc'un iki sekmesinden üretildi: markdown dışa aktarımı → pandoc → HTML →
+`docs/preprint/preprint_en.pdf` ve `preprint_tr.pdf` (A4, 21 sayfa) önbaskı
+belgesinin iki dil sürümünden üretildi: markdown dışa aktarımı → pandoc → HTML →
 Chromium (Playwright) PDF; betikler `docs/preprint/build_pdf.py`, `topdf.js`.
 Türkçe PDF şekilleri Türkçe açıklamalarla ve İngilizce kaynakçayı içeriyor.
 Yeni Şekil 9 (`artifacts/figures/fig9_3d_regimes.png`): WebGL izleyiciden

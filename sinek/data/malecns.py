@@ -96,7 +96,7 @@ def fetch_malecns(cache_dir: str | Path, server: str = "https://neuprint.janelia
     """Download neuron and adjacency tables with neuprint-python and cache them."""
     from neuprint import Client, NeuronCriteria as NC, fetch_neurons, fetch_adjacencies
     # Token sources: explicit argument, NEUPRINT_TOKEN, or a proxy that injects the
-    # Authorization header itself (Claude cloud "network secrets"); in the last case
+    # Authorization header itself (proxy-injected "network secrets"); in the last case
     # any placeholder works because the proxy overwrites the header.
     token = token or os.environ.get("NEUPRINT_TOKEN") or "proxy-injected"
     cache = Path(cache_dir); cache.mkdir(parents=True, exist_ok=True)
