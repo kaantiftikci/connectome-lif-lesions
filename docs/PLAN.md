@@ -1261,3 +1261,25 @@ bağımsız); rezerv aynı (MBON07 ve MBON02 %90'da tam, %100'de sıfır; PPL1
 ve RND307 etkisiz). Kompartman haritası ve rezerv eşiği kokudan bağımsız.
 MBON01/03 bu kokuya da yanıt vermiyor; bu iki kompartman modelde hiçbir
 kokuyla test edilemiyor.
+
+## 39. Kapanış maddeleri II: rezerv ve KC girdisi; acı düzeltmesi (2026-10-30)
+
+**Madde 6 — rezerv eşiği KC girdisine bağlı mı?** KC→MBON09 sinapsları
+×0.5 ve ×2 (`artifacts/compartment_map_kc{0.5,2}.csv`, seyrek rejim, şeker).
+×0.5: MBON09 kokuya hiç yanıt vermiyor (0 Hz), öğrenme ölçülemiyor. ×2:
+koku yanıtı 13 → 48 Hz, ama öğrenme indeksi 0.88 → 0.37'ye düşüyor ve
+rezerv eşiği öne geliyor (%50 0.38, %75 0.27, %90 0.08; PPL1 kaybı
+etkisiz). Yani KC girdisi arttıkça aynı dopamin fazlası sinapsların daha
+küçük bir oranını siliyor (plastisite kuralı sinaps başına kesirli,
+yanıt ise doygun) ve bellek daha erken kaybolur. Eşik gerçekten KC girdisi
+× dopamin fazlası çarpımıyla belirleniyor; tek başına yakınsayan DAN
+sayısıyla değil (bölüm 33'teki hipotez doğrulandı, yön: güçlü KC girdisi =
+daha küçük rezerv).
+
+**Madde 1 devamı — APL→PPL1 düzeltmesiyle acı koşullanması** (APL×5,
+`artifacts/compartment_map_bitter_aplppl1x0.csv`): eşleşme sırasında PPL1
+58 Hz (koku tek başına 45 Hz, fazlalık +13 Hz), PPL1 kaldırılınca 0 Hz;
+ama bu rejimde ceza kompartmanlarının MBON'ları (11, 12, 14) kokuya yanıt
+vermediği için öğrenme görünmüyor (yanıt veren 6 MBON'da indeks ≤ 0.14,
+gürültü düzeyi). Aynı düzeltme ara rejimde (APL×3; MBON11/12/14 yanıt
+veriyor) sırada.
