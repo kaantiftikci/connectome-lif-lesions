@@ -309,7 +309,7 @@ for b in blocks:
         if b["text"].startswith("Tüm kod, sonuç tabloları"): parts.append("<p>Yazılım geliştirme, analiz betikleri ve el yazması taslağının hazırlanmasında büyük dil modeli tabanlı bir asistandan destek alınmıştır; çalışmayı yazar tasarlamış, tüm analizleri yönetip doğrulamış ve içeriğin tüm sorumluluğunu üstlenmiştir.</p>")
     else:
         txt = b["text"]
-        if txt.startswith("Bağımsız araştırmacı"): parts.append(f'<p class="affil">{inline(txt)} ORCID: 0009-0004-6757-6220</p>')
+        if txt.startswith("Bağımsız araştırmacı"): parts.append('<p class="affil">Sakarya Uygulamalı Bilimler Üniversitesi, Sakarya, Türkiye. Yazışma: kaantiftikci@outlook.com. ORCID: 0009-0004-6757-6220</p>')
         else: parts.append(f'<p>{inline(txt)}</p>')
 css = """
 @page { size: A4; margin: 25mm 25mm 25mm 25mm; }
